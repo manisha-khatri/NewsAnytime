@@ -1,10 +1,9 @@
 
-package com.example.newsanytime.pojo;
+package com.example.newsanytime.model;
 
 import java.io.Serializable;
 import java.util.List;
 
-import com.example.newsanytime.pojo.Article;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
