@@ -13,9 +13,11 @@ import static com.example.newsanytime.constants.Constants.API_KEY;
 public class HomePresenter {
 
     private final HomeActivityContract contract;
+    ApiService apiService;
 
     public HomePresenter(HomeActivityContract contract){
         this.contract = contract;
+        apiService = RetrofitSingleton.getRetrofitInstance().create(ApiService.class);
     }
 
     public Call<News> getNationalNews(ApiService apiService) {
@@ -45,9 +47,14 @@ public class HomePresenter {
                 API_KEY
         );
     }
+    public Call<News> getNewsOnSearchedKeyword(ApiService apiService, String SearchedKeyword) {
+        return apiService.getTopHeadlinesBasedOnSearchedKeyword(
+                SearchedKeyword,
+                API_KEY
+        );
+    }
 
     public void fetchNews() {
-        ApiService apiService = RetrofitSingleton.getRetrofitInstance().create(ApiService.class);
         Call<News> call;
 
         call = getNationalNews(apiService);
@@ -122,6 +129,28 @@ public class HomePresenter {
                 //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void retrieveSearchedNewsRequestResponse(Call<News> call) {
+        call.enqueue(new Callback<News>() {
+            @Override
+            public void onResponse(Call<News> call, Response<News> response) {
+                News news = response.body();
+                contract.displayEntertainmentNewsArticles(news);
+            }
+
+            @Override
+            public void onFailure(Call<News> call, Throwable t) {
+                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void fetchNewsForSearchedKeyword(String searchedKeyword){
+        Call<News> call;
+
+        call = getNewsOnSearchedKeyword(apiService, searchedKeyword);
+        retrieveSearchedNewsRequestResponse(call);
     }
 
 }
