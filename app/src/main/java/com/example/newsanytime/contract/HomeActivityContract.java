@@ -1,8 +1,14 @@
 package com.example.newsanytime.contract;
 
-import com.example.newsanytime.pojo.News;
+import com.example.newsanytime.model.News;
 
 public interface HomeActivityContract {
 
-    public void showTopHeadlinesList(News news);
+    public void displayNationalNewsArticles(News news);
+
+    public void displaySportsNewsArticles(News news);
+
+    public void displayBusinessNewsArticles(News news);
+
+    public void displayEntertainmentNewsArticles(News news);
 }

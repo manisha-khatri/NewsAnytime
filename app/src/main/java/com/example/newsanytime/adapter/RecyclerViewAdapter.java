@@ -8,12 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.newsanytime.R;
-import com.example.newsanytime.pojo.Article;
-import com.example.newsanytime.pojo.News;
+import com.example.newsanytime.model.Article;
+import com.example.newsanytime.model.News;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -21,6 +19,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     News news;
     Context context;
     List<Article> articles;
+
     public RecyclerViewAdapter(News news, Context context){
         this.news = news;
         this.context = context;
@@ -29,9 +28,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View listItem= layoutInflater.inflate(R.layout.recyclerview_row, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
+        View listItem = layoutInflater.inflate(R.layout.recyclerview_list_item, viewGroup, false);
         return new ViewHolder(listItem);
     }
 
@@ -44,7 +43,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemCount() {
         return articles.size();
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -72,9 +70,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         .load(imageUrl)
                         .into(imageView);
             }
-
-
-
         }
     }
 }

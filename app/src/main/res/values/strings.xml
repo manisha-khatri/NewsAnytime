@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">News Anytime</string>
     <string name="news_heading">jhgjdygc jwhd iugwc mwgh iugc mwjmg iue</string>
-    <string name="top_headlines">Top Headlines</string>
+    <string name="national_news">National News</string>
+    <string name="sports_news">Sports News</string>
+    <string name="business_news">Business News</string>
+    <string name="entertainment_news">Entertainment News</string>
 </resources>
