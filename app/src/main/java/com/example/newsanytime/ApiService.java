@@ -24,4 +24,10 @@ public interface ApiService {
             @Query("apiKey") String apiKey
     );
 
+    @GET("top-headlines")
+    Call<News> getTopHeadlinesBasedOnSearchedKeyword(
+            @Query("q") String q,
+            @Query("apiKey") String apiKey
+    );
+
 }

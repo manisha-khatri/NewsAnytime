@@ -11,4 +11,5 @@ public interface HomeActivityContract {
     public void displayBusinessNewsArticles(News news);
 
     public void displayEntertainmentNewsArticles(News news);
+
 }

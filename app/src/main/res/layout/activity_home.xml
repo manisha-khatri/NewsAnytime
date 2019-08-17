@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="5dp">
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical">
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
 
@@ -17,119 +16,134 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#DCDCDC"
-                android:gravity="center"
-                android:text="@string/national_news"
-                android:textSize="16sp"
-                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view1"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:scrollbars="horizontal" />
+                    android:background="#fff"
+                    android:text="@string/national_news"
+                    android:textSize="16sp"
+                    android:paddingLeft="14dp"
+                    android:textColor="#000"
+                    android:textStyle="bold" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view1"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:padding="8dp"
+                        android:scrollbars="horizontal" />
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#DCDCDC"
-                android:gravity="center"
-                android:text="@string/sports_news"
-                android:textSize="16sp"
-                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view2"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:scrollbars="horizontal" />
+                    android:background="#fff"
+                    android:paddingLeft="14dp"
+                    android:text="@string/sports_news"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view2"
+                        android:layout_width="match_parent"
+                        android:padding="8dp"
+                        android:layout_height="220dp"
+                        android:layout_marginTop="10dp"
+                        android:scrollbars="horizontal" />
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#DCDCDC"
-                android:gravity="center"
-                android:text="@string/business_news"
-                android:textSize="16sp"
-                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view3"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:scrollbars="horizontal" />
+                    android:background="#fff"
+                    android:text="@string/business_news"
+                    android:paddingLeft="14dp"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view3"
+                        android:layout_width="match_parent"
+                        android:padding="8dp"
+                        android:layout_height="220dp"
+                        android:layout_marginTop="10dp"
+                        android:scrollbars="horizontal" />
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#DCDCDC"
-                android:gravity="center"
-                android:text="@string/entertainment_news"
-                android:textSize="16sp"
-                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="40dp"
+                android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view4"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:scrollbars="horizontal" />
+                    android:background="#fff"
+                    android:text="@string/entertainment_news"
+                    android:paddingLeft="14dp"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view4"
+                        android:layout_width="match_parent"
+                        android:padding="8dp"
+                        android:layout_height="220dp"
+                        android:layout_marginTop="10dp"
+                        android:scrollbars="horizontal" />
+
+                </LinearLayout>
             </LinearLayout>
+
+
         </LinearLayout>
 
-
-    </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
+</LinearLayout>
