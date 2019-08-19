@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.AdvanceSearchActivity"/>
+        <activity android:name=".view.SingleNewsActivity" />
     </application>
 
 </manifest>

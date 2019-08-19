@@ -16,7 +16,7 @@ import com.example.newsanytime.contract.AdvanceSearchContract;
 import com.example.newsanytime.model.News;
 import com.example.newsanytime.presenter.AdvanceSearchPresenter;
 
-public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceSearchContract {
+public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceSearchContract, AdvanceSearchRecyclerViewAdapter.OnNewsListener {
 
     AdvanceSearchPresenter presenter;
     @Override
@@ -45,7 +45,7 @@ public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceS
     }
 
     public void setNewsInRecyclerViewAdapter(News news, RecyclerView recyclerView) {
-        AdvanceSearchRecyclerViewAdapter adapter = new AdvanceSearchRecyclerViewAdapter(news, this);     //class object, which calls default constructor
+        AdvanceSearchRecyclerViewAdapter adapter = new AdvanceSearchRecyclerViewAdapter(news, this,this);     //class object, which calls default constructor
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -78,5 +78,17 @@ public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceS
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent) {
+        Intent intent = new Intent(AdvanceSearchActivity.this, SingleNewsActivity.class);
+
+        intent.putExtra("NEWS_HEADLINE", newsHeadline);
+        intent.putExtra("NEWS_IMAGE", newsImage);
+        intent.putExtra("NEWS_DESCRIPTION", newsDescription);
+        intent.putExtra("NEWS_CONTENT", newsContent);
+        this.startActivity(intent);
+
     }
 }

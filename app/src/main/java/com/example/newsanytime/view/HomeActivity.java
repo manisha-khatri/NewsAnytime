@@ -13,13 +13,17 @@ import android.widget.SearchView;
 import com.example.newsanytime.R;
 import com.example.newsanytime.adapter.HomeRecyclerViewAdapter;
 import com.example.newsanytime.contract.HomeActivityContract;
+import com.example.newsanytime.model.Article;
 import com.example.newsanytime.model.News;
 import com.example.newsanytime.presenter.HomePresenter;
 
+import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements HomeActivityContract {
+
+public class HomeActivity extends AppCompatActivity implements HomeActivityContract, HomeRecyclerViewAdapter.OnNewsListener {
 
     HomePresenter homePresenter;
+    List<Article> articles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,8 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
     }
 
     public void setNewsInRecyclerViewAdapter(News news, RecyclerView recyclerView) {
-        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(news, this);     //class object, which calls default constructor
+        this.articles = news.getArticles();
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(news, this,this);     //class object, which calls default constructor
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -92,4 +97,15 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
 
     }
 
+    @Override
+    public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent){
+        Intent intent = new Intent(HomeActivity.this, SingleNewsActivity.class);
+
+        intent.putExtra("NEWS_HEADLINE", newsHeadline);
+        intent.putExtra("NEWS_IMAGE", newsImage);
+        intent.putExtra("NEWS_DESCRIPTION", newsDescription);
+        intent.putExtra("NEWS_CONTENT", newsContent);
+        this.startActivity(intent);
+
+    }
 }
