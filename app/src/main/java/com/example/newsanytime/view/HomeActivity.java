@@ -1,5 +1,6 @@
 package com.example.newsanytime.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,7 @@ import android.view.MenuItem;
 import android.widget.SearchView;
 
 import com.example.newsanytime.R;
-import com.example.newsanytime.adapter.RecyclerViewAdapter;
+import com.example.newsanytime.adapter.HomeRecyclerViewAdapter;
 import com.example.newsanytime.contract.HomeActivityContract;
 import com.example.newsanytime.model.News;
 import com.example.newsanytime.presenter.HomePresenter;
@@ -54,7 +55,7 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
     }
 
     public void setNewsInRecyclerViewAdapter(News news, RecyclerView recyclerView) {
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(news, this);     //class object, which calls default constructor
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(news, this);     //class object, which calls default constructor
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -71,6 +72,7 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                callSearchNewsActivity(query);
                 return false;
             }
 
@@ -81,6 +83,13 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
             }
         });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void callSearchNewsActivity(String searchedKeyword){
+        Intent intent = new Intent(HomeActivity.this, AdvanceSearchActivity.class);
+        intent.putExtra("SEARCHED_KEYWORD",searchedKeyword);
+        startActivity(intent);
+
     }
 
 }
