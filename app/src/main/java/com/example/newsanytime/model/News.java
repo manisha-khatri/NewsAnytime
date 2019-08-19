@@ -23,13 +23,13 @@ public class News implements Serializable
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public News() {
     }
 
     /**
-     * 
+     *
      * @param articles
      * @param totalResults
      * @param status

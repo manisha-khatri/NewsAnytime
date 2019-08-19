@@ -10,7 +10,7 @@ import retrofit2.Response;
 
 import static com.example.newsanytime.constants.Constants.API_KEY;
 
-public class HomePresenter {
+public class HomePresenter{
 
     private final HomeActivityContract contract;
     ApiService apiService;
@@ -44,12 +44,6 @@ public class HomePresenter {
         return apiService.getTopHeadlinesBasedOnCategory(
                 "in",
                 "entertainment",
-                API_KEY
-        );
-    }
-    public Call<News> getNewsOnSearchedKeyword(ApiService apiService, String SearchedKeyword) {
-        return apiService.getTopHeadlinesBasedOnSearchedKeyword(
-                SearchedKeyword,
                 API_KEY
         );
     }
@@ -131,27 +125,7 @@ public class HomePresenter {
         });
     }
 
-    public void retrieveSearchedNewsRequestResponse(Call<News> call) {
-        call.enqueue(new Callback<News>() {
-            @Override
-            public void onResponse(Call<News> call, Response<News> response) {
-                News news = response.body();
-                contract.displayEntertainmentNewsArticles(news);
-            }
 
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
-                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void fetchNewsForSearchedKeyword(String searchedKeyword){
-        Call<News> call;
-
-        call = getNewsOnSearchedKeyword(apiService, searchedKeyword);
-        retrieveSearchedNewsRequestResponse(call);
-    }
 
 }
 

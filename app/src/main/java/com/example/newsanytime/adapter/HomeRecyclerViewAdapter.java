@@ -14,13 +14,13 @@ import com.example.newsanytime.model.News;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder> {
 
     News news;
     Context context;
     List<Article> articles;
 
-    public RecyclerViewAdapter(News news, Context context){
+    public HomeRecyclerViewAdapter(News news, Context context){
         this.news = news;
         this.context = context;
         this.articles = news.getArticles();
@@ -30,7 +30,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
-        View listItem = layoutInflater.inflate(R.layout.recyclerview_list_item, viewGroup, false);
+        View listItem = layoutInflater.inflate(R.layout.home_activity_recyclerview_list_item, viewGroup, false);
         return new ViewHolder(listItem);
     }
 
