@@ -1,0 +1,157 @@
+package com.example.newsanytime.presenter;
+
+import android.app.Application;
+
+import com.example.newsanytime.ApiService;
+import com.example.newsanytime.room.BookmarkedNews;
+import com.example.newsanytime.room.BookmarkedNewsRepository;
+import com.example.newsanytime.singleton.BookmarkedNewsSingleton;
+import com.example.newsanytime.singleton.RetrofitSingleton;
+import com.example.newsanytime.contract.HomeActivityContract;
+import com.example.newsanytime.model.News;
+
+import java.util.Dictionary;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.example.newsanytime.constants.Constants.API_KEY;
+
+public class HomePresenter{
+
+    private final HomeActivityContract contract;
+    ApiService apiService;
+    Dictionary<String,String> bookmarkedNews;
+
+    public HomePresenter(HomeActivityContract contract){
+        this.contract = contract;
+        apiService = RetrofitSingleton.getRetrofitInstance().create(ApiService.class);
+    }
+
+    public Call<News> getNationalNews(ApiService apiService) {
+        return apiService.getTopHeadlinesBasedOnCountry(
+                    "in",
+                    API_KEY
+            );
+    }
+    public Call<News> getSportsNews(ApiService apiService) {
+        return apiService.getTopHeadlinesBasedOnCategory(
+                "in",
+                "sports",
+                API_KEY
+        );
+    }
+    public Call<News> getBusinessNews(ApiService apiService) {
+        return apiService.getTopHeadlinesBasedOnCategory(
+                "in",
+                "business",
+                API_KEY
+        );
+    }
+    public Call<News> getEntertainmentNews(ApiService apiService) {
+        return apiService.getTopHeadlinesBasedOnCategory(
+                "in",
+                "entertainment",
+                API_KEY
+        );
+    }
+
+    public void fetchNews() {
+        Call<News> call;
+
+        call = getNationalNews(apiService);
+        retrieveNationalNewsRequestResponse(call);
+
+        call = getSportsNews(apiService);
+        retrieveSportsNewsRequestResponse(call);
+
+        call = getBusinessNews(apiService);
+        retrieveBusinessNewsRequestResponse(call);
+
+        call = getEntertainmentNews(apiService);
+        retrieveEntertainmentNewsRequestResponse(call);
+
+    }
+
+    public void retrieveNationalNewsRequestResponse(Call<News> call) {
+        call.enqueue(new Callback<News>() {
+            @Override
+            public void onResponse(Call<News> call, Response<News> response) {
+                News news = response.body();
+                contract.displayNationalNewsArticles(news);
+            }
+
+            @Override
+            public void onFailure(Call<News> call, Throwable t) {
+                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void retrieveSportsNewsRequestResponse(Call<News> call) {
+        call.enqueue(new Callback<News>() {
+            @Override
+            public void onResponse(Call<News> call, Response<News> response) {
+                News news = response.body();
+                contract.displaySportsNewsArticles(news);
+            }
+
+            @Override
+            public void onFailure(Call<News> call, Throwable t) {
+                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void retrieveBusinessNewsRequestResponse(Call<News> call) {
+        call.enqueue(new Callback<News>() {
+            @Override
+            public void onResponse(Call<News> call, Response<News> response) {
+                News news = response.body();
+                contract.displayBusinessNewsArticles(news);
+            }
+
+            @Override
+            public void onFailure(Call<News> call, Throwable t) {
+                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void retrieveEntertainmentNewsRequestResponse(Call<News> call) {
+        call.enqueue(new Callback<News>() {
+            @Override
+            public void onResponse(Call<News> call, Response<News> response) {
+                News news = response.body();
+                contract.displayEntertainmentNewsArticles(news);
+            }
+
+            @Override
+            public void onFailure(Call<News> call, Throwable t) {
+                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void saveBookmarkedNewsInDB(Dictionary newsDict, Application application){
+        this.bookmarkedNews = newsDict;
+        String headline = (String) newsDict.get("news headline");
+        String image = (String) newsDict.get("news image");
+        String description = (String) newsDict.get("news description");
+        String content = (String) newsDict.get("news content");
+
+        BookmarkedNews bookmarkedNews = new BookmarkedNews(headline, image, description, content);
+        BookmarkedNewsRepository repository = BookmarkedNewsSingleton.getInstance(application);
+        repository.saveNews(bookmarkedNews);
+    }
+
+
+}
+
+
+
+
+
+
+
