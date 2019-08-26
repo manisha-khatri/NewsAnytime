@@ -2,12 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/search_food"
-        android:title="search my food"
-        android:icon="@drawable/search_icon"
+    <item android:id="@+id/search_news"
         app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="always">
+        app:showAsAction="always"
+        android:title="search">
 
     </item>
 
+    <item
+        android:id="@+id/bookmark_items"
+        android:icon="@drawable/bkmark_list_2"
+        android:title="bookmark items button"
+        app:showAsAction="always">
+
+    </item>
 </menu>

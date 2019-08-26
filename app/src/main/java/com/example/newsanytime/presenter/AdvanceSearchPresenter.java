@@ -1,7 +1,7 @@
 package com.example.newsanytime.presenter;
 
 import com.example.newsanytime.ApiService;
-import com.example.newsanytime.RetrofitSingleton;
+import com.example.newsanytime.singleton.RetrofitSingleton;
 import com.example.newsanytime.contract.AdvanceSearchContract;
 import com.example.newsanytime.model.News;
 import retrofit2.Call;

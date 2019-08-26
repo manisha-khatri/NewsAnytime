@@ -12,6 +12,6 @@ public interface HomeActivityContract {
 
     public void displayEntertainmentNewsArticles(News news);
 
-    //public void displaySearchedNewsArticles(News news);
+    //public void displaySearchedNewsArticles(BookmarkedNews news);
 
 }

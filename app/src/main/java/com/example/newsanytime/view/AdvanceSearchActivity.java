@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.SearchView;
 
 import com.example.newsanytime.R;
 import com.example.newsanytime.adapter.AdvanceSearchRecyclerViewAdapter;
@@ -70,7 +69,7 @@ public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceS
 
         switch (item.getItemId()) {
             case R.id.back_button:
-                Intent intent = new Intent(AdvanceSearchActivity.this, HomeActivity.class);
+                Intent intent = new Intent(this, HomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 return true;
@@ -82,7 +81,7 @@ public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceS
 
     @Override
     public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent) {
-        Intent intent = new Intent(AdvanceSearchActivity.this, SingleNewsActivity.class);
+        Intent intent = new Intent(AdvanceSearchActivity.this, IndividualNewsActivity.class);
 
         intent.putExtra("NEWS_HEADLINE", newsHeadline);
         intent.putExtra("NEWS_IMAGE", newsImage);
