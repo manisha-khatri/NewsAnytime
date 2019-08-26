@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/back_button"
-        android:icon="@drawable/arrow"
+        android:icon="@drawable/back_3"
         app:showAsAction="always"
         android:title="back button">
     </item>

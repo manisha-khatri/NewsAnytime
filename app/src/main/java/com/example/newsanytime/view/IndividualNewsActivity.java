@@ -1,34 +1,51 @@
 package com.example.newsanytime.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.newsanytime.R;
+import com.example.newsanytime.contract.IndividualNewsContract;
+import com.example.newsanytime.presenter.IndividualNewsPresenter;
 import com.squareup.picasso.Picasso;
 
-public class SingleNewsActivity extends AppCompatActivity {
+import java.util.Dictionary;
+import java.util.Hashtable;
+
+public class IndividualNewsActivity extends AppCompatActivity implements IndividualNewsContract {
 
     ImageView newsImageIV;
     TextView newsHeadlineTV;
     TextView newsDescriptionTV;
     TextView newsContentTV;
+    Button bookmarkBtn;
+    IndividualNewsPresenter individualNewsPresenter;
+    Dictionary<String,String> newsDict;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_news);
+        setContentView(R.layout.activity_individual_news);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().hide();
+        individualNewsPresenter = new IndividualNewsPresenter(this);
 
         initViews();
         getNewsDetailsFromIntent();
-
+       // onBookmarkBtnClickListener();
     }
+
+    /*private void onBookmarkBtnClickListener() {
+        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                individualNewsPresenter.saveBookmarkedNewsInDB(newsDict, getApplication());
+                bookmarkBtn.setBackgroundResource(R.drawable.bookmark_see_green);
+            }
+        });
+    }*/
 
     private void initViews() {
         newsHeadlineTV = findViewById(R.id.single_news_heading);
@@ -64,10 +81,15 @@ public class SingleNewsActivity extends AppCompatActivity {
         else newsContent = null;
 
         setActivityViews(newsHeadline, newsImage, newsDescription, newsContent);
-
     }
 
     private void setActivityViews(String newsHeadline, String newsImage, String newsDescription, String newsContent) {
+        newsDict = new Hashtable<String, String>();
+        newsDict.put("news headline", newsHeadline);
+        newsDict.put("news image", newsImage);
+        newsDict.put("news description", newsDescription);
+        newsDict.put("news content", newsContent);
+
         newsHeadlineTV.setText(newsHeadline);
         newsDescriptionTV.setText(newsDescription);
         newsContentTV.setText(newsContent);

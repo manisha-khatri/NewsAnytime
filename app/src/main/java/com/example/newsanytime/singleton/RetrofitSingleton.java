@@ -1,4 +1,6 @@
-package com.example.newsanytime;
+package com.example.newsanytime.singleton;
+
+import com.example.newsanytime.ApiService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

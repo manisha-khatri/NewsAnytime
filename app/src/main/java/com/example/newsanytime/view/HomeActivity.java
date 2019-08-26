@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
-
 import com.example.newsanytime.R;
 import com.example.newsanytime.adapter.HomeRecyclerViewAdapter;
 import com.example.newsanytime.contract.HomeActivityContract;
@@ -17,6 +16,7 @@ import com.example.newsanytime.model.Article;
 import com.example.newsanytime.model.News;
 import com.example.newsanytime.presenter.HomePresenter;
 
+import java.util.Dictionary;
 import java.util.List;
 
 
@@ -33,8 +33,8 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
 
         homePresenter = new HomePresenter(this);
         homePresenter.fetchNews();
-
     }
+
 
     @Override
     public void displayNationalNewsArticles(News news) {
@@ -71,8 +71,9 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.search_view_menu,menu);
-        MenuItem item = menu.findItem(R.id.search_food);
-        SearchView searchView = (SearchView)item.getActionView();
+
+        MenuItem items = menu.findItem(R.id.search_news);
+        SearchView searchView = (SearchView)items.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -83,23 +84,37 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
 
             @Override
             public boolean onQueryTextChange(String newText) {
-               // adapter.getFilter().filter(newText);
+                // adapter.getFilter().filter(newText);
                 return false;
             }
         });
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.bookmark_items:
+                Intent intent = new Intent(this, BookmarkedNewsActivity.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     public void callSearchNewsActivity(String searchedKeyword){
         Intent intent = new Intent(HomeActivity.this, AdvanceSearchActivity.class);
         intent.putExtra("SEARCHED_KEYWORD",searchedKeyword);
         startActivity(intent);
-
     }
 
     @Override
     public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent){
-        Intent intent = new Intent(HomeActivity.this, SingleNewsActivity.class);
+        Intent intent = new Intent(HomeActivity.this, IndividualNewsActivity.class);
 
         intent.putExtra("NEWS_HEADLINE", newsHeadline);
         intent.putExtra("NEWS_IMAGE", newsImage);
@@ -107,5 +122,10 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
         intent.putExtra("NEWS_CONTENT", newsContent);
         this.startActivity(intent);
 
+    }
+
+    @Override
+    public void onBookmarkBtnClickListener(Dictionary<String, String> newsDict) {
+        homePresenter.saveBookmarkedNewsInDB(newsDict, getApplication());
     }
 }
