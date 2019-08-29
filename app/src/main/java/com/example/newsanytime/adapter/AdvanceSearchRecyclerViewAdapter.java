@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.example.newsanytime.R;
 import com.example.newsanytime.model.Article;
 import com.example.newsanytime.model.News;
-import com.example.newsanytime.view.AdvanceSearchActivity;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class AdvanceSearchRecyclerViewAdapter extends RecyclerView.Adapter<Advan
     }
 
     public interface OnNewsListener {
-        void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent);
+        void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -84,9 +83,9 @@ public class AdvanceSearchRecyclerViewAdapter extends RecyclerView.Adapter<Advan
                     String newsImage = articles.get(position).getUrlToImage();
                     String newsDescription = articles.get(position).getDescription();
                     String newsContent = articles.get(position).getContent();
+                    String newsPublishedDate = articles.get(position).getPublishedAt();
 
-                    onNewsListener.onNewsItemClickListener(newsHeadline, newsImage, newsDescription, newsContent);
-
+                    onNewsListener.onNewsItemClickListener(newsHeadline, newsImage, newsDescription, newsContent,newsPublishedDate);
                 }
             });
         }
@@ -99,8 +98,9 @@ public class AdvanceSearchRecyclerViewAdapter extends RecyclerView.Adapter<Advan
                     String newsImage = articles.get(position).getUrlToImage();
                     String newsDescription = articles.get(position).getDescription();
                     String newsContent = articles.get(position).getContent();
+                    String newsPublishedDate = articles.get(position).getPublishedAt();
 
-                    onNewsListener.onNewsItemClickListener(newsHeadline, newsImage, newsDescription, newsContent);
+                    onNewsListener.onNewsItemClickListener(newsHeadline, newsImage, newsDescription, newsContent,newsPublishedDate);
                 }
             });
         }

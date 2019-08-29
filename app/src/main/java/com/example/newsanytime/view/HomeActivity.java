@@ -8,16 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
+
 import com.example.newsanytime.R;
 import com.example.newsanytime.adapter.HomeRecyclerViewAdapter;
 import com.example.newsanytime.contract.HomeActivityContract;
 import com.example.newsanytime.model.Article;
 import com.example.newsanytime.model.News;
 import com.example.newsanytime.presenter.HomePresenter;
+import com.example.newsanytime.presenter.NewsDetailPresenter;
 
-import java.util.Dictionary;
 import java.util.List;
+
 
 
 public class HomeActivity extends AppCompatActivity implements HomeActivityContract, HomeRecyclerViewAdapter.OnNewsListener {
@@ -32,9 +35,10 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         homePresenter = new HomePresenter(this);
-        homePresenter.fetchNews();
-    }
 
+        homePresenter.fetchNews();
+
+    }
 
     @Override
     public void displayNationalNewsArticles(News news) {
@@ -105,7 +109,6 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
         }
     }
 
-
     public void callSearchNewsActivity(String searchedKeyword){
         Intent intent = new Intent(HomeActivity.this, AdvanceSearchActivity.class);
         intent.putExtra("SEARCHED_KEYWORD",searchedKeyword);
@@ -113,19 +116,15 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
     }
 
     @Override
-    public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent){
-        Intent intent = new Intent(HomeActivity.this, IndividualNewsActivity.class);
-
+    public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate){
+        Intent intent = new Intent(HomeActivity.this, NewsDetailDetailActivity.class);
         intent.putExtra("NEWS_HEADLINE", newsHeadline);
         intent.putExtra("NEWS_IMAGE", newsImage);
         intent.putExtra("NEWS_DESCRIPTION", newsDescription);
         intent.putExtra("NEWS_CONTENT", newsContent);
+        intent.putExtra("NEWS_PUBLISHED_DATE", newsPublishedDate);
+
         this.startActivity(intent);
-
     }
 
-    @Override
-    public void onBookmarkBtnClickListener(Dictionary<String, String> newsDict) {
-        homePresenter.saveBookmarkedNewsInDB(newsDict, getApplication());
-    }
 }

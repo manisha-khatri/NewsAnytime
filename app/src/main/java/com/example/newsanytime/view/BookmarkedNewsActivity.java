@@ -1,6 +1,5 @@
 package com.example.newsanytime.view;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,10 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.newsanytime.R;
-import com.example.newsanytime.adapter.AdvanceSearchRecyclerViewAdapter;
 import com.example.newsanytime.adapter.BookmarkedNewsAdapter;
 import com.example.newsanytime.contract.BookmarkedNewsContract;
-import com.example.newsanytime.model.News;
 import com.example.newsanytime.presenter.BookmarkedNewsPresenter;
 import com.example.newsanytime.room.BookmarkedNews;
 import java.util.List;
@@ -37,7 +34,7 @@ public class BookmarkedNewsActivity extends AppCompatActivity implements Bookmar
         bookmarkedNewsPresenter.fetchNewsListFromDB(getApplication());
     }
 
-    public void setNewsInRecyclerViewAdapter(List<BookmarkedNews> newsList, RecyclerView recyclerView) {
+    public void setNewsInRecyclerViewAdapter( RecyclerView recyclerView) {
         BookmarkedNewsAdapter adapter = new BookmarkedNewsAdapter(newsList, this,this);     //class object, which calls default constructor
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -47,19 +44,22 @@ public class BookmarkedNewsActivity extends AppCompatActivity implements Bookmar
 
     @Override
     public void renderNewsList(List<BookmarkedNews> newsList) {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_bookmarked_news);
-        setNewsInRecyclerViewAdapter(newsList, recyclerView);
+        this.newsList = newsList;
+        RecyclerView recyclerView =  findViewById(R.id.recycler_view_bookmarked_news);
+        setNewsInRecyclerViewAdapter(recyclerView);
     }
 
 
     @Override
-    public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent) {
-        Intent intent = new Intent(this, IndividualNewsActivity.class);
+    public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate) {
+        Intent intent = new Intent(this, NewsDetailDetailActivity.class);
 
         intent.putExtra("NEWS_HEADLINE", newsHeadline);
         intent.putExtra("NEWS_IMAGE", newsImage);
         intent.putExtra("NEWS_DESCRIPTION", newsDescription);
         intent.putExtra("NEWS_CONTENT", newsContent);
+        intent.putExtra("NEWS_PUBLISHED_DATE", newsPublishedDate);
+
         this.startActivity(intent);
 
     }

@@ -44,7 +44,7 @@ public class BookmarkedNewsAdapter extends RecyclerView.Adapter<BookmarkedNewsAd
     }
 
     public interface OnBookmarkedNewsItemListener {
-        void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent);
+        void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -87,8 +87,9 @@ public class BookmarkedNewsAdapter extends RecyclerView.Adapter<BookmarkedNewsAd
             String newsImage = newsList.get(position).getImageUrl();
             String newsDescription = newsList.get(position).getDescription();
             String newsContent = newsList.get(position).getContent();
+            String newsPublishedDate= newsList.get(position).getPublishedDate();
 
-            onBookmarkedNewsItemListener.onNewsItemClickListener(newsHeadline, newsImage, newsDescription, newsContent);
+            onBookmarkedNewsItemListener.onNewsItemClickListener(newsHeadline, newsImage, newsDescription, newsContent,newsPublishedDate);
         }
 
         private void onNewsImageClickListener() {

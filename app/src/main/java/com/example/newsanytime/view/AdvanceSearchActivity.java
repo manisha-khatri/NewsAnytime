@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
 import com.example.newsanytime.R;
 import com.example.newsanytime.adapter.AdvanceSearchRecyclerViewAdapter;
 import com.example.newsanytime.contract.AdvanceSearchContract;
@@ -31,7 +30,6 @@ public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceS
         if(searchedKeyword!=null){
             presenter.fetchNewsForSearchedKeyword(searchedKeyword);
         }
-
     }
 
     public String fetchSearchedKeyword() {
@@ -80,13 +78,15 @@ public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceS
     }
 
     @Override
-    public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent) {
-        Intent intent = new Intent(AdvanceSearchActivity.this, IndividualNewsActivity.class);
+    public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate) {
+        Intent intent = new Intent(AdvanceSearchActivity.this, NewsDetailDetailActivity.class);
 
         intent.putExtra("NEWS_HEADLINE", newsHeadline);
         intent.putExtra("NEWS_IMAGE", newsImage);
         intent.putExtra("NEWS_DESCRIPTION", newsDescription);
         intent.putExtra("NEWS_CONTENT", newsContent);
+        intent.putExtra("NEWS_CONTENT", newsContent);
+        intent.putExtra("NEWS_PUBLISHED_DATE", newsPublishedDate);
         this.startActivity(intent);
 
     }

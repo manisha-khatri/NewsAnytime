@@ -13,6 +13,9 @@ public class BookmarkedNews {
     @ColumnInfo
     int id;
 
+    @ColumnInfo(name = "published_date")
+    String publishedDate;
+
     @ColumnInfo(name = "image_url")
     String imageUrl;
 
@@ -25,11 +28,12 @@ public class BookmarkedNews {
     @ColumnInfo(name = "content")
     String content;
 
-    public BookmarkedNews(String headline, String imageUrl, String description, String content){
+    public BookmarkedNews(String headline, String imageUrl, String description, String content, String publishedDate){
         this.headline = headline;
         this.imageUrl = imageUrl;
         this.description = description;
         this.content = content;
+        this.publishedDate = publishedDate;
     }
 
     public String getContent() {
@@ -63,5 +67,14 @@ public class BookmarkedNews {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getPublishedDate() {
+        return publishedDate;
+    }
+
+    public void setPublishedDate(String publishedDate) {
+        this.publishedDate = publishedDate;
+    }
+
 
 }
