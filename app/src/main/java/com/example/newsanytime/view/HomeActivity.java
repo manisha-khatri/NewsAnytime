@@ -35,9 +35,7 @@ public class HomeActivity extends AppCompatActivity implements HomeActivityContr
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         homePresenter = new HomePresenter(this);
-
         homePresenter.fetchNews();
-
     }
 
     @Override
