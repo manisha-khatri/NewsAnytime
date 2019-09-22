@@ -13,19 +13,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="1dp"
-        android:weightSum="5"
+        android:weightSum="7"
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/bookmarked_news_image"
+            android:id="@+id/searched_news_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:layout_weight="3"
-            android:src="@drawable/modi" />
+            android:layout_weight="5"
+            android:src="@drawable/image_not_present" />
 
         <TextView
-            android:id="@+id/bookmarked_news_headline"
+            android:id="@+id/searched_news_headline"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="sans-serif"
@@ -36,5 +36,6 @@
             android:textSize="12sp" />
 
     </LinearLayout>
+
 </android.support.v7.widget.CardView>
 

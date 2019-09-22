@@ -14,31 +14,31 @@ import com.example.newsanytime.model.News;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
-public class AdvanceSearchRecyclerViewAdapter extends RecyclerView.Adapter<AdvanceSearchRecyclerViewAdapter.ViewHolder> {
+public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<NationalNewsRecyclerViewAdapter.ViewHolder> {
 
     News news;
     Context context;
     List<Article> articles;
-    private OnNewsListener onNewsListener;
+    private RecyclerViewItemListener recyclerViewItemListener;
 
-    public AdvanceSearchRecyclerViewAdapter(News news, Context context, OnNewsListener onNewsListener) {
+    public NationalNewsRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
         this.news = news;
         this.context = context;
         this.articles = news.getArticles();
-        this.onNewsListener = onNewsListener;
+        this.recyclerViewItemListener = recyclerViewItemListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
-        View listItem = layoutInflater.inflate(R.layout.searched_activity_recyclerview_list_item, viewGroup, false);
-        return new ViewHolder(listItem, onNewsListener);
+        View listItem = layoutInflater.inflate(R.layout.recyclerview_item_activity_home, viewGroup, false);
+        return new ViewHolder(listItem, recyclerViewItemListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        viewHolder.render(viewHolder,position);
+        viewHolder.render(viewHolder, position);
     }
 
     @Override
@@ -46,8 +46,8 @@ public class AdvanceSearchRecyclerViewAdapter extends RecyclerView.Adapter<Advan
         return articles.size();
     }
 
-    public interface OnNewsListener {
-        void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate);
+    public interface RecyclerViewItemListener {
+        void onRecyclerViewItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedAt);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -56,13 +56,13 @@ public class AdvanceSearchRecyclerViewAdapter extends RecyclerView.Adapter<Advan
         ViewHolder holder;
         ImageView newsImageIV;
         TextView newsHeadingTV;
-        OnNewsListener onNewsListener;
+        RecyclerViewItemListener recyclerViewItemListener;
 
-        public ViewHolder(@NonNull View itemView, OnNewsListener onNewsListener) {
+        public ViewHolder(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
             super(itemView);
-            newsImageIV = itemView.findViewById(R.id.searched_news_image);
-            newsHeadingTV = itemView.findViewById(R.id.searched_news_headline);
-            this.onNewsListener = onNewsListener;
+            newsImageIV = itemView.findViewById(R.id.news_image);
+            newsHeadingTV = itemView.findViewById(R.id.news_headline);
+            this.recyclerViewItemListener = recyclerViewItemListener;
         }
 
         public void render(ViewHolder viewHolder, int position) {
@@ -75,17 +75,12 @@ public class AdvanceSearchRecyclerViewAdapter extends RecyclerView.Adapter<Advan
             onNewsHeadingClickListener();
         }
 
+
         private void onNewsHeadingClickListener() {
             holder.newsHeadingTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String newsHeadline = articles.get(position).getTitle();
-                    String newsImage = articles.get(position).getUrlToImage();
-                    String newsDescription = articles.get(position).getDescription();
-                    String newsContent = articles.get(position).getContent();
-                    String newsPublishedDate = articles.get(position).getPublishedAt();
-
-                    onNewsListener.onNewsItemClickListener(newsHeadline, newsImage, newsDescription, newsContent,newsPublishedDate);
+                    passInfoToListener();
                 }
             });
         }
@@ -94,15 +89,19 @@ public class AdvanceSearchRecyclerViewAdapter extends RecyclerView.Adapter<Advan
             holder.newsImageIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String newsHeadline = articles.get(position).getTitle();
-                    String newsImage = articles.get(position).getUrlToImage();
-                    String newsDescription = articles.get(position).getDescription();
-                    String newsContent = articles.get(position).getContent();
-                    String newsPublishedDate = articles.get(position).getPublishedAt();
-
-                    onNewsListener.onNewsItemClickListener(newsHeadline, newsImage, newsDescription, newsContent,newsPublishedDate);
+                    passInfoToListener();
                 }
             });
+        }
+
+        void passInfoToListener(){
+            String newsHeadline = articles.get(position).getTitle();
+            String newsImage = articles.get(position).getUrlToImage();
+            String newsDescription = articles.get(position).getDescription();
+            String newsContent = articles.get(position).getContent();
+            String newsPublishedAt = articles.get(position).getPublishedAt();
+
+            recyclerViewItemListener.onRecyclerViewItemClickListener(newsHeadline, newsImage, newsDescription, newsContent, newsPublishedAt);
         }
 
         private void setNewsHeadline() {
@@ -112,12 +111,14 @@ public class AdvanceSearchRecyclerViewAdapter extends RecyclerView.Adapter<Advan
         private void setNewsImage() {
             String imageUrl = articles.get(position).getUrlToImage();
 
-            if (imageUrl != null) {
+            if (imageUrl != null && imageUrl !="" && imageUrl != " ") {
                 Picasso.with(context)
                         .load(imageUrl)
                         .into(newsImageIV);
             }
+            else
+                holder.newsImageIV.setImageResource(R.drawable.image_not_present);
+
         }
     }
 }
-

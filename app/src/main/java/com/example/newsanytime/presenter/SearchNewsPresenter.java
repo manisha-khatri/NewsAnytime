@@ -2,19 +2,19 @@ package com.example.newsanytime.presenter;
 
 import com.example.newsanytime.ApiService;
 import com.example.newsanytime.singleton.RetrofitSingleton;
-import com.example.newsanytime.contract.AdvanceSearchContract;
+import com.example.newsanytime.contract.SearchNewsContract;
 import com.example.newsanytime.model.News;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import static com.example.newsanytime.constants.Constants.API_KEY;
 
-public class AdvanceSearchPresenter {
+public class SearchNewsPresenter {
 
-    private final AdvanceSearchContract contract;
+    private final SearchNewsContract contract;
     ApiService apiService;
 
-    public AdvanceSearchPresenter(AdvanceSearchContract contract){
+    public SearchNewsPresenter(SearchNewsContract contract){
         this.contract = contract;
         apiService = RetrofitSingleton.getRetrofitInstance().create(ApiService.class);
     }

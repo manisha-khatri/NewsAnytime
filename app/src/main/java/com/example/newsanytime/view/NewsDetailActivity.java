@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-public class NewsDetailDetailActivity extends AppCompatActivity implements NewsDetailContract {
+public class NewsDetailActivity extends AppCompatActivity implements NewsDetailContract {
 
     ImageView newsImageIV;
     TextView newsHeadlineTV;
@@ -33,7 +33,6 @@ public class NewsDetailDetailActivity extends AppCompatActivity implements NewsD
         getNewsDetailsFromIntent();
         getSupportActionBar().hide();
         setToolBar();
-        newsDetailPresenter = new NewsDetailPresenter(this);
 
         checkIfNewsAlreadySavedInDB();
 
@@ -54,7 +53,7 @@ public class NewsDetailDetailActivity extends AppCompatActivity implements NewsD
     }
 
     private void setToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
     }
 
@@ -79,6 +78,7 @@ public class NewsDetailDetailActivity extends AppCompatActivity implements NewsD
     }
 
     private void initViews() {
+        newsDetailPresenter = new NewsDetailPresenter(this);
         newsHeadlineTV = findViewById(R.id.single_news_heading);
         newsImageIV = findViewById(R.id.single_news_image);
         newsDescriptionTV = findViewById(R.id.single_news_description);
@@ -87,40 +87,31 @@ public class NewsDetailDetailActivity extends AppCompatActivity implements NewsD
     }
 
     void getNewsDetailsFromIntent() {
-        String newsHeadline;
-        String newsImage;
-        String newsDescription;
-        String newsContent;
-        String newsPublishedAt;
-
-        if (getIntent().hasExtra("NEWS_HEADLINE")) {
-            newsHeadline = getIntent().getStringExtra("NEWS_HEADLINE");
-        } else newsHeadline = null;
-
-        if (getIntent().hasExtra("NEWS_IMAGE")) {
-            newsImage = getIntent().getStringExtra("NEWS_IMAGE");
-        } else newsImage = null;
-
-        if (getIntent().hasExtra("NEWS_DESCRIPTION")) {
-            newsDescription = getIntent().getStringExtra("NEWS_DESCRIPTION");
-        } else newsDescription = null;
-
-        if (getIntent().hasExtra("NEWS_CONTENT")) {
-            newsContent = getIntent().getStringExtra("NEWS_CONTENT");
-        } else newsContent = null;
-
-        if (getIntent().hasExtra("NEWS_PUBLISHED_DATE")) {
-            newsPublishedAt = getIntent().getStringExtra("NEWS_PUBLISHED_DATE");
-        } else newsPublishedAt = null;
 
         newsDict = new Hashtable<String, String>();
-        newsDict.put("NEWS_HEADLINE", newsHeadline);
-        newsDict.put("NEWS_IMAGE", newsImage);
-        newsDict.put("NEWS_DESCRIPTION", newsDescription);
-        newsDict.put("NEWS_CONTENT", newsContent);
-        newsDict.put("NEWS_PUBLISHED_AT", newsPublishedAt);
+        newsDict.put("NEWS_HEADLINE", getValueFromIntent("NEWS_HEADLINE"));
+        newsDict.put("NEWS_IMAGE", getValueFromIntent("NEWS_IMAGE"));
+        newsDict.put("NEWS_DESCRIPTION", getValueFromIntent("NEWS_DESCRIPTION"));
+        newsDict.put("NEWS_CONTENT", getValueFromIntent("NEWS_CONTENT"));
+        newsDict.put("NEWS_PUBLISHED_AT", getValueFromIntent("NEWS_PUBLISHED_DATE"));
 
-        setActivityViews(newsHeadline, newsImage, newsDescription, newsContent);
+
+        setActivityViews(newsDict.get("NEWS_HEADLINE"),
+                newsDict.get("NEWS_IMAGE"),
+                newsDict.get("NEWS_DESCRIPTION"),
+                newsDict.get("NEWS_CONTENT"));
+    }
+
+    private String getValueFromIntent(String key) {
+        String value = " ";
+
+        if (getIntent().hasExtra(key)) {
+            value = getIntent().getStringExtra(key);
+
+            if(value == null)
+                value = " ";
+        }
+        return value;
     }
 
     private void setActivityViews(String newsHeadline, String newsImage, String newsDescription, String newsContent) {

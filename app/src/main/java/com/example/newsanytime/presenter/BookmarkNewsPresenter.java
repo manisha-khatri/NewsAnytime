@@ -3,19 +3,19 @@ package com.example.newsanytime.presenter;
 import android.app.Application;
 import android.os.AsyncTask;
 
-import com.example.newsanytime.contract.BookmarkedNewsContract;
+import com.example.newsanytime.contract.BookmarkNewsContract;
 import com.example.newsanytime.room.BookmarkedNews;
 import com.example.newsanytime.room.BookmarkedNewsRepository;
 import com.example.newsanytime.singleton.BookmarkedNewsSingleton;
 
 import java.util.List;
 
-public class BookmarkedNewsPresenter {
+public class BookmarkNewsPresenter {
 
-    BookmarkedNewsContract bookmarkedNewsContract;
+    BookmarkNewsContract bookmarkNewsContract;
 
-    public BookmarkedNewsPresenter(BookmarkedNewsContract bookmarkedNewsContract){
-        this.bookmarkedNewsContract = bookmarkedNewsContract;
+    public BookmarkNewsPresenter(BookmarkNewsContract bookmarkNewsContract){
+        this.bookmarkNewsContract = bookmarkNewsContract;
     }
 
     public void fetchNewsListFromDB(Application application){
@@ -35,7 +35,7 @@ public class BookmarkedNewsPresenter {
             return bookmarkedNewsRepository.fetchNewsList();
         }
         protected void onPostExecute(List<BookmarkedNews> newsList){
-            bookmarkedNewsContract.renderNewsList(newsList);
+            bookmarkNewsContract.renderNewsList(newsList);
         }
     }
 

@@ -1,13 +1,8 @@
 package com.example.newsanytime.presenter;
 
-import android.app.Application;
-
 import com.example.newsanytime.ApiService;
-import com.example.newsanytime.room.BookmarkedNews;
-import com.example.newsanytime.room.BookmarkedNewsRepository;
-import com.example.newsanytime.singleton.BookmarkedNewsSingleton;
 import com.example.newsanytime.singleton.RetrofitSingleton;
-import com.example.newsanytime.contract.HomeActivityContract;
+import com.example.newsanytime.contract.NationalNewsContract;
 import com.example.newsanytime.model.News;
 
 import java.util.Dictionary;
@@ -18,13 +13,12 @@ import retrofit2.Response;
 
 import static com.example.newsanytime.constants.Constants.API_KEY;
 
-public class HomePresenter{
+public class NationalNewsPresenter {
 
-    private final HomeActivityContract contract;
+    private final NationalNewsContract contract;
     ApiService apiService;
-    Dictionary<String,String> bookmarkedNews;
 
-    public HomePresenter(HomeActivityContract contract){
+    public NationalNewsPresenter(NationalNewsContract contract){
         this.contract = contract;
         apiService = RetrofitSingleton.getRetrofitInstance().create(ApiService.class);
     }

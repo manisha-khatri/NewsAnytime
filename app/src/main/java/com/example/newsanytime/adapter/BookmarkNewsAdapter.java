@@ -13,24 +13,24 @@ import com.example.newsanytime.room.BookmarkedNews;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
-public class BookmarkedNewsAdapter extends RecyclerView.Adapter<BookmarkedNewsAdapter.ViewHolder> {
+public class BookmarkNewsAdapter extends RecyclerView.Adapter<BookmarkNewsAdapter.ViewHolder> {
 
     Context context;
     List<BookmarkedNews> newsList;
-    private OnBookmarkedNewsItemListener onBookmarkedNewsItemListener;
+    private RecyclerViewItemListener recyclerViewItemListener;
 
-    public BookmarkedNewsAdapter(List<BookmarkedNews> newsList, Context context, OnBookmarkedNewsItemListener onBookmarkedNewsItemListener) {
+    public BookmarkNewsAdapter(List<BookmarkedNews> newsList, Context context, RecyclerViewItemListener recyclerViewItemListener) {
         this.context = context;
         this.newsList = newsList;
-        this.onBookmarkedNewsItemListener = onBookmarkedNewsItemListener;
+        this.recyclerViewItemListener = recyclerViewItemListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
-        View listItem = layoutInflater.inflate(R.layout.bookmarked_news_list_item, viewGroup, false);
-        return new ViewHolder(listItem, onBookmarkedNewsItemListener);
+        View listItem = layoutInflater.inflate(R.layout.recyclerview_item_activity_bookmark, viewGroup, false);
+        return new ViewHolder(listItem, recyclerViewItemListener);
     }
 
     @Override
@@ -43,8 +43,8 @@ public class BookmarkedNewsAdapter extends RecyclerView.Adapter<BookmarkedNewsAd
         return newsList.size();
     }
 
-    public interface OnBookmarkedNewsItemListener {
-        void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate);
+    public interface RecyclerViewItemListener {
+        void onRecyclerViewItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -53,13 +53,13 @@ public class BookmarkedNewsAdapter extends RecyclerView.Adapter<BookmarkedNewsAd
         ViewHolder holder;
         ImageView newsImageIV;
         TextView newsHeadingTV;
-        OnBookmarkedNewsItemListener onBookmarkedNewsItemListener;
+        RecyclerViewItemListener recyclerViewItemListener;
 
-        public ViewHolder(@NonNull View itemView, OnBookmarkedNewsItemListener onBookmarkedNewsItemListener) {
+        public ViewHolder(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
             super(itemView);
             newsImageIV = itemView.findViewById(R.id.bookmarked_news_image);
             newsHeadingTV = itemView.findViewById(R.id.bookmarked_news_headline);
-            this.onBookmarkedNewsItemListener = onBookmarkedNewsItemListener;
+            this.recyclerViewItemListener = recyclerViewItemListener;
         }
 
         public void render(ViewHolder viewHolder, int position) {
@@ -76,27 +76,26 @@ public class BookmarkedNewsAdapter extends RecyclerView.Adapter<BookmarkedNewsAd
             holder.newsHeadingTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setAction();
-
+                    passInfoToListener();
                 }
             });
         }
 
-        public void setAction() {
+        public void passInfoToListener() {
             String newsHeadline = newsList.get(position).getHeadline();
             String newsImage = newsList.get(position).getImageUrl();
             String newsDescription = newsList.get(position).getDescription();
             String newsContent = newsList.get(position).getContent();
             String newsPublishedDate= newsList.get(position).getPublishedDate();
 
-            onBookmarkedNewsItemListener.onNewsItemClickListener(newsHeadline, newsImage, newsDescription, newsContent,newsPublishedDate);
+            recyclerViewItemListener.onRecyclerViewItemClickListener(newsHeadline, newsImage, newsDescription, newsContent,newsPublishedDate);
         }
 
         private void onNewsImageClickListener() {
             holder.newsImageIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setAction();
+                    passInfoToListener();
                 }
             });
         }
@@ -108,11 +107,13 @@ public class BookmarkedNewsAdapter extends RecyclerView.Adapter<BookmarkedNewsAd
         private void setNewsImage() {
             String imageUrl = newsList.get(position).getImageUrl();
 
-            if (imageUrl != null) {
+            if (imageUrl != null && imageUrl != "" && imageUrl != " ") {
                 Picasso.with(context)
                         .load(imageUrl)
                         .into(newsImageIV);
             }
+            else
+                holder.newsImageIV.setImageResource(R.drawable.image_not_present);
         }
     }
 }

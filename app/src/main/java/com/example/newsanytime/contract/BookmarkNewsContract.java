@@ -4,7 +4,7 @@ import com.example.newsanytime.room.BookmarkedNews;
 
 import java.util.List;
 
-public interface BookmarkedNewsContract {
+public interface BookmarkNewsContract {
 
     void renderNewsList(List<BookmarkedNews> newsList);
 }

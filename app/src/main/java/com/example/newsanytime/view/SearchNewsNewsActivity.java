@@ -9,30 +9,35 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.example.newsanytime.R;
-import com.example.newsanytime.adapter.AdvanceSearchRecyclerViewAdapter;
-import com.example.newsanytime.contract.AdvanceSearchContract;
+import com.example.newsanytime.adapter.SearchNewsRecyclerViewAdapter;
+import com.example.newsanytime.contract.SearchNewsContract;
 import com.example.newsanytime.model.News;
-import com.example.newsanytime.presenter.AdvanceSearchPresenter;
+import com.example.newsanytime.presenter.SearchNewsPresenter;
 
-public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceSearchContract, AdvanceSearchRecyclerViewAdapter.OnNewsListener {
+public class SearchNewsNewsActivity extends AppCompatActivity implements SearchNewsContract, SearchNewsRecyclerViewAdapter.RecyclerViewItemListener {
 
-    AdvanceSearchPresenter presenter;
+    SearchNewsPresenter searchNewsPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_searched_news);
+        setContentView(R.layout.activity_search_news);
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        initViews();
 
-        presenter = new AdvanceSearchPresenter(this);
+        String searchedKeyword = getSearchedKeyword();
 
-        String searchedKeyword = fetchSearchedKeyword();
-        if(searchedKeyword!=null){
-            presenter.fetchNewsForSearchedKeyword(searchedKeyword);
+        if(searchedKeyword != null){
+            searchNewsPresenter.fetchNewsForSearchedKeyword(searchedKeyword);
         }
     }
 
-    public String fetchSearchedKeyword() {
+    private void initViews() {
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        searchNewsPresenter = new SearchNewsPresenter(this);
+    }
+
+    public String getSearchedKeyword() {
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
             return null;
@@ -42,7 +47,7 @@ public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceS
     }
 
     public void setNewsInRecyclerViewAdapter(News news, RecyclerView recyclerView) {
-        AdvanceSearchRecyclerViewAdapter adapter = new AdvanceSearchRecyclerViewAdapter(news, this,this);     //class object, which calls default constructor
+        SearchNewsRecyclerViewAdapter adapter = new SearchNewsRecyclerViewAdapter(news, this,this);     //class object, which calls default constructor
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -59,7 +64,7 @@ public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceS
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.back_btn_menu,menu);
+        menuInflater.inflate(R.menu.search_news_activity_menu,menu);
         return true;
     }
     @Override
@@ -67,9 +72,7 @@ public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceS
 
         switch (item.getItemId()) {
             case R.id.back_button:
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                finish();
                 return true;
 
             default:
@@ -78,8 +81,8 @@ public class AdvanceSearchActivity extends AppCompatActivity implements AdvanceS
     }
 
     @Override
-    public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate) {
-        Intent intent = new Intent(AdvanceSearchActivity.this, NewsDetailDetailActivity.class);
+    public void onRecyclerViewItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate) {
+        Intent intent = new Intent(SearchNewsNewsActivity.this, NewsDetailActivity.class);
 
         intent.putExtra("NEWS_HEADLINE", newsHeadline);
         intent.putExtra("NEWS_IMAGE", newsImage);

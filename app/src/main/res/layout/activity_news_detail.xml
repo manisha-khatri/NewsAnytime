@@ -9,8 +9,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:layout_height="50dp"
+        android:background="#4B8BCC">
 
         <ImageView
             android:layout_width="27dp"
@@ -58,9 +58,9 @@
             <ImageView
                 android:id="@+id/single_news_image"
                 android:layout_width="match_parent"
-                android:layout_height="270dp"
+                android:layout_height="300dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/modi" />
+                android:src="@drawable/image_not_present" />
 
 
             <LinearLayout

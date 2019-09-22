@@ -20,9 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.AdvanceSearchActivity"/>
-        <activity android:name=".view.NewsDetailDetailActivity" />
-        <activity android:name=".view.BookmarkedNewsActivity" />
+        <activity android:name=".view.SearchNewsNewsActivity"/>
+        <activity android:name=".view.NewsDetailActivity" />
+        <activity android:name=".view.BookmarkNewsActivity" />
     </application>
 
 </manifest>

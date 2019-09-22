@@ -8,34 +8,39 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
 import com.example.newsanytime.R;
-import com.example.newsanytime.adapter.BookmarkedNewsAdapter;
-import com.example.newsanytime.contract.BookmarkedNewsContract;
-import com.example.newsanytime.presenter.BookmarkedNewsPresenter;
+import com.example.newsanytime.adapter.BookmarkNewsAdapter;
+import com.example.newsanytime.contract.BookmarkNewsContract;
+import com.example.newsanytime.presenter.BookmarkNewsPresenter;
 import com.example.newsanytime.room.BookmarkedNews;
 import java.util.List;
 
-public class BookmarkedNewsActivity extends AppCompatActivity implements BookmarkedNewsContract, BookmarkedNewsAdapter.OnBookmarkedNewsItemListener {
-    BookmarkedNewsPresenter bookmarkedNewsPresenter;
+public class BookmarkNewsActivity extends AppCompatActivity implements BookmarkNewsContract, BookmarkNewsAdapter.RecyclerViewItemListener {
+
+    BookmarkNewsPresenter bookmarkNewsPresenter;
     List<BookmarkedNews> newsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bookmarked_news);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        bookmarkedNewsPresenter = new BookmarkedNewsPresenter(this);
+        setContentView(R.layout.activity_bookmark_news);
+
+        initViews();
 
         DisplayNews();
     }
 
+    private void initViews() {
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        bookmarkNewsPresenter = new BookmarkNewsPresenter(this);
+    }
+
     private void DisplayNews() {
-        bookmarkedNewsPresenter.fetchNewsListFromDB(getApplication());
+        bookmarkNewsPresenter.fetchNewsListFromDB(getApplication());
     }
 
     public void setNewsInRecyclerViewAdapter( RecyclerView recyclerView) {
-        BookmarkedNewsAdapter adapter = new BookmarkedNewsAdapter(newsList, this,this);     //class object, which calls default constructor
+        BookmarkNewsAdapter adapter = new BookmarkNewsAdapter(newsList, this,this);     //class object, which calls default constructor
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -51,8 +56,8 @@ public class BookmarkedNewsActivity extends AppCompatActivity implements Bookmar
 
 
     @Override
-    public void onNewsItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate) {
-        Intent intent = new Intent(this, NewsDetailDetailActivity.class);
+    public void onRecyclerViewItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate) {
+        Intent intent = new Intent(this, NewsDetailActivity.class);
 
         intent.putExtra("NEWS_HEADLINE", newsHeadline);
         intent.putExtra("NEWS_IMAGE", newsImage);
@@ -67,7 +72,7 @@ public class BookmarkedNewsActivity extends AppCompatActivity implements Bookmar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.back_btn_menu,menu);
+        menuInflater.inflate(R.menu.bookmark_activity_menu,menu);
         return true;
     }
 
@@ -76,9 +81,7 @@ public class BookmarkedNewsActivity extends AppCompatActivity implements Bookmar
 
         switch (item.getItemId()) {
             case R.id.back_button:
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                finish();
                 return true;
 
             default:
