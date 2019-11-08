@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
 import com.example.newsanytime.R;
 import com.example.newsanytime.adapter.BookmarkNewsAdapter;
 import com.example.newsanytime.contract.BookmarkNewsContract;
@@ -31,8 +29,9 @@ public class BookmarkNewsActivity extends AppCompatActivity implements BookmarkN
     }
 
     private void initViews() {
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
         bookmarkNewsPresenter = new BookmarkNewsPresenter(this);
+        onBackBtnClickListener();
     }
 
     private void DisplayNews() {
@@ -54,7 +53,6 @@ public class BookmarkNewsActivity extends AppCompatActivity implements BookmarkN
         setNewsInRecyclerViewAdapter(recyclerView);
     }
 
-
     @Override
     public void onRecyclerViewItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate) {
         Intent intent = new Intent(this, NewsDetailActivity.class);
@@ -66,27 +64,13 @@ public class BookmarkNewsActivity extends AppCompatActivity implements BookmarkN
         intent.putExtra("NEWS_PUBLISHED_DATE", newsPublishedDate);
 
         this.startActivity(intent);
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.bookmark_activity_menu,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.back_button:
+    void onBackBtnClickListener(){
+        findViewById(R.id.news_bookmark_back_btn).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 finish();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+            }
+        });
     }
-
 }

@@ -1,28 +1,18 @@
 package com.example.newsanytime.view;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.SearchView;
-import android.widget.Toast;
 import com.example.newsanytime.R;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-    private NavigationView navigationView;
-
+    SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +21,27 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        setNavigationDrawer();
+        setToolbar();
         setTabs();
     }
+    private void setToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar_home);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setupSearchView();
+        onBookmarkNewsListBtnClick();
+    }
+
+    private void onBookmarkNewsListBtnClick() {
+        findViewById(R.id.bookmark_news_list).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, BookmarkNewsActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 
     private void setTabs() {
         TabLayout tabLayout =  findViewById(R.id.tab_layout);
@@ -57,60 +64,47 @@ public class HomeActivity extends AppCompatActivity {
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
     }
 
-    private void setNavigationDrawer() {
-        drawerLayout = findViewById(R.id.drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.Open, R.string.Close);
+    public void callSearchNewsActivity(String searchedKeyword){
+        Intent intent = new Intent(HomeActivity.this, SearchNewsNewsActivity.class);
+        intent.putExtra("SEARCHED_KEYWORD",searchedKeyword);
+        startActivity(intent);
+    }
 
 
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
+    private void setupSearchView() {
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        searchView = findViewById(R.id.search_view);
 
-        navigationView = (NavigationView)findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                switch(id)
-                {
-                    case R.id.account:
-                        Toast.makeText(HomeActivity.this, "My Account",Toast.LENGTH_SHORT).show();break;
-                    case R.id.settings:
-                        Toast.makeText(HomeActivity.this, "Settings",Toast.LENGTH_SHORT).show();break;
-                    default:
-                        return true;
-                }
-                return true;
+            public boolean onQueryTextSubmit(String query) {
+                callSearchNewsActivity(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // adapter.getFilter().filter(newText);
+                return false;
             }
         });
     }
 
 
-    @Override
+ /*   @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.home_activity_menu,menu);
 
         MenuItem items = menu.findItem(R.id.search_news);
-        SearchView searchView = (SearchView)items.getActionView();
-        searchView.setMaxWidth(650);
-
-        int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
-
-        View searchPlate = searchView.findViewById(searchPlateId);
-
-        //searchPlate.setBackgroundColor(Color.parseColor("#6BA3CF"));
-
+        android.widget.SearchView searchView = (android.widget.SearchView)items.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -126,14 +120,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         return true;
-    }
+    }*/
 
-    @Override
+  /*  @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
 
         switch (item.getItemId()) {
             case R.id.bookmark_items:
@@ -144,14 +134,7 @@ public class HomeActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public void callSearchNewsActivity(String searchedKeyword){
-        Intent intent = new Intent(HomeActivity.this, SearchNewsNewsActivity.class);
-        intent.putExtra("SEARCHED_KEYWORD",searchedKeyword);
-        startActivity(intent);
-    }
-
+    }*/
 
 
 }

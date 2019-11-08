@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.newsanytime.R;
@@ -17,6 +18,7 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
 
     ImageView newsImageIV;
     TextView newsHeadlineTV;
+    Button backBtn;
     TextView newsDescriptionTV;
     TextView newsContentTV;
     ImageView bookmarkBtn;
@@ -28,33 +30,32 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+       // getSupportActionBar().setDisplayShowTitleEnabled(false);
         initViews();
         getNewsDetailsFromIntent();
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         setToolBar();
-
         checkIfNewsAlreadySavedInDB();
 
         onBookmarkBtnClickListener();
+        onBackBtnClickListener();
     }
 
 
     public void setBookmark(String news) {
 
         if(news!=null) {
-            bookmarkBtn.setImageResource(R.drawable.book_5);
+            bookmarkBtn.setImageResource(R.drawable.icon2);
             newsSavedInDB = true;
         }
         else{
-            bookmarkBtn.setImageResource(R.drawable.book_4);
+            bookmarkBtn.setImageResource(R.drawable.icon1);
             newsSavedInDB = false;
         }
     }
 
     private void setToolBar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
+        Toolbar toolbar = findViewById(R.id.toolbar1);
     }
 
     public void onBookmarkBtnClickListener() {
@@ -63,12 +64,12 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
             public void onClick(View v) {
 
                 if(newsSavedInDB) {
-                    bookmarkBtn.setImageResource(R.drawable.book_4);
+                    bookmarkBtn.setImageResource(R.drawable.icon1);
                     deleteBookmarkedNewsFromDB();
                     newsSavedInDB = false;
                 }
                 else{
-                    bookmarkBtn.setImageResource(R.drawable.book_5);
+                    bookmarkBtn.setImageResource(R.drawable.icon2);
                     newsDetailPresenter.saveBookmarkedNewsInDB(newsDict, getApplication());
                     newsSavedInDB = true;
                 }
@@ -84,6 +85,7 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
         newsDescriptionTV = findViewById(R.id.single_news_description);
         newsContentTV = findViewById(R.id.single_news_content);
         bookmarkBtn = findViewById(R.id.bookmark_news_item);
+        backBtn = findViewById(R.id.news_detail_back_btn);
     }
 
     void getNewsDetailsFromIntent() {
@@ -94,7 +96,6 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
         newsDict.put("NEWS_DESCRIPTION", getValueFromIntent("NEWS_DESCRIPTION"));
         newsDict.put("NEWS_CONTENT", getValueFromIntent("NEWS_CONTENT"));
         newsDict.put("NEWS_PUBLISHED_AT", getValueFromIntent("NEWS_PUBLISHED_DATE"));
-
 
         setActivityViews(newsDict.get("NEWS_HEADLINE"),
                 newsDict.get("NEWS_IMAGE"),
@@ -118,7 +119,17 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
 
         newsHeadlineTV.setText(newsHeadline);
         newsDescriptionTV.setText(newsDescription);
-        newsContentTV.setText(newsContent);
+
+
+        String[] s1 = newsContent.split("\\[");
+        String[] s2 = s1[0].split("\\.");
+        int len = s2.length;
+        String content = "";
+        for (int i=0; i<len-1;i++) {
+            content = content + s2[i];
+        }
+
+        newsContentTV.setText(content);
 
         String imageUrl = newsImage;
 
@@ -137,6 +148,14 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
     public void deleteBookmarkedNewsFromDB() {
         String publishDate = newsDict.get("NEWS_PUBLISHED_AT");
         newsDetailPresenter.deleteNewsByPublishDate(publishDate, getApplication());
+    }
+
+    void onBackBtnClickListener(){
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 }

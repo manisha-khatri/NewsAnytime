@@ -33,7 +33,7 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
     }
 
     private void initViews() {
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+       // getSupportActionBar().setDisplayShowTitleEnabled(false);
         searchNewsPresenter = new SearchNewsPresenter(this);
     }
 
@@ -61,7 +61,7 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
 
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.search_news_activity_menu,menu);
@@ -78,7 +78,7 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
+    }*/
 
     @Override
     public void onRecyclerViewItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate) {

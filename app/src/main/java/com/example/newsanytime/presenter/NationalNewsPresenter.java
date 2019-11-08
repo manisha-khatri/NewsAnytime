@@ -1,17 +1,17 @@
 package com.example.newsanytime.presenter;
 
+import android.widget.Toast;
+
 import com.example.newsanytime.ApiService;
 import com.example.newsanytime.singleton.RetrofitSingleton;
 import com.example.newsanytime.contract.NationalNewsContract;
 import com.example.newsanytime.model.News;
-
 import java.util.Dictionary;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.example.newsanytime.constants.Constants.API_KEY;
+
 
 public class NationalNewsPresenter {
 
@@ -65,7 +65,6 @@ public class NationalNewsPresenter {
 
         call = getEntertainmentNews(apiService);
         retrieveEntertainmentNewsRequestResponse(call);
-
     }
 
     public void retrieveNationalNewsRequestResponse(Call<News> call) {
@@ -78,7 +77,7 @@ public class NationalNewsPresenter {
 
             @Override
             public void onFailure(Call<News> call, Throwable t) {
-                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                String err = t.getMessage();
             }
         });
     }
@@ -93,7 +92,7 @@ public class NationalNewsPresenter {
 
             @Override
             public void onFailure(Call<News> call, Throwable t) {
-                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                String err = t.getMessage();
             }
         });
     }
@@ -108,7 +107,7 @@ public class NationalNewsPresenter {
 
             @Override
             public void onFailure(Call<News> call, Throwable t) {
-                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                String err = t.getMessage();
             }
         });
     }
@@ -123,7 +122,7 @@ public class NationalNewsPresenter {
 
             @Override
             public void onFailure(Call<News> call, Throwable t) {
-                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                String err = t.getMessage();
             }
         });
     }

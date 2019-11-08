@@ -1,39 +1,32 @@
 
 package com.example.newsanytime.model;
 
+import android.support.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.List;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class News implements Serializable
 {
-
     @SerializedName("status")
     @Expose
+    @Nullable
     private String status;
+
     @SerializedName("totalResults")
     @Expose
+    @Nullable
     private long totalResults;
+
     @SerializedName("articles")
     @Expose
+    @Nullable
     private List<Article> articles = null;
+
     private final static long serialVersionUID = -113585310620385215L;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public News() {
-    }
-
-    /**
-     *
-     * @param articles
-     * @param totalResults
-     * @param status
-     */
     public News(String status, long totalResults, List<Article> articles) {
         super();
         this.status = status;

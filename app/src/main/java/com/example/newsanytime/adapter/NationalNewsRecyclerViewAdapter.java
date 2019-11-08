@@ -32,7 +32,7 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
-        View listItem = layoutInflater.inflate(R.layout.recyclerview_item_activity_home, viewGroup, false);
+        View listItem = layoutInflater.inflate(R.layout.recyclerview_item_national_news, viewGroup, false);
         return new ViewHolder(listItem, recyclerViewItemListener);
     }
 

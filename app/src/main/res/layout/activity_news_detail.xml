@@ -6,19 +6,8 @@
     android:orientation="vertical">
 
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#4B8BCC">
-
-        <ImageView
-            android:layout_width="27dp"
-            android:layout_height="37dp"
-            android:id="@+id/bookmark_news_item"
-            android:background="@drawable/book_4" />
-
-    </android.support.v7.widget.Toolbar>
+    <include
+        layout="@layout/toolbar_news_detail"/>
 
 
     <ScrollView
@@ -108,7 +97,7 @@
                 <TextView
                     android:id="@+id/single_news_heading"
                     android:layout_width="match_parent"
-                    android:fontFamily="sans-serif"
+                    android:fontFamily="Montserrat"
                     android:layout_height="wrap_content"
                     android:textSize="18dp"
                     android:text="Born to a Gujarati family in Vadnagar, Modi helped his father sell tea as a child, and has said he later ran his own stall. "
@@ -120,7 +109,7 @@
                     android:layout_marginTop="15dp"
                     android:lineSpacingExtra="5dp"
                     android:textSize="15dp"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="Montserrat"
                     android:layout_height="wrap_content"
                     android:text="Narendra Damodardas Modi (Gujarati pronunciation: [ˈnəɾendrə dɑmodəɾˈdɑs ˈmodiː]; born 17 September 1950) is an Indian politician serving as the 14th and current Prime Minister of India since 2014. He was the Chief Minister of Gujarat from 2001 to 2014, and is the Member of Parliament for Varanasi. Modi is a member of the Bharatiya Janata Party (BJP),"
                     android:textColor="#000" />
@@ -130,7 +119,7 @@
                     android:layout_width="match_parent"
                     android:lineSpacingExtra="5dp"
                     android:textSize="15dp"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="Montserrat"
                     android:layout_height="wrap_content"
                     android:text="Narendra Damodardas Modi (Gujarati pronunciation: [ˈnəɾendrə dɑmodəɾˈdɑs ˈmodiː]; born 17 September 1950) is an Indian politician serving as the 14th and current Prime Minister of India since 2014. He was the Chief Minister of Gujarat from 2001 to 2014, and is the Member of Parliament for Varanasi. Modi is a member of the Bharatiya Janata Party (BJP),"
                     android:textColor="#000" />

@@ -1,8 +1,7 @@
-
 package com.example.newsanytime.model;
 
+import android.support.annotation.Nullable;
 import java.io.Serializable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,48 +10,46 @@ public class Article implements Serializable
 
     @SerializedName("source")
     @Expose
-    private Source source;
+    @Nullable
+    private Source source = null;
+
     @SerializedName("author")
     @Expose
+    @Nullable
     private String author;
+
     @SerializedName("title")
     @Expose
+    @Nullable
     private String title;
+
     @SerializedName("description")
     @Expose
+    @Nullable
     private String description;
+
     @SerializedName("url")
     @Expose
+    @Nullable
     private String url;
+
     @SerializedName("urlToImage")
     @Expose
+    @Nullable
     private String urlToImage;
+
     @SerializedName("publishedAt")
     @Expose
+    @Nullable
     private String publishedAt;
+
     @SerializedName("content")
     @Expose
+    @Nullable
     private String content;
+
     private final static long serialVersionUID = 8912954806878633795L;
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Article() {
-    }
-
-    /**
-     * 
-     * @param content
-     * @param publishedAt
-     * @param author
-     * @param urlToImage
-     * @param title
-     * @param source
-     * @param description
-     * @param url
-     */
     public Article(Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
         super();
         this.source = source;

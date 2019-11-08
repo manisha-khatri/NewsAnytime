@@ -23,6 +23,11 @@
         <activity android:name=".view.SearchNewsNewsActivity"/>
         <activity android:name=".view.NewsDetailActivity" />
         <activity android:name=".view.BookmarkNewsActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

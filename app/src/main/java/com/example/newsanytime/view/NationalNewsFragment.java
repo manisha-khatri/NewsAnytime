@@ -16,7 +16,6 @@ import com.example.newsanytime.model.News;
 import com.example.newsanytime.presenter.NationalNewsPresenter;
 import java.util.List;
 
-
 public class NationalNewsFragment extends Fragment implements NationalNewsContract, NationalNewsRecyclerViewAdapter.RecyclerViewItemListener {
 
     NationalNewsPresenter nationalNewsPresenter;
