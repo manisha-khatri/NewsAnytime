@@ -5,10 +5,8 @@
     android:background="#000"
     android:orientation="vertical">
 
-
     <include
         layout="@layout/toolbar_news_detail"/>
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,34 +14,11 @@
         android:background="@drawable/rounded_corners"
         android:orientation="vertical">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-           <!-- <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" >
-
-                <ImageView
-                    android:id="@+id/single_news_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="270dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/modi" />
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="right"
-                    android:id="@+id/bookmark_news_item"
-                    android:background="@drawable/book_4" />
-
-            </FrameLayout>-->
             <ImageView
                 android:id="@+id/single_news_image"
                 android:layout_width="match_parent"
@@ -51,84 +26,57 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/image_not_present" />
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="20dp">
 
-               <!-- <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="15"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/single_news_heading"
-                        android:layout_width="match_parent"
-                        android:fontFamily="sans-serif"
-                        android:layout_height="wrap_content"
-                        android:textSize="18dp"
-                        android:layout_weight="1"
-                        android:layout_marginRight="10dp"
-                        android:text="Born to a Gujarati family in Vadnagar, Modi helped his father sell tea as a child, and has said he later ran his own stall. "
-                        android:textColor="#000"/>
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="37dp"
-                        android:layout_weight="14"
-                        android:id="@+id/bookmark_news_item"
-                        android:background="@drawable/book_4" />
-
-                </LinearLayout>
-
--->
-                <!--<TextView
-                    android:id="@+id/single_news_heading"
-                    android:layout_width="match_parent"
-                    android:fontFamily="sans-serif"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Born to a Gujarati family in Vadnagar, Modi helped his father sell tea as a child, and has said he later ran his own stall. "
-                    android:textColor="#000"/>
-               -->
                 <TextView
                     android:id="@+id/single_news_heading"
                     android:layout_width="match_parent"
                     android:fontFamily="Montserrat"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     android:text="Born to a Gujarati family in Vadnagar, Modi helped his father sell tea as a child, and has said he later ran his own stall. "
-                    android:textColor="#000"/>
+                    android:textColor="#211a23"/>
+
+                <TextView
+                    android:id="@+id/news_detail_published_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:textColor="#595B5D"
+                    android:layout_marginTop="15dp"
+                    android:text="2 days ago "
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/single_news_description"
                     android:layout_width="match_parent"
                     android:layout_marginTop="15dp"
                     android:lineSpacingExtra="5dp"
-                    android:textSize="15dp"
+                    android:textSize="13dp"
                     android:fontFamily="Montserrat"
                     android:layout_height="wrap_content"
                     android:text="Narendra Damodardas Modi (Gujarati pronunciation: [ˈnəɾendrə dɑmodəɾˈdɑs ˈmodiː]; born 17 September 1950) is an Indian politician serving as the 14th and current Prime Minister of India since 2014. He was the Chief Minister of Gujarat from 2001 to 2014, and is the Member of Parliament for Varanasi. Modi is a member of the Bharatiya Janata Party (BJP),"
-                    android:textColor="#000" />
+                    android:textColor="#211a23" />
 
                 <TextView
                     android:id="@+id/single_news_content"
                     android:layout_width="match_parent"
                     android:lineSpacingExtra="5dp"
-                    android:textSize="15dp"
+                    android:textSize="14dp"
                     android:fontFamily="Montserrat"
                     android:layout_height="wrap_content"
                     android:text="Narendra Damodardas Modi (Gujarati pronunciation: [ˈnəɾendrə dɑmodəɾˈdɑs ˈmodiː]; born 17 September 1950) is an Indian politician serving as the 14th and current Prime Minister of India since 2014. He was the Chief Minister of Gujarat from 2001 to 2014, and is the Member of Parliament for Varanasi. Modi is a member of the Bharatiya Janata Party (BJP),"
-                    android:textColor="#000" />
-
+                    android:textColor="#211a23" />
 
             </LinearLayout>
 
-
         </LinearLayout>
+
     </ScrollView>
+
 </LinearLayout>
 

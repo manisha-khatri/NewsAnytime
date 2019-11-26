@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:maxWidth="200dp"
+            android:maxWidth="300dp"
             app:closeIcon="@drawable/close_hint_icon"
             app:queryBackground="@drawable/searchview_background"
             app:searchHintIcon="@drawable/search_hint_icon"
@@ -27,9 +27,10 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:gravity="center"
+            android:id="@+id/app_title"
             android:text="News Anytime"
             android:textColor="#ffffff"
-            android:textSize="23dp"
+            android:textSize="18dp"
             app:fontFamily="@font/pt_sans" />
 
         <LinearLayout
@@ -37,17 +38,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:padding="9dp">
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/bookmark_news_list"
-                android:layout_width="23dp"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bkmark_list_2" />
+
         </LinearLayout>
 
-
     </LinearLayout>
-
 
 </android.support.v7.widget.Toolbar>

@@ -12,6 +12,4 @@
         <!-- Gets rid of the search icon -->
         <item name="searchIcon">@drawable/white_search_icon</item>
     </style>
-
-
 </resources>

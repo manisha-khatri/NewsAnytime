@@ -1,5 +1,5 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/toolbar1"
+    android:id="@+id/searched_news_toolbar"
     android:layout_width="match_parent"
     android:layout_height="45dp"
     android:background="#147fbb">
@@ -10,13 +10,13 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/news_bookmark_back_btn"
+            android:id="@+id/news_searched_news_back_btn"
             android:layout_width="16dp"
             android:layout_margin="10dp"
             android:layout_height="match_parent"
             android:background="@drawable/back_3" />
 
-
     </LinearLayout>
+    
 </android.support.v7.widget.Toolbar>
 

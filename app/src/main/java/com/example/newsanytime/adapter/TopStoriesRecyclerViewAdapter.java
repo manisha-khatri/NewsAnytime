@@ -8,22 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.newsanytime.util.DateCalculator;
 import com.example.newsanytime.R;
 import com.example.newsanytime.model.Article;
 import com.example.newsanytime.model.News;
+import com.example.newsanytime.util.DateCalculator;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
-public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<NationalNewsRecyclerViewAdapter.ViewHolder> {
-
+public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStoriesRecyclerViewAdapter.ViewHolder> {
     News news;
     Context context;
     List<Article> articles;
     private RecyclerViewItemListener recyclerViewItemListener;
 
-    public NationalNewsRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
+    public TopStoriesRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
         this.news = news;
         this.context = context;
         this.articles = news.getArticles();
@@ -34,7 +32,7 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
-        View listItem = layoutInflater.inflate(R.layout.recyclerview_item_national_news, viewGroup, false);
+        View listItem = layoutInflater.inflate(R.layout.recyclerview_top_stories_item2, viewGroup, false);
         return new ViewHolder(listItem, recyclerViewItemListener);
     }
 
@@ -53,12 +51,11 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         int position;
         ViewHolder holder;
-        ImageView image;
+        ImageView imageIV;
         DateCalculator dateCalculator;
-        TextView heading;
+        TextView headingTV;
         TextView publishedDateTV;
         RecyclerViewItemListener recyclerViewItemListener;  //handle any operation on the recyclerview items
 
@@ -68,9 +65,9 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
         }
 
         private void initViews(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
-            image = itemView.findViewById(R.id.news_image);
-            heading = itemView.findViewById(R.id.news_headline);
-            publishedDateTV = itemView.findViewById(R.id.bookmarked_news_published_date);
+            imageIV = itemView.findViewById(R.id.top_stories2_img);
+            headingTV = itemView.findViewById(R.id.top_stories2_heading);
+            publishedDateTV = itemView.findViewById(R.id.top_stories2_published_date);
             this.recyclerViewItemListener = recyclerViewItemListener;
         }
 
@@ -95,9 +92,8 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
             }
         }
 
-
         private void onHeadingClickListener() {
-            holder.heading.setOnClickListener(new View.OnClickListener() {
+            holder.headingTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     passInfoToListener();
@@ -106,7 +102,7 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
         }
 
         private void onImageClickListener() {
-            holder.image.setOnClickListener(new View.OnClickListener() {
+            holder.imageIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     passInfoToListener();
@@ -125,11 +121,10 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
 
         private void setHeadline() {
             String headLine = articles.get(position).getTitle();
-            String str2 = removeInvalidNewsLastChar(headLine);
-            heading.setText(str2);
+            headingTV.setText(headLine);
         }
 
-        private String removeInvalidNewsLastChar(String headLine) {
+      /*  private String removeInvalidNewsLastChar(String headLine) {
             String str[] = headLine.split("-");
             int len = str.length;
             String str2="";
@@ -137,17 +132,17 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
                 str2 = str2 + str[i];
             }
             return str2;
-        }
+        }*/
 
         private void setImage() {
             String imageUrl = articles.get(position).getUrlToImage();
             if (imageUrl != null && imageUrl !="" && imageUrl != " ") {
                 Picasso.with(context)
                         .load(imageUrl)
-                        .into(image);
+                        .into(imageIV);
             }
             else
-                holder.image.setImageResource(R.drawable.image_not_present);
+                holder.imageIV.setImageResource(R.drawable.image_not_present);
         }
     }
 }

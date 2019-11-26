@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">News Anytime</string>
-    <string name="news_heading">a piece of thick paper, leather, or plastic that you put between the pages of a book so that you </string>
+    <string name="news_heading">a piece of thick paper, leather, or plastic </string>
     <string name="national_news">National News</string>
     <string name="sports_news">Sports News</string>
     <string name="business_news">Business News</string>
     <string name="entertainment_news">Entertainment News</string>
-    <string name="search_news_by_keyword">search bookmarkedNews by keyword</string>
+    <string name="search_news_by_keyword">search savedNews by keyword</string>
     <string name="bookmark_button">bookmark button</string>
 
     <string name="Open">open</string>

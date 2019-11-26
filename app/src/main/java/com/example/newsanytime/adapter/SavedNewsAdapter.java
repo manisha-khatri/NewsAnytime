@@ -8,25 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.newsanytime.util.DateCalculator;
 import com.example.newsanytime.R;
-import com.example.newsanytime.model.Article;
-import com.example.newsanytime.model.News;
+import com.example.newsanytime.room.SavedNews;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
-public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<NationalNewsRecyclerViewAdapter.ViewHolder> {
+public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.ViewHolder> {
 
-    News news;
     Context context;
-    List<Article> articles;
+    List<SavedNews> newsList;
     private RecyclerViewItemListener recyclerViewItemListener;
 
-    public NationalNewsRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
-        this.news = news;
+    public SavedNewsAdapter(List<SavedNews> newsList, Context context, RecyclerViewItemListener recyclerViewItemListener) {
         this.context = context;
-        this.articles = news.getArticles();
+        this.newsList = newsList;
         this.recyclerViewItemListener = recyclerViewItemListener;
     }
 
@@ -34,22 +30,22 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
-        View listItem = layoutInflater.inflate(R.layout.recyclerview_item_national_news, viewGroup, false);
+        View listItem = layoutInflater.inflate(R.layout.recyclerview_saved_news_item, viewGroup, false);
         return new ViewHolder(listItem, recyclerViewItemListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        viewHolder.render(viewHolder, position);
+        viewHolder.render(viewHolder,position);
     }
 
     @Override
     public int getItemCount() {
-        return articles.size();
+        return newsList.size();
     }
 
     public interface RecyclerViewItemListener {
-        void onRecyclerViewItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedAt);
+        void onRecyclerViewItemClickListener(String headline, String image, String description, String content, String publishedDate);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -57,10 +53,10 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
         int position;
         ViewHolder holder;
         ImageView image;
-        DateCalculator dateCalculator;
         TextView heading;
         TextView publishedDateTV;
-        RecyclerViewItemListener recyclerViewItemListener;  //handle any operation on the recyclerview items
+        DateCalculator dateCalculator;
+        RecyclerViewItemListener recyclerViewItemListener;
 
         public ViewHolder(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
             super(itemView);
@@ -68,9 +64,9 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
         }
 
         private void initViews(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
-            image = itemView.findViewById(R.id.news_image);
-            heading = itemView.findViewById(R.id.news_headline);
-            publishedDateTV = itemView.findViewById(R.id.bookmarked_news_published_date);
+            image = itemView.findViewById(R.id.saved_news_image);
+            heading = itemView.findViewById(R.id.saved_news_headline);
+            publishedDateTV = itemView.findViewById(R.id.saved_news_published_date);
             this.recyclerViewItemListener = recyclerViewItemListener;
         }
 
@@ -85,7 +81,7 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
         }
 
         private void setPublishedDate() {
-            String publishedDateStr = articles.get(position).getPublishedAt();
+            String publishedDateStr = newsList.get(position).getPublishedDate();
             dateCalculator = new DateCalculator();
             if(dateCalculator.validatePublishedDate(publishedDateStr)) {
                 String totalTime = dateCalculator.calculateTotalTimeDifference(
@@ -95,7 +91,6 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
             }
         }
 
-
         private void onHeadingClickListener() {
             holder.heading.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -103,6 +98,16 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
                     passInfoToListener();
                 }
             });
+        }
+
+        public void passInfoToListener() {
+            String headline = newsList.get(position).getHeadline();
+            String image = newsList.get(position).getImageUrl();
+            String description = newsList.get(position).getDescription();
+            String content = newsList.get(position).getContent();
+            String publishedDate= newsList.get(position).getPublishedDate();
+
+            recyclerViewItemListener.onRecyclerViewItemClickListener(headline, image, description, content,publishedDate);
         }
 
         private void onImageClickListener() {
@@ -114,34 +119,13 @@ public class NationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<Nation
             });
         }
 
-        void passInfoToListener(){
-            String newsHeadline = articles.get(position).getTitle();
-            String newsImage = articles.get(position).getUrlToImage();
-            String newsDescription = articles.get(position).getDescription();
-            String newsContent = articles.get(position).getContent();
-            String newsPublishedAt = articles.get(position).getPublishedAt();
-            recyclerViewItemListener.onRecyclerViewItemClickListener(newsHeadline, newsImage, newsDescription, newsContent, newsPublishedAt);
-        }
-
         private void setHeadline() {
-            String headLine = articles.get(position).getTitle();
-            String str2 = removeInvalidNewsLastChar(headLine);
-            heading.setText(str2);
-        }
-
-        private String removeInvalidNewsLastChar(String headLine) {
-            String str[] = headLine.split("-");
-            int len = str.length;
-            String str2="";
-            for (int i=0; i<len-1;i++) {
-                str2 = str2 + str[i];
-            }
-            return str2;
+            heading.setText(newsList.get(position).getHeadline());
         }
 
         private void setImage() {
-            String imageUrl = articles.get(position).getUrlToImage();
-            if (imageUrl != null && imageUrl !="" && imageUrl != " ") {
+            String imageUrl = newsList.get(position).getImageUrl();
+            if (imageUrl != null && imageUrl != "" && imageUrl != " ") {
                 Picasso.with(context)
                         .load(imageUrl)
                         .into(image);

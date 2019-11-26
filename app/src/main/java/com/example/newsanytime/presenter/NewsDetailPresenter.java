@@ -3,9 +3,9 @@ package com.example.newsanytime.presenter;
 import android.app.Application;
 import android.os.AsyncTask;
 import com.example.newsanytime.contract.NewsDetailContract;
-import com.example.newsanytime.room.BookmarkedNews;
-import com.example.newsanytime.room.BookmarkedNewsRepository;
-import com.example.newsanytime.singleton.BookmarkedNewsSingleton;
+import com.example.newsanytime.room.SavedNews;
+import com.example.newsanytime.room.SavedNewsRepository;
+import com.example.newsanytime.singleton.SavedNewsSingleton;
 import java.util.Dictionary;
 
 public class NewsDetailPresenter {
@@ -17,38 +17,38 @@ public class NewsDetailPresenter {
     }
 
     public void searchNewsByPublishDate(String publishDate, Application application) {
-        BookmarkedNewsRepository repository = BookmarkedNewsSingleton.getInstance(application);
+        SavedNewsRepository repository = SavedNewsSingleton.getInstance(application);
         new searchNewsByPublishedDateAsyncTask(repository).execute(publishDate);
     }
 
     private class searchNewsByPublishedDateAsyncTask extends AsyncTask<String, Void, String > {
-        private BookmarkedNewsRepository repository;
+        private SavedNewsRepository repository;
 
-        public searchNewsByPublishedDateAsyncTask(BookmarkedNewsRepository repository){
+        public searchNewsByPublishedDateAsyncTask(SavedNewsRepository repository){
             this.repository = repository;
         }
         @Override
         protected String  doInBackground(String... publishedDate) {
             return repository.searchNewsByPublishedDate(publishedDate[0]);
         }
-        protected void onPostExecute(String  bookmarkedNews){
-            setBookmark(bookmarkedNews);
+        protected void onPostExecute(String savedNews){
+            if(savedNews!=null)
+                newsDetailContract.enableBookmark();
+            else
+                newsDetailContract.disableBookmark();
         }
 
     }
-    public void setBookmark(String bookmarkedNews) {
-        newsDetailContract.setBookmark(bookmarkedNews);
-    }
 
     public void deleteNewsByPublishDate(String publishDate, Application application) {
-        BookmarkedNewsRepository repository = BookmarkedNewsSingleton.getInstance(application);
+        SavedNewsRepository repository = SavedNewsSingleton.getInstance(application);
         new deleteNewsByPublishDateAsyncTask(repository).execute(publishDate);
     }
 
     private static class deleteNewsByPublishDateAsyncTask extends AsyncTask<String, Void, Void> {
-        private BookmarkedNewsRepository repository;
+        private SavedNewsRepository repository;
 
-        public deleteNewsByPublishDateAsyncTask(BookmarkedNewsRepository repository) {
+        public deleteNewsByPublishDateAsyncTask(SavedNewsRepository repository) {
             this.repository = repository;
         }
 
@@ -59,19 +59,17 @@ public class NewsDetailPresenter {
         }
     }
 
+    public void saveNewsInDB(Dictionary newsDict, Application application){
 
+        String headline = (String) newsDict.get("HEADLINE");
+        String image = (String) newsDict.get("IMAGE");
+        String description = (String) newsDict.get("DESCRIPTION");
+        String content = (String) newsDict.get("CONTENT");
+        String publishedDate = (String) newsDict.get("PUBLISHEDAT");
 
-    public void saveBookmarkedNewsInDB(Dictionary newsDict, Application application){
-
-        String headline = (String) newsDict.get("NEWS_HEADLINE");
-        String image = (String) newsDict.get("NEWS_IMAGE");
-        String description = (String) newsDict.get("NEWS_DESCRIPTION");
-        String content = (String) newsDict.get("NEWS_CONTENT");
-        String publishedDate = (String) newsDict.get("NEWS_PUBLISHED_AT");
-
-        BookmarkedNews bookmarkedNews = new BookmarkedNews(headline, image, description, content,publishedDate);
-        BookmarkedNewsRepository repository = BookmarkedNewsSingleton.getInstance(application);
-        repository.saveNews(bookmarkedNews);
+        SavedNews savedNews = new SavedNews(headline, image, description, content,publishedDate);
+        SavedNewsRepository repository = SavedNewsSingleton.getInstance(application);
+        repository.saveNews(savedNews);
     }
 
 }

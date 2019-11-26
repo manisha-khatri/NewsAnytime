@@ -2,47 +2,41 @@ package com.example.newsanytime.presenter;
 
 import android.util.Log;
 import com.example.newsanytime.ApiService;
-import com.example.newsanytime.singleton.RetrofitSingleton;
-import com.example.newsanytime.contract.SearchNewsContract;
+import com.example.newsanytime._enum.TopStoriesType;
+import com.example.newsanytime.contract.TopStoriesContract;
 import com.example.newsanytime.model.News;
+import com.example.newsanytime.singleton.RetrofitSingleton;
 import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import static com.example.newsanytime.constants.Constants.API_KEY;
 
-public class SearchNewsPresenter {
-    private final SearchNewsContract contract;
+public class TopStoriesPresenter {
+    private final TopStoriesContract contract;    
     ApiService apiService;
     private static final String tag = "FETCHING NEWS";
 
-    public SearchNewsPresenter(SearchNewsContract contract){
+    public TopStoriesPresenter(TopStoriesContract contract){
         this.contract = contract;
         apiService = RetrofitSingleton.getRetrofitInstance().create(ApiService.class);
     }
 
-    public void fetchNewsFromServer(String searchedKeyword){
+    public void fetchNewsFromServer() {
         Call<News> call;
-        call = getNewsOnSearchedKeyword(apiService, searchedKeyword);
-        retrieveSearchedNewsRequestResponse(call);
+        call = getTopStories(apiService);
+        fetchTopStoriesFromServer(call);
     }
 
-    public Call<News> getNewsOnSearchedKeyword(ApiService apiService, String SearchedKeyword) {
-        return apiService.getTopHeadlinesBasedOnSearchedKeyword(
-                SearchedKeyword,
-                "en",
-                API_KEY
-        );
-    }
 
-    public void retrieveSearchedNewsRequestResponse(Call<News> call) {
+    private void fetchTopStoriesFromServer(Call<News> call) {
         call.enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
                 if (response.isSuccessful()) {
                     News news = response.body();
                     if (news.getTotalResults() > 0) {
-                        contract.displaySearchedNewsArticles(news);
+                        contract.displayTopStories(news);
                     } else {
                         Log.e(tag,"No news article found");
                         contract.handleInvalidResponseFromServer();
@@ -53,7 +47,6 @@ public class SearchNewsPresenter {
                     contract.handleInvalidResponseFromServer();
                 }
             }
-
             @Override
             public void onFailure(Call<News> call, Throwable t) {
                 if(t instanceof IOException){
@@ -67,5 +60,13 @@ public class SearchNewsPresenter {
             }
         });
     }
+
+    private Call<News> getTopStories(ApiService apiService) {
+        return apiService.getTopHeadlines(
+                "en",
+                API_KEY
+        );
+    }
+
 
 }

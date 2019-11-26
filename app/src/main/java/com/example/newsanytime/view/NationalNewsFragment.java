@@ -8,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import com.example.newsanytime.R;
+import com.example.newsanytime._enum.NationalNewsType;
 import com.example.newsanytime.adapter.NationalNewsRecyclerViewAdapter;
 import com.example.newsanytime.contract.NationalNewsContract;
 import com.example.newsanytime.model.Article;
@@ -29,34 +31,87 @@ public class NationalNewsFragment extends Fragment implements NationalNewsContra
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initViews();
-        nationalNewsPresenter.fetchNews();
+        nationalNewsPresenter.fetchNewsFromServer();  //fetch news by retrofit call
     }
-
 
     private void initViews() {
         nationalNewsPresenter = new NationalNewsPresenter(this);
     }
 
+    public void handleInvalidResponseFromServer(NationalNewsType nationalNewsType){
+        String msg = "Data is not available";
+        TextView callbackRespMsg;
+        switch(nationalNewsType){
+            case NATIONAL:
+                    getView().findViewById(R.id.callback_1_prgss_bar).setVisibility(View.GONE);
+                    callbackRespMsg = getView().findViewById(R.id.callback_1_resp_msg);
+                    callbackRespMsg.setText(msg);
+                    break;
+            case SPORTS:
+                    getView().findViewById(R.id.callback_2_prgss_bar).setVisibility(View.GONE);
+                    callbackRespMsg = getView().findViewById(R.id.callback_2_resp_msg);
+                    callbackRespMsg.setText(msg);
+                    break;
+            case BUSINESS:
+                    getView().findViewById(R.id.callback_3_prgss_bar).setVisibility(View.GONE);
+                    callbackRespMsg = getView().findViewById(R.id.callback_3_resp_msg);
+                    callbackRespMsg.setText(msg);
+                    break;
+            case ENTERTAINMENT:
+                    getView().findViewById(R.id.callback_4_prgss_bar).setVisibility(View.GONE);
+                    callbackRespMsg = getView().findViewById(R.id.callback_4_resp_msg);
+                    callbackRespMsg.setText(msg);
+                    break;
+        }
+    }
+
+    private void hideNewsLoadingWidgets(NationalNewsType newType) {
+        switch(newType){
+            case NATIONAL:
+                    getView().findViewById(R.id.callback_1_prgss_bar).setVisibility(View.GONE);
+                    getView().findViewById(R.id.callback_1_Resp_Msg_holder).setVisibility(View.GONE);
+                    break;
+            case SPORTS:
+                    getView().findViewById(R.id.callback_2_prgss_bar).setVisibility(View.GONE);
+                    getView().findViewById(R.id.callback_2_Resp_Msg_holder).setVisibility(View.GONE);
+                    break;
+            case BUSINESS:
+                    getView().findViewById(R.id.callback_3_prgss_bar).setVisibility(View.GONE);
+                    getView().findViewById(R.id.callback_3_Resp_Msg_holder).setVisibility(View.GONE);
+                    break;
+            case ENTERTAINMENT:
+                    getView().findViewById(R.id.callback_4_prgss_bar).setVisibility(View.GONE);
+                    getView().findViewById(R.id.callback_4_Resp_Msg_holder).setVisibility(View.GONE);
+                    break;
+        }
+    }
+
     @Override
-    public void displayNationalNewsArticles(News news) {
-        RecyclerView recyclerView = getView().findViewById(R.id.recycler_view1);
+    public void displayNationalNewsArticles(News news, NationalNewsType nationalNewsType) {
+        hideNewsLoadingWidgets(nationalNewsType);  //recycler view position
+        RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_1);
         setNewsInRecyclerViewAdapter(news, recyclerView);
     }
 
     @Override
-    public void displaySportsNewsArticles(News news) {
+    public void displaySportsNewsArticles(News news, NationalNewsType nationalNewsType) {
+        hideNewsLoadingWidgets(nationalNewsType);  //recycler view position
         RecyclerView recyclerView = getView().findViewById(R.id.recycler_view2);
         setNewsInRecyclerViewAdapter(news, recyclerView);
     }
 
-    public void displayBusinessNewsArticles(News news) {
+    public void displayBusinessNewsArticles(News news, NationalNewsType nationalNewsType) {
+        hideNewsLoadingWidgets(nationalNewsType);
         RecyclerView recyclerView = getView().findViewById(R.id.recycler_view3);
         setNewsInRecyclerViewAdapter(news, recyclerView);
+
     }
 
-    public void displayEntertainmentNewsArticles(News news) {
+    public void displayEntertainmentNewsArticles(News news, NationalNewsType nationalNewsType) {
+        hideNewsLoadingWidgets(nationalNewsType);
         RecyclerView recyclerView = getView().findViewById(R.id.recycler_view4);
         setNewsInRecyclerViewAdapter(news, recyclerView);
+
     }
 
     public void setNewsInRecyclerViewAdapter(News news, RecyclerView recyclerView) {
@@ -70,11 +125,11 @@ public class NationalNewsFragment extends Fragment implements NationalNewsContra
     @Override
     public void onRecyclerViewItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate){
         Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-        intent.putExtra("NEWS_HEADLINE", newsHeadline);
-        intent.putExtra("NEWS_IMAGE", newsImage);
-        intent.putExtra("NEWS_DESCRIPTION", newsDescription);
-        intent.putExtra("NEWS_CONTENT", newsContent);
-        intent.putExtra("NEWS_PUBLISHED_DATE", newsPublishedDate);
+        intent.putExtra("HEADLINE", newsHeadline);
+        intent.putExtra("IMAGE", newsImage);
+        intent.putExtra("DESCRIPTION", newsDescription);
+        intent.putExtra("CONTENT", newsContent);
+        intent.putExtra("PUBLISHEDDATE", newsPublishedDate);
 
         this.startActivity(intent);
     }

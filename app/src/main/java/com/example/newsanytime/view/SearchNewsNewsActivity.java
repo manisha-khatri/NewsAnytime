@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 import com.example.newsanytime.R;
 import com.example.newsanytime.adapter.SearchNewsRecyclerViewAdapter;
 import com.example.newsanytime.contract.SearchNewsContract;
@@ -24,17 +24,31 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
         setContentView(R.layout.activity_search_news);
 
         initViews();
-
         String searchedKeyword = getSearchedKeyword();
-
-        if(searchedKeyword != null){
-            searchNewsPresenter.fetchNewsForSearchedKeyword(searchedKeyword);
+        if(searchedKeyword != null) {
+            searchNewsPresenter.fetchNewsFromServer(searchedKeyword);
         }
     }
 
     private void initViews() {
-       // getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setToolbar();
         searchNewsPresenter = new SearchNewsPresenter(this);
+        onBackBtnClick();
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = findViewById(R.id.searched_news_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    void onBackBtnClick(){
+        findViewById(R.id.news_searched_news_back_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     public String getSearchedKeyword() {
@@ -56,41 +70,32 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
 
     @Override
     public void displaySearchedNewsArticles(News news) {
+        hideNewsLoadingWidgets();
         RecyclerView recyclerView = findViewById(R.id.recycler_view_searched_news);
         setNewsInRecyclerViewAdapter(news, recyclerView);
-
     }
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.search_news_activity_menu,menu);
-        return true;
+    private void hideNewsLoadingWidgets() {
+        findViewById(R.id.srch_news_callback_prgss_bar).setVisibility(View.GONE);   // hide progress bar
+        findViewById(R.id.srch_news_callback_Resp_Msg_holder).setVisibility(View.GONE);
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.back_button:
-                finish();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
+    public void handleInvalidResponseFromServer(){
+        String msg = "Data is not available";
+        TextView callbackRespMsg = findViewById(R.id.srch_news_callback_resp_msg);
+        findViewById(R.id.srch_news_callback_prgss_bar).setVisibility(View.GONE);
+        callbackRespMsg.setText(msg);
+    }
 
     @Override
     public void onRecyclerViewItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate) {
         Intent intent = new Intent(SearchNewsNewsActivity.this, NewsDetailActivity.class);
-
-        intent.putExtra("NEWS_HEADLINE", newsHeadline);
-        intent.putExtra("NEWS_IMAGE", newsImage);
-        intent.putExtra("NEWS_DESCRIPTION", newsDescription);
-        intent.putExtra("NEWS_CONTENT", newsContent);
-        intent.putExtra("NEWS_CONTENT", newsContent);
-        intent.putExtra("NEWS_PUBLISHED_DATE", newsPublishedDate);
+        intent.putExtra("HEADLINE", newsHeadline);
+        intent.putExtra("IMAGE", newsImage);
+        intent.putExtra("DESCRIPTION", newsDescription);
+        intent.putExtra("CONTENT", newsContent);
+        intent.putExtra("CONTENT", newsContent);
+        intent.putExtra("PUBLISHEDDATE", newsPublishedDate);
         this.startActivity(intent);
-
     }
 }

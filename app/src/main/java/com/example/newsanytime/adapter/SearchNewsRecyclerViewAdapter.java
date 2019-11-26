@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.newsanytime.util.DateCalculator;
 import com.example.newsanytime.R;
 import com.example.newsanytime.model.Article;
 import com.example.newsanytime.model.News;
@@ -56,12 +58,15 @@ public class SearchNewsRecyclerViewAdapter extends RecyclerView.Adapter<SearchNe
         ViewHolder holder;
         ImageView newsImageIV;
         TextView newsHeadingTV;
+        TextView publishedDateTV;
+        DateCalculator dateCalculator;
         RecyclerViewItemListener recyclerViewItemListener;
 
         public ViewHolder(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
             super(itemView);
             newsImageIV = itemView.findViewById(R.id.searched_news_image);
             newsHeadingTV = itemView.findViewById(R.id.searched_news_headline);
+            publishedDateTV = itemView.findViewById(R.id.bookmarked_news_published_date);
             this.recyclerViewItemListener = recyclerViewItemListener;
         }
 
@@ -71,6 +76,7 @@ public class SearchNewsRecyclerViewAdapter extends RecyclerView.Adapter<SearchNe
 
             setNewsImage();
             setNewsHeadline();
+            setPublishedDate();
             onNewsImageClickListener();
             onNewsHeadingClickListener();
         }
@@ -103,7 +109,16 @@ public class SearchNewsRecyclerViewAdapter extends RecyclerView.Adapter<SearchNe
             recyclerViewItemListener.onRecyclerViewItemClickListener(newsHeadline, newsImage, newsDescription, newsContent,newsPublishedDate);
         }
 
-
+        private void setPublishedDate() {
+            String publishedDateStr = articles.get(position).getPublishedAt();
+            dateCalculator = new DateCalculator();
+            if(dateCalculator.validatePublishedDate(publishedDateStr)) {
+                String totalTime = dateCalculator.calculateTotalTimeDifference(
+                        dateCalculator.convertDateIntoISTTimeZone(publishedDateStr),
+                        dateCalculator.getCurrentDate());
+                publishedDateTV.setText(totalTime);
+            }
+        }
 
         private void setNewsHeadline() {
             newsHeadingTV.setText(articles.get(position).getTitle());

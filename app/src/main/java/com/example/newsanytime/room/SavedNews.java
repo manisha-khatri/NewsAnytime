@@ -5,8 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "bookmarked_news")
-public class BookmarkedNews {
+@Entity(tableName = "saved_news")
+public class SavedNews {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
@@ -28,7 +28,7 @@ public class BookmarkedNews {
     @ColumnInfo(name = "content")
     String content;
 
-    public BookmarkedNews(String headline, String imageUrl, String description, String content, String publishedDate){
+    public SavedNews(String headline, String imageUrl, String description, String content, String publishedDate){
         this.headline = headline;
         this.imageUrl = imageUrl;
         this.description = description;

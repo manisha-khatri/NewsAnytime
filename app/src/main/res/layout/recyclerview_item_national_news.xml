@@ -4,16 +4,15 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="160dp"
-    android:layout_height="220dp"
-    android:layout_marginBottom="4dp"
-    android:layout_marginRight="6dp"
-    android:padding="2dp"
-    android:layout_marginLeft="1dp"
+    android:layout_height="205dp"
+    android:layout_marginBottom="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginLeft="2dp"
     card_view:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <ImageView
@@ -25,8 +24,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
+            android:layout_height="match_parent"
+            android:padding="6dp"
             android:orientation="vertical">
 
             <TextView
@@ -36,25 +35,23 @@
                 android:fontFamily="sans-serif"
                 android:maxLines="3"
                 android:text="@string/news_heading"
-                android:textColor="#000"
-                android:textSize="15sp" />
+                android:textColor="#211a23"
+                android:textSize="13sp"
+                card_view:fontFamily="@font/roboto" />
 
             <TextView
                 android:id="@+id/bookmarked_news_published_date"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:fontFamily="sans-serif"
                 android:textColor="#595B5D"
-                android:gravity="right"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="5dp"
+                android:gravity="bottom|right"
                 android:layout_marginTop="2dp"
-                android:text="22-2-19"
+                android:text=""
                 android:textSize="10sp" />
 
-
         </LinearLayout>
-
-
 
     </LinearLayout>
 

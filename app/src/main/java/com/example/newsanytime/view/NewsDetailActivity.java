@@ -10,17 +10,19 @@ import android.widget.TextView;
 import com.example.newsanytime.R;
 import com.example.newsanytime.contract.NewsDetailContract;
 import com.example.newsanytime.presenter.NewsDetailPresenter;
+import com.example.newsanytime.util.DateCalculator;
 import com.squareup.picasso.Picasso;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class NewsDetailActivity extends AppCompatActivity implements NewsDetailContract {
 
-    ImageView newsImageIV;
-    TextView newsHeadlineTV;
+    ImageView imageIV;
+    TextView headlineTV;
+    TextView descriptionTV;
+    TextView contentTV;
+    TextView publishedDateTV;
     Button backBtn;
-    TextView newsDescriptionTV;
-    TextView newsContentTV;
     ImageView bookmarkBtn;
     NewsDetailPresenter newsDetailPresenter;
     Dictionary<String, String> newsDict;
@@ -30,77 +32,66 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
-       // getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         initViews();
         getNewsDetailsFromIntent();
-        //getSupportActionBar().hide();
-        setToolBar();
         checkIfNewsAlreadySavedInDB();
-
         onBookmarkBtnClickListener();
         onBackBtnClickListener();
     }
 
-
-    public void setBookmark(String news) {
-
-        if(news!=null) {
-            bookmarkBtn.setImageResource(R.drawable.icon2);
-            newsSavedInDB = true;
-        }
-        else{
-            bookmarkBtn.setImageResource(R.drawable.icon1);
-            newsSavedInDB = false;
-        }
+    public void enableBookmark() {
+        bookmarkBtn.setImageResource(R.drawable.icon2);
+        newsSavedInDB = true;
     }
 
-    private void setToolBar() {
-        Toolbar toolbar = findViewById(R.id.toolbar1);
+    public void disableBookmark(){
+        bookmarkBtn.setImageResource(R.drawable.icon1);
+        newsSavedInDB = false;
     }
 
     public void onBookmarkBtnClickListener() {
         bookmarkBtn.setOnClickListener(new  View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
                 if(newsSavedInDB) {
-                    bookmarkBtn.setImageResource(R.drawable.icon1);
-                    deleteBookmarkedNewsFromDB();
-                    newsSavedInDB = false;
+                    disableBookmark();
+                    deleteSavedNewsFromDB();
                 }
                 else{
-                    bookmarkBtn.setImageResource(R.drawable.icon2);
-                    newsDetailPresenter.saveBookmarkedNewsInDB(newsDict, getApplication());
-                    newsSavedInDB = true;
+                    enableBookmark();
+                    newsDetailPresenter.saveNewsInDB(newsDict, getApplication());
                 }
-
             }
         });
     }
 
     private void initViews() {
+        setToolbar();
         newsDetailPresenter = new NewsDetailPresenter(this);
-        newsHeadlineTV = findViewById(R.id.single_news_heading);
-        newsImageIV = findViewById(R.id.single_news_image);
-        newsDescriptionTV = findViewById(R.id.single_news_description);
-        newsContentTV = findViewById(R.id.single_news_content);
+        headlineTV = findViewById(R.id.single_news_heading);
+        imageIV = findViewById(R.id.single_news_image);
+        descriptionTV = findViewById(R.id.single_news_description);
+        contentTV = findViewById(R.id.single_news_content);
         bookmarkBtn = findViewById(R.id.bookmark_news_item);
         backBtn = findViewById(R.id.news_detail_back_btn);
+        publishedDateTV = findViewById(R.id.news_detail_published_date);
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = findViewById(R.id.news_detail_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     void getNewsDetailsFromIntent() {
-
         newsDict = new Hashtable<String, String>();
-        newsDict.put("NEWS_HEADLINE", getValueFromIntent("NEWS_HEADLINE"));
-        newsDict.put("NEWS_IMAGE", getValueFromIntent("NEWS_IMAGE"));
-        newsDict.put("NEWS_DESCRIPTION", getValueFromIntent("NEWS_DESCRIPTION"));
-        newsDict.put("NEWS_CONTENT", getValueFromIntent("NEWS_CONTENT"));
-        newsDict.put("NEWS_PUBLISHED_AT", getValueFromIntent("NEWS_PUBLISHED_DATE"));
-
-        setActivityViews(newsDict.get("NEWS_HEADLINE"),
-                newsDict.get("NEWS_IMAGE"),
-                newsDict.get("NEWS_DESCRIPTION"),
-                newsDict.get("NEWS_CONTENT"));
+        newsDict.put("HEADLINE", getValueFromIntent("HEADLINE"));
+        newsDict.put("IMAGE", getValueFromIntent("IMAGE"));
+        newsDict.put("DESCRIPTION", getValueFromIntent("DESCRIPTION"));
+        newsDict.put("CONTENT", getValueFromIntent("CONTENT"));
+        newsDict.put("PUBLISHEDAT", getValueFromIntent("PUBLISHEDDATE"));
+        setActivityViews(newsDict);
     }
 
     private String getValueFromIntent(String key) {
@@ -115,38 +106,59 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
         return value;
     }
 
-    private void setActivityViews(String newsHeadline, String newsImage, String newsDescription, String newsContent) {
+    private void setActivityViews(Dictionary<String, String> newsDict) {
+        headlineTV.setText(newsDict.get("HEADLINE"));
+        descriptionTV.setText(newsDict.get("DESCRIPTION"));
 
-        newsHeadlineTV.setText(newsHeadline);
-        newsDescriptionTV.setText(newsDescription);
+        String content = newsDict.get("CONTENT");
+        String newsContent = removeInvalidCharFromLast(content);
+        contentTV.setText(newsContent);
 
-
-        String[] s1 = newsContent.split("\\[");
-        String[] s2 = s1[0].split("\\.");
-        int len = s2.length;
-        String content = "";
-        for (int i=0; i<len-1;i++) {
-            content = content + s2[i];
+        String imageUrl = newsDict.get("IMAGE");
+        setImage(imageUrl);
+        setPublishedDate(newsDict.get("PUBLISHEDAT"));
+    }
+    private void setPublishedDate(String publishedDateStr) {
+        DateCalculator dateCalculator = new DateCalculator();
+        if(dateCalculator.validatePublishedDate(publishedDateStr)) {
+            String totalTime = dateCalculator.calculateTotalTimeDifference(
+                    dateCalculator.convertDateIntoISTTimeZone(publishedDateStr),
+                    dateCalculator.getCurrentDate());
+            publishedDateTV.setText(totalTime);
         }
+        else
+            publishedDateTV.setVisibility(View.GONE);
+    }
 
-        newsContentTV.setText(content);
 
-        String imageUrl = newsImage;
-
-        if (imageUrl != null) {
+    private void setImage(String imageUrl) {
+        if (imageUrl != null && imageUrl !="" && imageUrl != " ") {
             Picasso.with(this)
                     .load(imageUrl)
-                    .into(newsImageIV);
+                    .into(imageIV);
         }
+        else
+            imageIV.setImageResource(R.drawable.image_not_present);
+    }
+
+    private String removeInvalidCharFromLast(String content) {
+        String[] s1 = content.split("\\[");
+        String[] s2 = s1[0].split("\\.");
+        int len = s2.length;
+        String newsContent = "";
+        for (int i=0; i<len-1;i++) {
+            newsContent = newsContent + s2[i];
+        }
+        return newsContent;
     }
 
     public void checkIfNewsAlreadySavedInDB() {
-        String publishDate = newsDict.get("NEWS_PUBLISHED_AT");
+        String publishDate = newsDict.get("PUBLISHEDAT");
         newsDetailPresenter.searchNewsByPublishDate(publishDate, getApplication());
     }
 
-    public void deleteBookmarkedNewsFromDB() {
-        String publishDate = newsDict.get("NEWS_PUBLISHED_AT");
+    public void deleteSavedNewsFromDB() {
+        String publishDate = newsDict.get("PUBLISHEDAT");
         newsDetailPresenter.deleteNewsByPublishDate(publishDate, getApplication());
     }
 
