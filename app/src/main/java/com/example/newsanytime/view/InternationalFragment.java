@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.newsanytime.R;
 import com.example.newsanytime._enum.InternationalNewsType;
@@ -22,6 +24,10 @@ public class InternationalFragment extends Fragment implements InternationalNews
 {
     InternationalNewsPresenter internationalNewsPresenter;
     List<Article> articles;
+    RecyclerView recyclerView1, recyclerView2, recyclerView3, recyclerView4;
+    ProgressBar prgssBar1,prgssBar2,prgssBar3,prgssBar4;
+    TextView callbackRespMsg1, callbackRespMsg2, callbackRespMsg3, callbackRespMsg4;
+    LinearLayout callbackRespMsgHolder1, callbackRespMsgHolder2, callbackRespMsgHolder3, callbackRespMsgHolder4;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState){
@@ -36,32 +42,47 @@ public class InternationalFragment extends Fragment implements InternationalNews
 
     private void initViews(){
         internationalNewsPresenter = new InternationalNewsPresenter(this);
+        recyclerView1 = getView().findViewById(R.id.int_recycler_view_1);
+        recyclerView2 = getView().findViewById(R.id.int_recycler_view2);
+        recyclerView3 = getView().findViewById(R.id.int_recycler_view3);
+        recyclerView4 = getView().findViewById(R.id.int_recycler_view4);
+
+        prgssBar1 = getView().findViewById(R.id.int_1_prgss_bar);
+        prgssBar2 = getView().findViewById(R.id.int_2_prgss_bar);
+        prgssBar3 = getView().findViewById(R.id.int_3_prgss_bar);
+        prgssBar4 = getView().findViewById(R.id.int_4_prgss_bar);
+
+        callbackRespMsg1 = getView().findViewById(R.id.int_1_resp_msg);
+        callbackRespMsg2 = getView().findViewById(R.id.int_2_resp_msg);
+        callbackRespMsg3 = getView().findViewById(R.id.int_3_resp_msg);
+        callbackRespMsg4 = getView().findViewById(R.id.int_4_resp_msg);
+
+        callbackRespMsgHolder1 = getView().findViewById(R.id.int_1_Resp_Msg_holder);
+        callbackRespMsgHolder2 = getView().findViewById(R.id.int_2_Resp_Msg_holder);
+        callbackRespMsgHolder3 = getView().findViewById(R.id.int_3_Resp_Msg_holder);
+        callbackRespMsgHolder4 = getView().findViewById(R.id.int_4_Resp_Msg_holder);
     }
 
     @Override
     public void displayInternationalNewsArticles(News news, InternationalNewsType internationalNewsType) {
         hideNewsLoadingWidgets(internationalNewsType);  //recycler view position
-        RecyclerView recyclerView = getView().findViewById(R.id.int_recycler_view_1);
-        setNewsInRecyclerViewAdapter(news, recyclerView);
+        setNewsInRecyclerViewAdapter(news, recyclerView1);
     }
 
     @Override
     public void displaySportsNewsArticles(News news, InternationalNewsType internationalNewsType) {
         hideNewsLoadingWidgets(internationalNewsType);  //recycler view position
-        RecyclerView recyclerView = getView().findViewById(R.id.int_recycler_view2);
-        setNewsInRecyclerViewAdapter(news, recyclerView);
+        setNewsInRecyclerViewAdapter(news, recyclerView2);
     }
 
     public void displayBusinessNewsArticles(News news, InternationalNewsType internationalNewsType) {
         hideNewsLoadingWidgets(internationalNewsType);
-        RecyclerView recyclerView = getView().findViewById(R.id.int_recycler_view3);
-        setNewsInRecyclerViewAdapter(news, recyclerView);
+        setNewsInRecyclerViewAdapter(news, recyclerView3);
     }
 
     public void displayEntertainmentNewsArticles(News news, InternationalNewsType internationalNewsType) {
         hideNewsLoadingWidgets(internationalNewsType);
-        RecyclerView recyclerView = getView().findViewById(R.id.int_recycler_view4);
-        setNewsInRecyclerViewAdapter(news, recyclerView);
+        setNewsInRecyclerViewAdapter(news, recyclerView4);
 
     }
 
@@ -89,23 +110,23 @@ public class InternationalFragment extends Fragment implements InternationalNews
         TextView callbackRespMsg;
         switch(internationalNewsType){
             case INTERNATIONAL:
-                getView().findViewById(R.id.int_1_prgss_bar).setVisibility(View.GONE);
-                callbackRespMsg = getView().findViewById(R.id.int_1_resp_msg);
+                prgssBar1.setVisibility(View.GONE);
+                callbackRespMsg = callbackRespMsg1;
                 callbackRespMsg.setText(msg);
                 break;
             case SPORTS:
-                getView().findViewById(R.id.int_2_prgss_bar).setVisibility(View.GONE);
-                callbackRespMsg = getView().findViewById(R.id.int_2_resp_msg);
+                prgssBar2.setVisibility(View.GONE);
+                callbackRespMsg = callbackRespMsg2;
                 callbackRespMsg.setText(msg);
                 break;
             case BUSINESS:
-                getView().findViewById(R.id.int_3_prgss_bar).setVisibility(View.GONE);
-                callbackRespMsg = getView().findViewById(R.id.int_3_resp_msg);
+                prgssBar3.setVisibility(View.GONE);
+                callbackRespMsg = callbackRespMsg3;
                 callbackRespMsg.setText(msg);
                 break;
             case ENTERTAINMENT:
-                getView().findViewById(R.id.int_4_prgss_bar).setVisibility(View.GONE);
-                callbackRespMsg = getView().findViewById(R.id.int_4_resp_msg);
+                prgssBar4.setVisibility(View.GONE);
+                callbackRespMsg = callbackRespMsg4;
                 callbackRespMsg.setText(msg);
                 break;
         }
@@ -114,20 +135,20 @@ public class InternationalFragment extends Fragment implements InternationalNews
     private void hideNewsLoadingWidgets(InternationalNewsType newType) {
         switch(newType){
             case INTERNATIONAL:
-                getView().findViewById(R.id.int_1_prgss_bar).setVisibility(View.GONE);
-                getView().findViewById(R.id.int_1_Resp_Msg_holder).setVisibility(View.GONE);
+                prgssBar1.setVisibility(View.GONE);
+                callbackRespMsgHolder1.setVisibility(View.GONE);
                 break;
             case SPORTS:
-                getView().findViewById(R.id.int_2_prgss_bar).setVisibility(View.GONE);
-                getView().findViewById(R.id.int_2_Resp_Msg_holder).setVisibility(View.GONE);
+                prgssBar2.setVisibility(View.GONE);
+                callbackRespMsgHolder2.setVisibility(View.GONE);
                 break;
             case BUSINESS:
-                getView().findViewById(R.id.int_3_prgss_bar).setVisibility(View.GONE);
-                getView().findViewById(R.id.int_3_Resp_Msg_holder).setVisibility(View.GONE);
+                prgssBar3.setVisibility(View.GONE);
+                callbackRespMsgHolder3.setVisibility(View.GONE);
                 break;
             case ENTERTAINMENT:
-                getView().findViewById(R.id.int_4_prgss_bar).setVisibility(View.GONE);
-                getView().findViewById(R.id.int_4_Resp_Msg_holder).setVisibility(View.GONE);
+                prgssBar4.setVisibility(View.GONE);
+                callbackRespMsgHolder4.setVisibility(View.GONE);
                 break;
         }
     }

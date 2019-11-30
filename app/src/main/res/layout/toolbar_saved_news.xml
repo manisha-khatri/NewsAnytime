@@ -12,8 +12,8 @@
         <Button
             android:id="@+id/saved_news_back_btn"
             android:layout_width="16dp"
+            android:layout_height="22dp"
             android:layout_margin="10dp"
-            android:layout_height="match_parent"
             android:background="@drawable/back_3" />
 
     </LinearLayout>

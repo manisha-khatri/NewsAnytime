@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.newsanytime.R;
 import com.example.newsanytime.adapter.TopStoriesRecyclerViewAdapter;
@@ -17,6 +19,10 @@ import com.example.newsanytime.presenter.TopStoriesPresenter;
 
 public class TopStoriesFragment extends Fragment implements TopStoriesContract, TopStoriesRecyclerViewAdapter.RecyclerViewItemListener {
     TopStoriesPresenter topStoriesPresenter;
+    RecyclerView recyclerView;
+    ProgressBar prgssBar;
+    LinearLayout callbackRespMsgHolder;
+    TextView callbackRespMsg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -31,15 +37,16 @@ public class TopStoriesFragment extends Fragment implements TopStoriesContract, 
 
     private void initViews() {
         topStoriesPresenter = new TopStoriesPresenter(this);
+        recyclerView = getView().findViewById(R.id.recycler_view_top_stories);
+        prgssBar = getView().findViewById(R.id.top_stories_callback_prgss_bar2);
+        callbackRespMsgHolder = getView().findViewById(R.id.top_stories_callback_Resp_Msg_holder2);
+        callbackRespMsg = getView().findViewById(R.id.top_stories_callback_resp_msg2);
     }
 
     public void displayTopStories(News news) {
         hideNewsLoadingWidgets();
-        RecyclerView recyclerView = getView().findViewById(R.id.recycler_view_top_stories);
         setNewsInRecyclerViewAdapter(news, recyclerView);
     }
-
-
 
     public void setNewsInRecyclerViewAdapter(News news, RecyclerView recyclerView) {
         TopStoriesRecyclerViewAdapter adapter = new TopStoriesRecyclerViewAdapter(news, getActivity(), this);     //class object, which calls default constructor
@@ -49,15 +56,13 @@ public class TopStoriesFragment extends Fragment implements TopStoriesContract, 
     }
 
     private void hideNewsLoadingWidgets() {
-        getView().findViewById(R.id.top_stories_callback_prgss_bar2).setVisibility(View.GONE);
-        getView().findViewById(R.id.top_stories_callback_Resp_Msg_holder2).setVisibility(View.GONE);
+        prgssBar.setVisibility(View.GONE);
+        callbackRespMsgHolder.setVisibility(View.GONE);
     }
 
     public void handleInvalidResponseFromServer() {
         String msg = "Data is not available";
-        TextView callbackRespMsg;
-        getView().findViewById(R.id.top_stories_callback_prgss_bar2).setVisibility(View.GONE);
-        callbackRespMsg = getView().findViewById(R.id.top_stories_callback_Resp_Msg_holder2);
+        prgssBar.setVisibility(View.GONE);
         callbackRespMsg.setText(msg);
     }
 

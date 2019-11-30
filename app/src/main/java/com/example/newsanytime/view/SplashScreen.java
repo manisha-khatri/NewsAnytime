@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.newsanytime.R;
@@ -17,12 +20,15 @@ public class SplashScreen extends AppCompatActivity {
     ProgressBar progressBar;
     ImageView errorImage;
     TextView errorMsg;
+    LinearLayout linearLayout;
     private Handler mWaitHandler = new Handler();
+    Animation myAnim;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         initViews();
+        fadedAnimation();
 
         mWaitHandler.postDelayed(new Runnable() {
             @Override
@@ -52,6 +58,7 @@ public class SplashScreen extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         errorImage = findViewById(R.id.error_icon);
         errorMsg = findViewById(R.id.internet_connection_msg);
+        linearLayout = findViewById(R.id.splash_linear_layout);
     }
 
     private boolean internetConnectivityTest() {
@@ -66,4 +73,10 @@ public class SplashScreen extends AppCompatActivity {
         //Remove all the callbacks otherwise navigation will execute even after activity is killed or closed.
         mWaitHandler.removeCallbacksAndMessages(null);
     }
+
+    private void fadedAnimation() {
+        myAnim = AnimationUtils.loadAnimation(this,R.anim.faded_animation);
+        linearLayout.startAnimation(myAnim);
+    }
+
 }

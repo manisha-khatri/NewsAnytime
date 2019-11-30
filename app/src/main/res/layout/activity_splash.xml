@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CBD4DF"
     android:gravity="center"
+    android:id="@+id/splash_linear_layout"
     android:orientation="vertical">
 
     <LinearLayout
@@ -24,7 +24,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/news_anytime_logo" />
+                    android:src="@drawable/rounded_app_logo" />
             </LinearLayout>
 
             <ProgressBar
