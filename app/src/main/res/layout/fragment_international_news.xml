@@ -5,10 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <manisha.tuesda.walker.circlerefresh.CircleRefreshLayout
+        app:AniBackColor="#ff8b90af"
+        app:AniForeColor="#ffffffff"
+        app:CircleSmaller="6"
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -270,5 +279,8 @@
         </LinearLayout>
 
     </ScrollView>
+
+
+    </manisha.tuesda.walker.circlerefresh.CircleRefreshLayout>
 
 </LinearLayout>

@@ -7,7 +7,7 @@
                 android:thickness="5dp"
                 android:innerRadiusRatio="3"
                 android:thicknessRatio="30.0">
-                <solid android:color="#FFFFFF" />
+                <solid android:color="#046ABC" />
             </shape>
         </rotate>
     </item>

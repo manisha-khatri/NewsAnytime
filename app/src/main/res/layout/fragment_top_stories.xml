@@ -1,43 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_gravity="center"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <LinearLayout
+    <manisha.tuesda.walker.circlerefresh.CircleRefreshLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/refresh_layout3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        app:AniBackColor="#ff8b90af"
+        app:AniForeColor="#ffffffff"
+        app:CircleSmaller="6">
 
-        <LinearLayout
-            android:id="@+id/top_stories_callback_Resp_Msg_holder2"
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:orientation="vertical">
 
-            <ProgressBar
-                android:id="@+id/top_stories_callback_prgss_bar2"
-                style="?android:attr/progressBarStyle"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/top_stories_callback_resp_msg2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:gravity="center_horizontal"
-                android:textSize="18sp" />
-        </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/top_stories_callback_Resp_Msg_holder2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="700dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_top_stories"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+                    <ProgressBar
+                        android:id="@+id/top_stories_callback_prgss_bar2"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/top_stories_callback_resp_msg2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center_horizontal"
+                        android:textSize="18sp" />
+                </LinearLayout>
 
 
-    </LinearLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_top_stories"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </manisha.tuesda.walker.circlerefresh.CircleRefreshLayout>
 
 </LinearLayout>

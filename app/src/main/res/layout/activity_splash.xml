@@ -45,6 +45,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp" />
 
+
         <TextView
             android:id="@+id/internet_connection_msg"
             android:layout_width="wrap_content"

@@ -9,14 +9,13 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <Button
+        <ImageView
             android:id="@+id/news_searched_news_back_btn"
-            android:layout_width="16dp"
-            android:layout_margin="10dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/back_3" />
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/final_back_btn" />
 
     </LinearLayout>
     
 </android.support.v7.widget.Toolbar>
-

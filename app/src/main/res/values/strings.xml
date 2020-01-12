@@ -7,7 +7,6 @@
     <string name="entertainment_news">Entertainment News</string>
     <string name="search_news_by_keyword">search savedNews by keyword</string>
     <string name="bookmark_button">bookmark button</string>
-
     <string name="Open">open</string>
     <string name="Close">close</string>
 </resources>

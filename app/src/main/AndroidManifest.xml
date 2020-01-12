@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.newsanytime">
+    package="manisha.khatri.newsanytime">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,16 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".view.SplashScreen">
+        <activity android:name="manisha.khatri.newsanytime.view.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.HomeActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".view.SearchNewsNewsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".view.NewsDetailActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".view.SavedNewsActivity" android:screenOrientation="portrait"/>
+        <activity android:name="manisha.khatri.newsanytime.view.HomeActivity" android:screenOrientation="portrait"/>
+        <activity android:name="manisha.khatri.newsanytime.view.SearchNewsNewsActivity" android:screenOrientation="portrait"/>
+        <activity android:name="manisha.khatri.newsanytime.view.NewsDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name="manisha.khatri.newsanytime.view.SavedNewsActivity" android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"
