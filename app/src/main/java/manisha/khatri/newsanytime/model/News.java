@@ -2,7 +2,6 @@
 package manisha.khatri.newsanytime.model;
 
 import android.support.annotation.Nullable;
-
 import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;

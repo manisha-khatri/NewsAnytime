@@ -1,75 +1,50 @@
 package manisha.khatri.newsanytime.presenter;
 
 import android.app.Application;
-import android.os.AsyncTask;
+import java.util.List;
 import manisha.khatri.newsanytime.contract.NewsDetailContract;
-import manisha.khatri.newsanytime.room.SavedNews;
-import manisha.khatri.newsanytime.room.SavedNewsRepository;
-import manisha.khatri.newsanytime.singleton.SavedNewsSingleton;
-import java.util.Dictionary;
+import manisha.khatri.newsanytime.database.BookmarkedNews;
+import manisha.khatri.newsanytime.service.DatabaseServiceRequest;
+import manisha.khatri.newsanytime.service.DatabaseServiceCallBack;
+import manisha.khatri.newsanytime.service.DBRemoteDataSource;
+import manisha.khatri.newsanytime.util.NewsDetailCallBackEnum;
 
-public class NewsDetailPresenter {
+public class NewsDetailPresenter implements DatabaseServiceCallBack {
     private NewsDetailContract newsDetailContract;
-    Dictionary<String,String> newsDict;
+    DBRemoteDataSource DBRemoteDataSource;
 
     public NewsDetailPresenter(NewsDetailContract newsDetailContract){
         this.newsDetailContract = newsDetailContract;
+        DBRemoteDataSource = new DatabaseServiceRequest();
     }
 
-    public void searchNewsByPublishDate(String publishDate, Application application) {
-        SavedNewsRepository repository = SavedNewsSingleton.getInstance(application);
-        new searchNewsByPublishedDateAsyncTask(repository).execute(publishDate);
+    public void searchNews(String publishDate, Application application){
+        DBRemoteDataSource.searchNewsByPublishDate( this, publishDate, application);
     }
 
-    private class searchNewsByPublishedDateAsyncTask extends AsyncTask<String, Void, String > {
-        private SavedNewsRepository repository;
+    public void deleteNews(String publishDate, Application application){
+        DBRemoteDataSource.deleteNewsByPublishDate(this, publishDate, application);
+    }
 
-        public searchNewsByPublishedDateAsyncTask(SavedNewsRepository repository){
-            this.repository = repository;
-        }
-        @Override
-        protected String  doInBackground(String... publishedDate) {
-            return repository.searchNewsByPublishedDate(publishedDate[0]);
-        }
-        protected void onPostExecute(String savedNews){
-            if(savedNews!=null)
-                newsDetailContract.enableBookmark();
-            else
-                newsDetailContract.disableBookmark();
-        }
+    public void saveNews(BookmarkedNews bookmarkedNews, Application application){
+        DBRemoteDataSource.saveNewsInDB(this, bookmarkedNews, application);
+    }
+
+    @Override
+    public void onSuccessfulResponse(String res) {
+        if(NewsDetailCallBackEnum.NEWS_DELETED_FROM_DB.toString() == res)
+            newsDetailContract.uncheckBookmark();
+        else if(NewsDetailCallBackEnum.NEWS_SAVED_IN_DB.toString() == res)
+                newsDetailContract.checkBookmark();
+    }
+
+    @Override
+    public void onFailureResponse() {
 
     }
 
-    public void deleteNewsByPublishDate(String publishDate, Application application) {
-        SavedNewsRepository repository = SavedNewsSingleton.getInstance(application);
-        new deleteNewsByPublishDateAsyncTask(repository).execute(publishDate);
+    @Override
+    public void onSuccessfulResponse(List<BookmarkedNews> bookmarkedNews) {
+
     }
-
-    private static class deleteNewsByPublishDateAsyncTask extends AsyncTask<String, Void, Void> {
-        private SavedNewsRepository repository;
-
-        public deleteNewsByPublishDateAsyncTask(SavedNewsRepository repository) {
-            this.repository = repository;
-        }
-
-        @Override
-        protected Void doInBackground(String... publishedDate) {
-            repository.deleteNewsByPublishDate(publishedDate[0]);
-            return null;
-        }
-    }
-
-    public void saveNewsInDB(Dictionary newsDict, Application application){
-
-        String headline = (String) newsDict.get("HEADLINE");
-        String image = (String) newsDict.get("IMAGE");
-        String description = (String) newsDict.get("DESCRIPTION");
-        String content = (String) newsDict.get("CONTENT");
-        String publishedDate = (String) newsDict.get("PUBLISHEDAT");
-
-        SavedNews savedNews = new SavedNews(headline, image, description, content,publishedDate);
-        SavedNewsRepository repository = SavedNewsSingleton.getInstance(application);
-        repository.saveNews(savedNews);
-    }
-
 }

@@ -1,18 +1,11 @@
 package manisha.khatri.newsanytime.contract;
 
 import manisha.khatri.newsanytime.model.News;
-import manisha.khatri.newsanytime._enum.NationalNewsType;
+import manisha.khatri.newsanytime.util.NewsCategory;
+import manisha.khatri.newsanytime.util._enum.NationalNewsType;
 
 public interface NationalNewsContract {
-
-    public void displayNationalNewsArticles(News news, NationalNewsType nationalNewsType);
-
-    public void displaySportsNewsArticles(News news, NationalNewsType nationalNewsType);
-
-    public void displayBusinessNewsArticles(News news, NationalNewsType nationalNewsType);
-
-    public void displayEntertainmentNewsArticles(News news, NationalNewsType nationalNewsType);
-
-    public void handleInvalidResponseFromServer(NationalNewsType nationalNewsType);
+    public void onFailureResponse(String errorMsg, NewsCategory newsCategory);
+    public void onSuccessfulResponse(News news, NewsCategory newsCategory);
 
 }

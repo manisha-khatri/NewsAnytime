@@ -1,207 +1,61 @@
 package manisha.khatri.newsanytime.presenter;
 
-import android.util.Log;
-import manisha.khatri.newsanytime.ApiService;
-import manisha.khatri.newsanytime.singleton.RetrofitSingleton;
 import manisha.khatri.newsanytime.contract.NationalNewsContract;
 import manisha.khatri.newsanytime.model.News;
-import manisha.khatri.newsanytime._enum.NationalNewsType;
-import java.io.IOException;
+import manisha.khatri.newsanytime.service.WebServiceCallBack;
+import manisha.khatri.newsanytime.service.WebRemoteDataSource;
+import manisha.khatri.newsanytime.service.WebServiceRequest;
+import manisha.khatri.newsanytime.util.NewsCategory;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import static manisha.khatri.newsanytime.constants.Constants.API_KEY;
+public class NationalNewsPresenter implements WebServiceCallBack {
+    private final NationalNewsContract nationalNewsContract;
+    WebRemoteDataSource webRemoteDataSource;
 
-public class NationalNewsPresenter {
-
-    private final NationalNewsContract contract;
-    ApiService apiService;
-    private static final String tag = "FETCHING NEWS";
-
-    public NationalNewsPresenter(NationalNewsContract contract){
-        this.contract = contract;
-        apiService = RetrofitSingleton.getRetrofitInstance().create(ApiService.class);
+    public NationalNewsPresenter(NationalNewsContract nationalNewsContract) {
+        this.nationalNewsContract = nationalNewsContract;
     }
 
-    public Call<News> getNationalNews(ApiService apiService) {
-        return apiService.getTopHeadlinesBasedOnCountry(
-                    "in",
-                    "en",
-                    API_KEY
-            );
-    }
-    public Call<News> getSportsNews(ApiService apiService) {
-        return apiService.getTopHeadlinesBasedOnCategory(
-                "in",
-                "sports",
-                "en",
-                API_KEY
-        );
-    }
-    public Call<News> getBusinessNews(ApiService apiService) {
-        return apiService.getTopHeadlinesBasedOnCategory(
-                "in",
-                "business",
-                "en",
-                API_KEY
-        );
-    }
-    public Call<News> getEntertainmentNews(ApiService apiService) {
-        return apiService.getTopHeadlinesBasedOnCategory(
-                "in",
-                "entertainment",
-                "en",
-                API_KEY
-        );
+    public void fetchNews() {
+        webRemoteDataSource = new WebServiceRequest();
+        fetchNationalNews();
+        fetchSportsNews();
+        fetchBusinessNews();
+        fetchEntertainmentNews();
     }
 
-    public void fetchNewsFromServer() {
-        Call<News> call;
-
-        call = getNationalNews(apiService);
-        fetchNationalNewsFromServer(call);
-
-        call = getSportsNews(apiService);
-        retrieveSportsNewsRequestResponse(call);
-
-        call = getBusinessNews(apiService);
-        retrieveBusinessNewsRequestResponse(call);
-
-        call = getEntertainmentNews(apiService);
-        retrieveEntertainmentNewsRequestResponse(call);
+    private void fetchSportsNews() {
+        String category = "sports";
+        String language = "en";
+        String country = "in";
+        webRemoteDataSource.fetchNewsByLanguageCategoryAndCountry(this, category, language, country,NewsCategory.NATIONAL_SPORTS);
     }
 
-    public void fetchNationalNewsFromServer(Call<News> call) {
-        call.enqueue(new Callback<News>() {
-            NationalNewsType nationalNewsType = NationalNewsType.NATIONAL;
-            @Override
-            public void onResponse(Call<News> call, Response<News> response) {
-                if (response.isSuccessful()) {
-                    News news = response.body();
-                    if (news.getTotalResults() > 0) {
-                        contract.displayNationalNewsArticles(news, nationalNewsType);
-                    } else {
-                        Log.e(tag,"No news article found");
-                        contract.handleInvalidResponseFromServer(nationalNewsType);
-                    }
-                }
-                else{
-                    Log.e(tag,"Internal server error");
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-            }
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
-                if(t instanceof IOException){
-                    Log.e(tag,"Network error " + t);
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-                else{
-                    Log.e(tag,"Converter error " + t);
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-            }
-        });
+    private void fetchNationalNews() {
+        String language = "en";
+        String country = "in";
+        webRemoteDataSource.fetchNewsByCountryAndLanguage(this, country, language, NewsCategory.NATIONAL);
     }
 
-    public void retrieveSportsNewsRequestResponse(Call<News> call) {
-        call.enqueue(new Callback<News>() {
-            NationalNewsType nationalNewsType = NationalNewsType.SPORTS;
-            @Override
-            public void onResponse(Call<News> call, Response<News> response) {
-                if (response.isSuccessful()) {
-                    News news = response.body();
-                    if (news.getTotalResults() > 0) {
-                        contract.displaySportsNewsArticles(news, nationalNewsType);
-                    } else {
-                        Log.e(tag,"No news article found");
-                        contract.handleInvalidResponseFromServer(nationalNewsType);
-                    }
-                }
-                else{
-                    Log.e(tag,"Internal server error");
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-            }
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
-                if(t instanceof IOException){
-                    Log.e(tag,"Network error " + t);
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-                else{
-                    Log.e(tag,"Converter error " + t);
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-            }
-        });
+    private void fetchBusinessNews() {
+        String category = "business";
+        String language = "en";
+        String country = "in";
+        webRemoteDataSource.fetchNewsByLanguageCategoryAndCountry(this, category, language, country,NewsCategory.NATIONAL_BUSINESS);
     }
 
-    public void retrieveBusinessNewsRequestResponse(Call<News> call) {
-        call.enqueue(new Callback<News>() {
-            NationalNewsType nationalNewsType = NationalNewsType.BUSINESS;
-            @Override
-            public void onResponse(Call<News> call, Response<News> response) {
-                if (response.isSuccessful()) {
-                    News news = response.body();
-                    if (news.getTotalResults() > 0) {
-                        contract.displayBusinessNewsArticles(news, nationalNewsType);
-                    } else {
-                        Log.e(tag,"No news article found");
-                        contract.handleInvalidResponseFromServer(nationalNewsType);
-                    }
-                }
-                else{
-                    Log.e(tag,"Internal server error");
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-            }
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
-                if(t instanceof IOException){
-                    Log.e(tag,"Network error " + t);
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-                else{
-                    Log.e(tag,"Converter error " + t);
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-            }
-        });
+    private void fetchEntertainmentNews() {
+        String category = "entertainment";
+        String language = "en";
+        String country = "in";
+        webRemoteDataSource.fetchNewsByLanguageCategoryAndCountry(this, category, language, country,NewsCategory.NATIONAL_ENTERTAINMENT);
     }
 
-    public void retrieveEntertainmentNewsRequestResponse(Call<News> call) {
-        call.enqueue(new Callback<News>() {
-            NationalNewsType nationalNewsType = NationalNewsType.ENTERTAINMENT;
-            @Override
-            public void onResponse(Call<News> call, Response<News> response) {
-                if (response.isSuccessful()) {
-                    News news = response.body();
-                    if (news.getTotalResults() > 0) {
-                        contract.displayEntertainmentNewsArticles(news, nationalNewsType);
-                    } else {
-                        Log.e(tag,"No news article found");
-                        contract.handleInvalidResponseFromServer(nationalNewsType);
-                    }
-                }
-                else{
-                    Log.e(tag,"Internal server error");
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-            }
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
-                if(t instanceof IOException){
-                    Log.e(tag,"Network error " + t);
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-                else{
-                    Log.e(tag,"Converter error " + t);
-                    contract.handleInvalidResponseFromServer(nationalNewsType);
-                }
-            }
-        });
+    public void onSuccessfulResponse(News news, NewsCategory newsCategory) {
+        nationalNewsContract.onSuccessfulResponse(news, newsCategory);
+    }
+
+    public void onFailureResponse(String errorMsg, NewsCategory newsCategory) {
+        nationalNewsContract.onFailureResponse(errorMsg, newsCategory);
     }
 
 }

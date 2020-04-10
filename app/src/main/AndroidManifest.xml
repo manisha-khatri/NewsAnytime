@@ -14,16 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="manisha.khatri.newsanytime.view.SplashScreen">
+        <activity android:name="manisha.khatri.newsanytime.view.activity.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="manisha.khatri.newsanytime.view.HomeActivity" android:screenOrientation="portrait"/>
-        <activity android:name="manisha.khatri.newsanytime.view.SearchNewsNewsActivity" android:screenOrientation="portrait"/>
-        <activity android:name="manisha.khatri.newsanytime.view.NewsDetailActivity" android:screenOrientation="portrait"/>
-        <activity android:name="manisha.khatri.newsanytime.view.SavedNewsActivity" android:screenOrientation="portrait"/>
+        <activity android:name="manisha.khatri.newsanytime.view.activity.HomeActivity" android:screenOrientation="portrait"/>
+        <activity android:name="manisha.khatri.newsanytime.view.activity.SearchNewsNewsActivity" android:screenOrientation="portrait"/>
+        <activity android:name="manisha.khatri.newsanytime.view.activity.NewsDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name="manisha.khatri.newsanytime.view.activity.SavedNewsActivity" android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"

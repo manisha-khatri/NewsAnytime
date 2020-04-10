@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
-import manisha.khatri.newsanytime._enum.NationalNewsType;
-import manisha.khatri.newsanytime.adapter.NationalNewsRecyclerViewAdapter;
+import manisha.khatri.newsanytime.util.NewsCategory;
+import manisha.khatri.newsanytime.view.adapter.NationalNewsRecyclerViewAdapter;
 import manisha.khatri.newsanytime.contract.NationalNewsContract;
 import manisha.khatri.newsanytime.model.Article;
 import manisha.khatri.newsanytime.model.News;
 import manisha.khatri.newsanytime.presenter.NationalNewsPresenter;
-import manisha.khatri.newsanytime.view.NewsDetailActivity;
+import manisha.khatri.newsanytime.view.activity.NewsDetailActivity;
 import manisha.tuesda.walker.circlerefresh.CircleRefreshLayout;
 import java.util.List;
 
@@ -32,36 +31,32 @@ public class NationalNewsFragment extends Fragment implements NationalNewsContra
     LinearLayout callbackRespMsgHolder1, callbackRespMsgHolder2, callbackRespMsgHolder3, callbackRespMsgHolder4;
     RecyclerView recyclerView1,recyclerView2,recyclerView3,recyclerView4;
     View rootView;
-    String tag = "NationalNewsFragment";
     CircleRefreshLayout mRefreshLayout2;
     private Handler mWaitHandler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState){
         rootView = inflater.inflate(R.layout.fragment_national_news, viewGroup, false);
-        Log.v(tag,"onCreateView");
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Log.v(tag,"onViewCreated");
         initViews();
-        refreshListener();
-        nationalNewsPresenter.fetchNewsFromServer();  //fetch news by retrofit cal
+        pullToRefreshAnimistener();
+        nationalNewsPresenter.fetchNews();  //fetch news by retrofit cal
     }
 
     public void onStart(){
         super.onStart();
-        Log.v(tag,"onStart");
     }
 
-    private void refreshListener() {
+    private void pullToRefreshAnimistener() {
         mRefreshLayout2.setOnRefreshListener(
                 new CircleRefreshLayout.OnCircleRefreshListener() {
                     @Override
                     public void refreshing() {
-                        nationalNewsPresenter.fetchNewsFromServer();  //fetch news by retrofit call
+                        nationalNewsPresenter.fetchNews();  //fetch news by retrofit call
                     }
                     @Override
                     public void completeRefresh() {
@@ -92,103 +87,100 @@ public class NationalNewsFragment extends Fragment implements NationalNewsContra
         recyclerView4 = rootView.findViewById(R.id.recycler_view4);
     }
 
-    public void handleInvalidResponseFromServer(NationalNewsType nationalNewsType){
-        mWaitHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRefreshLayout2.finishRefreshing();
-                //stopRefreshBtn.callOnClick();
-            }
-        }, 2000);
-        //mRefreshLayout3.finishRefreshing();
-        String msg = "Data is not available";
-        TextView callbackRespMsg;
-        switch(nationalNewsType){
+    public void onSuccessfulResponse(News news, NewsCategory newsCategory) {
+        switch(newsCategory){
             case NATIONAL:
-                    prgssBar1.setVisibility(View.GONE);
-                    callbackRespMsg1.setText(msg);
-                    break;
-            case SPORTS:
-                    prgssBar2.setVisibility(View.GONE);
-                    callbackRespMsg2.setText(msg);
-                    break;
-            case BUSINESS:
-                    prgssBar3.setVisibility(View.GONE);
-                    callbackRespMsg3.setText(msg);
-                    break;
-            case ENTERTAINMENT:
-                    prgssBar4.setVisibility(View.GONE);
-                    callbackRespMsg4.setText(msg);
-                    break;
+                stopLoader(prgssBar1, callbackRespMsgHolder1);
+                displayNationalNews(news);
+                break;
+            case NATIONAL_SPORTS:
+                stopLoader(prgssBar2, callbackRespMsgHolder2);
+                displaySportsNews(news);
+                break;
+            case NATIONAL_BUSINESS:
+                stopLoader(prgssBar3, callbackRespMsgHolder3);
+                displayBusinessNews(news);
+                break;
+            case NATIONAL_ENTERTAINMENT:
+                stopLoader(prgssBar4, callbackRespMsgHolder4);
+                displayEntertainmentNews(news);
+                break;
         }
     }
 
-    private void hideNewsLoadingWidgets(NationalNewsType newType) {
-        switch(newType){
-            case NATIONAL:
-                    prgssBar1.setVisibility(View.GONE);
-                    callbackRespMsgHolder1.setVisibility(View.GONE);
-                    break;
-            case SPORTS:
-                    prgssBar2.setVisibility(View.GONE);
-                    callbackRespMsgHolder2.setVisibility(View.GONE);
-                    break;
-            case BUSINESS:
-                    prgssBar3.setVisibility(View.GONE);
-                    callbackRespMsgHolder3.setVisibility(View.GONE);
-                    break;
-            case ENTERTAINMENT:
-                    prgssBar4.setVisibility(View.GONE);
-                    callbackRespMsgHolder4.setVisibility(View.GONE);
-                    break;
-        }
+    private void stopLoader(ProgressBar progressBar, LinearLayout layout) {
+        progressBar.setVisibility(View.GONE);
+        layout.setVisibility(View.GONE);
     }
 
-    @Override
-    public void displayNationalNewsArticles(News news, NationalNewsType nationalNewsType) {
-        mWaitHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRefreshLayout2.finishRefreshing();
-                //stopRefreshBtn.callOnClick();
-            }
-        }, 2000);
-        hideNewsLoadingWidgets(nationalNewsType);  //recycler view position
+    public void displayNationalNews(News news) {
+        stopPullToRefreshAnim();
         setNewsInRecyclerViewAdapter(news, recyclerView1);
     }
 
-    @Override
-    public void displaySportsNewsArticles(News news, NationalNewsType nationalNewsType) {
-        hideNewsLoadingWidgets(nationalNewsType);  //recycler view position
+    public void stopPullToRefreshAnim(){
+        mWaitHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout2.finishRefreshing();
+                //stopRefreshBtn.callOnClick();
+            }
+        }, 2000);
+    }
+
+    public void displaySportsNews(News news) {
         setNewsInRecyclerViewAdapter(news, recyclerView2);
     }
 
-    public void displayBusinessNewsArticles(News news, NationalNewsType nationalNewsType) {
-        hideNewsLoadingWidgets(nationalNewsType);
+    public void displayBusinessNews(News news) {
         setNewsInRecyclerViewAdapter(news, recyclerView3);
     }
 
-    public void displayEntertainmentNewsArticles(News news, NationalNewsType nationalNewsType) {
-        hideNewsLoadingWidgets(nationalNewsType);
+    public void displayEntertainmentNews(News news) {
         setNewsInRecyclerViewAdapter(news, recyclerView4);
     }
 
     public void setNewsInRecyclerViewAdapter(News news, RecyclerView recyclerView) {
-        this.articles = news.getArticles();
         NationalNewsRecyclerViewAdapter adapter = new NationalNewsRecyclerViewAdapter(news, getActivity(),this);     //class object, which calls default constructor
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
     }
+
+    public void onFailureResponse(String errorMsg, NewsCategory newsCategory) {
+        stopPullToRefreshAnim();
+        switch(newsCategory){
+            case NATIONAL:
+                showErrorOnFailure(prgssBar1, callbackRespMsg1, errorMsg);
+                break;
+            case NATIONAL_SPORTS:
+                showErrorOnFailure(prgssBar2, callbackRespMsg2, errorMsg);
+                break;
+            case NATIONAL_BUSINESS:
+                showErrorOnFailure(prgssBar3, callbackRespMsg3, errorMsg);
+                break;
+            case NATIONAL_ENTERTAINMENT:
+                showErrorOnFailure(prgssBar4, callbackRespMsg4, errorMsg);
+                break;
+        }
+    }
+
+    void showErrorOnFailure(ProgressBar prgssBar, TextView tv, String errorMsg){
+        TextView callbackRespMsg;
+        prgssBar.setVisibility(View.GONE);
+        callbackRespMsg = tv;
+        callbackRespMsg.setText(errorMsg);
+    }
+
     @Override
-    public void onRecyclerViewItemClickListener(String newsHeadline, String newsImage, String newsDescription, String newsContent, String newsPublishedDate){
+    public void onRecyclerViewItemClickListener(Article article){
         Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-        intent.putExtra("HEADLINE", newsHeadline);
-        intent.putExtra("IMAGE", newsImage);
-        intent.putExtra("DESCRIPTION", newsDescription);
-        intent.putExtra("CONTENT", newsContent);
-        intent.putExtra("PUBLISHEDDATE", newsPublishedDate);
+        intent.putExtra("HEADLINE", article.getTitle());
+        intent.putExtra("IMAGE", article.getUrlToImage());
+        intent.putExtra("DESCRIPTION", article.getDescription());
+        intent.putExtra("CONTENT", article.getContent());
+        intent.putExtra("PUBLISHEDDATE", article.getPublishedAt());
 
         this.startActivity(intent);
     }
