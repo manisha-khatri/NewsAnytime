@@ -13,6 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.model.Article;
+import manisha.khatri.newsanytime.util._enum.GenericStrings;
+import manisha.khatri.newsanytime.util._enum.NewsIntent;
 import manisha.khatri.newsanytime.view.adapter.SearchNewsRecyclerViewAdapter;
 import manisha.khatri.newsanytime.contract.SearchNewsContract;
 import manisha.khatri.newsanytime.model.News;
@@ -71,7 +73,7 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
         if(extras == null) {
             return null;
         } else {
-            return extras.getString("SEARCHED_KEYWORD");
+            return extras.getString(GenericStrings.SEARCHED_KEYWORD.toString());
         }
     }
 
@@ -84,7 +86,7 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
     }
 
     @Override
-    public void displaySearchedNewsArticles(News news) {
+    public void onSuccessfulResponse(News news) {
         hideNewsLoadingWidgets();
         setNewsInRecyclerViewAdapter(news, recyclerView);
     }
@@ -94,21 +96,19 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
         callbackRespMsgHolder.setVisibility(View.GONE);
     }
 
-    public void handleInvalidResponseFromServer(){
-        String msg = "Data is not available";
+    public void onFailureResponse(){
         progsBar.setVisibility(View.GONE);
-        callbackRespMsg.setText(msg);
+        callbackRespMsg.setText(GenericStrings.Data_is_not_available.toString());
     }
 
     @Override
     public void onRecyclerViewItemClickListener(Article newsArticle) {
         Intent intent = new Intent(SearchNewsNewsActivity.this, NewsDetailActivity.class);
-        intent.putExtra("HEADLINE", newsArticle.getTitle());
-        intent.putExtra("IMAGE", newsArticle.getUrlToImage());
-        intent.putExtra("DESCRIPTION", newsArticle.getDescription());
-        intent.putExtra("CONTENT", newsArticle.getContent());
-        intent.putExtra("CONTENT", newsArticle.getContent());
-        intent.putExtra("PUBLISHEDDATE", newsArticle.getPublishedAt());
+        intent.putExtra(NewsIntent.HEADLINE.toString(), newsArticle.getTitle());
+        intent.putExtra(NewsIntent.IMAGE.toString(), newsArticle.getUrlToImage());
+        intent.putExtra(NewsIntent.DESCRIPTION.toString(), newsArticle.getDescription());
+        intent.putExtra(NewsIntent.CONTENT.toString(), newsArticle.getContent());
+        intent.putExtra(NewsIntent.PUBLISHEDDATE.toString(), newsArticle.getPublishedAt());
         this.startActivity(intent);
     }
 }

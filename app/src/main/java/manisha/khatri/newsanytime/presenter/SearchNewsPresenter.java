@@ -2,32 +2,29 @@ package manisha.khatri.newsanytime.presenter;
 
 import manisha.khatri.newsanytime.contract.SearchNewsContract;
 import manisha.khatri.newsanytime.model.News;
-import manisha.khatri.newsanytime.service.WebRemoteDataSource;
-import manisha.khatri.newsanytime.service.WebServiceCallBack;
-import manisha.khatri.newsanytime.service.WebServiceRequest;
-import manisha.khatri.newsanytime.util.NewsCategory;
+import manisha.khatri.newsanytime.service.APIResponseCallBack;
+import manisha.khatri.newsanytime.service.APINewsRepository;
 
-public class SearchNewsPresenter implements WebServiceCallBack {
+public class SearchNewsPresenter {
     private final SearchNewsContract contract;
-    WebRemoteDataSource webRemoteDataSource;
-
+    APINewsRepository apiNewsRepository;
 
     public SearchNewsPresenter(SearchNewsContract contract){
         this.contract = contract;
-        webRemoteDataSource = new WebServiceRequest();
+        apiNewsRepository = new APINewsRepository();
     }
 
     public void fetchNews(String keyword){
-        webRemoteDataSource.fetchNewsBySearchedKeyword( this, keyword, NewsCategory.SEARCHED_NEWS);
-    }
+        apiNewsRepository.fetchNewsBySearchedKeyword(new APIResponseCallBack() {
+            @Override
+            public void onSuccessfulResponse(News news) {
+                contract.onSuccessfulResponse(news);
+            }
 
-    @Override
-    public void onSuccessfulResponse(News news, NewsCategory newsCategory) {
-        contract.displaySearchedNewsArticles(news);
-    }
-
-    @Override
-    public void onFailureResponse(String errorMsg, NewsCategory newsCategory) {
-        contract.handleInvalidResponseFromServer();
+            @Override
+            public void onFailureResponse(String errorMsg) {
+                contract.onFailureResponse();
+            }
+        }, keyword);
     }
 }

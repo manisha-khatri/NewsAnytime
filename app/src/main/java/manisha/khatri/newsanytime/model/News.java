@@ -1,35 +1,25 @@
-
 package manisha.khatri.newsanytime.model;
 
-import android.support.annotation.Nullable;
-import java.io.Serializable;
-import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+public class News {
+    private int totalResults;
 
-public class News implements Serializable
-{
-    @SerializedName("status")
-    @Expose
-    @Nullable
+    private Article[] articles;
+
     private String status;
 
-    @SerializedName("totalResults")
-    @Expose
-    @Nullable
-    private long totalResults;
+    public int getTotalResults() {
+        return totalResults;
+    }
 
-    @SerializedName("articles")
-    @Expose
-    @Nullable
-    private List<Article> articles = null;
-
-    private final static long serialVersionUID = -113585310620385215L;
-
-    public News(String status, long totalResults, List<Article> articles) {
-        super();
-        this.status = status;
+    public void setTotalResults(int totalResults) {
         this.totalResults = totalResults;
+    }
+
+    public Article[] getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Article[] articles) {
         this.articles = articles;
     }
 
@@ -41,20 +31,8 @@ public class News implements Serializable
         this.status = status;
     }
 
-    public long getTotalResults() {
-        return totalResults;
+    @Override
+    public String toString() {
+        return "ClassPojo [totalResults = " + totalResults + ", articles = " + articles + ", status = " + status + "]";
     }
-
-    public void setTotalResults(long totalResults) {
-        this.totalResults = totalResults;
-    }
-
-    public List<Article> getArticles() {
-        return articles;
-    }
-
-    public void setArticles(List<Article> articles) {
-        this.articles = articles;
-    }
-
 }

@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
+import manisha.khatri.newsanytime.util._enum.Fragments;
+import manisha.khatri.newsanytime.util._enum.GenericStrings;
 import manisha.khatri.newsanytime.view.adapter.*;
 
 public class HomeActivity extends AppCompatActivity {
@@ -57,9 +59,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setTabs() {
-        tabLayout.addTab(tabLayout.newTab().setText("National"));
-        tabLayout.addTab(tabLayout.newTab().setText("Top Stories"));
-        tabLayout.addTab(tabLayout.newTab().setText("International"));
+        tabLayout.addTab(tabLayout.newTab().setText(Fragments.NATIONAL.toString()));
+        tabLayout.addTab(tabLayout.newTab().setText(Fragments.TOP_STORIES.toString()));
+        tabLayout.addTab(tabLayout.newTab().setText(Fragments.INTERNATIONAL.toString()));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         TabsAdapter tabsAdapter = new TabsAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
@@ -85,7 +87,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void callSearchNewsActivity(String searchedKeyword){
         Intent intent = new Intent(HomeActivity.this, SearchNewsNewsActivity.class);
-        intent.putExtra("SEARCHED_KEYWORD",searchedKeyword);
+        intent.putExtra(GenericStrings.SEARCHED_KEYWORD.toString(),searchedKeyword);
         startActivity(intent);
     }
 

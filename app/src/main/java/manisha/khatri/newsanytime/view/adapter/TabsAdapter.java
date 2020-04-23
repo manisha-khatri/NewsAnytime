@@ -1,25 +1,46 @@
 package manisha.khatri.newsanytime.view.adapter;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import manisha.khatri.newsanytime.view.fragment.InternationalFragment;
-import manisha.khatri.newsanytime.view.fragment.NationalNewsFragment;
-import manisha.khatri.newsanytime.view.fragment.TopStoriesFragment;
+
+import manisha.khatri.newsanytime.util._enum.GenericStrings;
+import manisha.khatri.newsanytime.util._enum.NewsType;
+import manisha.khatri.newsanytime.view.fragment.NewsFragment;
+import manisha.khatri.newsanytime.view.fragment.TopStoriesNewsFragment;
+
 
 public class TabsAdapter extends FragmentStatePagerAdapter {
-
     int tabCount;
-    NationalNewsFragment nationalNewsFragment;
-    TopStoriesFragment topStoriesFragment;
-    InternationalFragment internationalFragment;
+    NewsFragment nationalNewsFragment;
+    TopStoriesNewsFragment topStoriesNewsFragment;
+    NewsFragment internationalNewsFragment;
 
     public TabsAdapter(FragmentManager fragmentManager, int tabCount){
         super(fragmentManager);
         this.tabCount = tabCount;
-        nationalNewsFragment = new NationalNewsFragment();
-        topStoriesFragment = new TopStoriesFragment();
-        internationalFragment = new InternationalFragment();
+        setNationalNewsFragment();
+        setInternationalNewsFragment();
+        setTopStoriesNewsFragment();
+    }
+
+    void setNationalNewsFragment(){
+        nationalNewsFragment = new NewsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(GenericStrings.NEWS_TYPE.toString(), NewsType.NATIONAL.toString());
+        nationalNewsFragment.setArguments(bundle);
+    }
+
+    void setInternationalNewsFragment(){
+        internationalNewsFragment = new NewsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(GenericStrings.NEWS_TYPE.toString(), NewsType.INTERNATIONAL.toString());
+        internationalNewsFragment.setArguments(bundle);
+    }
+
+    void setTopStoriesNewsFragment(){
+        topStoriesNewsFragment = new TopStoriesNewsFragment();
     }
 
     @Override
@@ -33,9 +54,9 @@ public class TabsAdapter extends FragmentStatePagerAdapter {
         switch (position){
             case 0:  return nationalNewsFragment;
 
-            case 1: return topStoriesFragment;
+            case 1: return topStoriesNewsFragment;
 
-            case 2: return internationalFragment;
+            case 2: return internationalNewsFragment;
 
             default: return null;
         }

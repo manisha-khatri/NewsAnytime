@@ -11,6 +11,8 @@ import manisha.khatri.newsanytime.contract.NewsDetailContract;
 import manisha.khatri.newsanytime.database.BookmarkedNews;
 import manisha.khatri.newsanytime.presenter.NewsDetailPresenter;
 import manisha.khatri.newsanytime.util.DateCalculator;
+import manisha.khatri.newsanytime.util._enum.NewsIntent;
+
 import com.squareup.picasso.Picasso;
 
 public class NewsDetailActivity extends AppCompatActivity implements NewsDetailContract {
@@ -50,11 +52,11 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
 
     void getNewsDetailsFromIntent() {
         bookmarkedNews = new BookmarkedNews();
-        bookmarkedNews.setHeadline(getValueFromIntent("HEADLINE"));
-        bookmarkedNews.setImageUrl(getValueFromIntent("IMAGE"));
-        bookmarkedNews.setContent(getValueFromIntent("CONTENT"));
-        bookmarkedNews.setDescription(getValueFromIntent("DESCRIPTION"));
-        bookmarkedNews.setPublishedDate(getValueFromIntent("PUBLISHEDDATE"));
+        bookmarkedNews.setHeadline(getValueFromIntent(NewsIntent.HEADLINE.toString()));
+        bookmarkedNews.setImageUrl(getValueFromIntent(NewsIntent.IMAGE.toString()));
+        bookmarkedNews.setContent(getValueFromIntent(NewsIntent.CONTENT.toString()));
+        bookmarkedNews.setDescription(getValueFromIntent(NewsIntent.DESCRIPTION.toString()));
+        bookmarkedNews.setPublishedDate(getValueFromIntent(NewsIntent.PUBLISHEDDATE.toString()));
         setActivityViews();
     }
 
@@ -63,7 +65,7 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
         descriptionTV.setText(bookmarkedNews.getDescription());
 
         String content = bookmarkedNews.getContent();
-        String newsContent = removeInvalidCharFromLast(content);
+        String newsContent = (content!=null)?removeInvalidCharFromLast(content):null;
         contentTV.setText(newsContent);
 
         setImage(bookmarkedNews.getImageUrl());

@@ -12,6 +12,8 @@ import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.model.Article;
 import manisha.khatri.newsanytime.model.News;
 import manisha.khatri.newsanytime.util.DateCalculator;
+import manisha.khatri.newsanytime.util.HelperFunctions;
+
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStori
 
     public TopStoriesRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
         this.context = context;
-        this.articles = news.getArticles();
+        this.articles = HelperFunctions.convertArrayToList(news.getArticles());
         this.recyclerViewItemListener = recyclerViewItemListener;
     }
 

@@ -1,50 +1,39 @@
 package manisha.khatri.newsanytime.presenter;
 
 import android.app.Application;
-import java.util.List;
 import manisha.khatri.newsanytime.contract.NewsDetailContract;
 import manisha.khatri.newsanytime.database.BookmarkedNews;
-import manisha.khatri.newsanytime.service.DatabaseServiceRequest;
-import manisha.khatri.newsanytime.service.DatabaseServiceCallBack;
-import manisha.khatri.newsanytime.service.DBRemoteDataSource;
-import manisha.khatri.newsanytime.util.NewsDetailCallBackEnum;
+import manisha.khatri.newsanytime.database.DBNewsRepository;
+import manisha.khatri.newsanytime.database.DBRepositorySearchNewsCallBck;
 
-public class NewsDetailPresenter implements DatabaseServiceCallBack {
+public class NewsDetailPresenter {
     private NewsDetailContract newsDetailContract;
-    DBRemoteDataSource DBRemoteDataSource;
+    DBNewsRepository DBNewsRepository;
 
     public NewsDetailPresenter(NewsDetailContract newsDetailContract){
         this.newsDetailContract = newsDetailContract;
-        DBRemoteDataSource = new DatabaseServiceRequest();
     }
 
     public void searchNews(String publishDate, Application application){
-        DBRemoteDataSource.searchNewsByPublishDate( this, publishDate, application);
+        DBNewsRepository = new DBNewsRepository(application);
+        DBNewsRepository.searchNewsByPublishDate(new DBRepositorySearchNewsCallBck() {
+            @Override
+            public void isNewsFound(boolean result) {
+                if(result == true)
+                    newsDetailContract.checkBookmark();
+                else
+                    newsDetailContract.uncheckBookmark();
+            }
+        }, publishDate);
     }
 
     public void deleteNews(String publishDate, Application application){
-        DBRemoteDataSource.deleteNewsByPublishDate(this, publishDate, application);
+        DBNewsRepository = new DBNewsRepository(application);
+        DBNewsRepository.deleteNewsByPublishDate(publishDate);
     }
 
     public void saveNews(BookmarkedNews bookmarkedNews, Application application){
-        DBRemoteDataSource.saveNewsInDB(this, bookmarkedNews, application);
-    }
-
-    @Override
-    public void onSuccessfulResponse(String res) {
-        if(NewsDetailCallBackEnum.NEWS_DELETED_FROM_DB.toString() == res)
-            newsDetailContract.uncheckBookmark();
-        else if(NewsDetailCallBackEnum.NEWS_SAVED_IN_DB.toString() == res)
-                newsDetailContract.checkBookmark();
-    }
-
-    @Override
-    public void onFailureResponse() {
-
-    }
-
-    @Override
-    public void onSuccessfulResponse(List<BookmarkedNews> bookmarkedNews) {
-
+        DBNewsRepository = new DBNewsRepository(application);
+        DBNewsRepository.saveNewsInDB( bookmarkedNews);
     }
 }

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
+import manisha.khatri.newsanytime.util._enum.GenericStrings;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -44,7 +45,7 @@ public class SplashScreen extends AppCompatActivity {
                         finish();
                     } else {
                         progressBar.setVisibility(View.GONE);
-                        errorMsg.setText("Internet is not available!");
+                        errorMsg.setText(GenericStrings.Internet_is_not_available.toString());
                         errorImage.setImageResource(R.drawable.reload_icon);
                     }
                 } catch (Exception ignored) {

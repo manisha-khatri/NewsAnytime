@@ -28,16 +28,8 @@ public class BookmarkedNews {
     @ColumnInfo(name = "content")
     String content;
 
-    public BookmarkedNews(){
+    public BookmarkedNews() {
 
-    }
-
-    public BookmarkedNews(String headline, String imageUrl, String description, String content, String publishedDate){
-        this.headline = headline;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.content = content;
-        this.publishedDate = publishedDate;
     }
 
     public String getContent() {

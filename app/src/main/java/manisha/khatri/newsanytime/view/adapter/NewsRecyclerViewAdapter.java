@@ -8,21 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import manisha.khatri.newsanytime.util.DateCalculator;
 import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.model.Article;
 import manisha.khatri.newsanytime.model.News;
-import manisha.khatri.newsanytime.util.DateCalculator;
+import manisha.khatri.newsanytime.util.HelperFunctions;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
-public class InternationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<InternationalNewsRecyclerViewAdapter.ViewHolder> {
+public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder> {
+
+    News news;
     Context context;
     List<Article> articles;
     private RecyclerViewItemListener recyclerViewItemListener;
 
-    public InternationalNewsRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
+    public NewsRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
+        this.news = news;
         this.context = context;
-        this.articles = news.getArticles();
+        this.articles = HelperFunctions.convertArrayToList(news.getArticles());
         this.recyclerViewItemListener = recyclerViewItemListener;
     }
 
@@ -30,7 +34,7 @@ public class InternationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<I
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
-        View listItem = layoutInflater.inflate(R.layout.recyclerview_item_international_news, viewGroup, false);
+        View listItem = layoutInflater.inflate(R.layout.recyclerview_item_national_news, viewGroup, false);
         return new ViewHolder(listItem, recyclerViewItemListener);
     }
 
@@ -64,9 +68,9 @@ public class InternationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<I
         }
 
         private void initViews(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
-            image = itemView.findViewById(R.id.int_news_image);
-            heading = itemView.findViewById(R.id.int_news_headline);
-            publishedDateTV = itemView.findViewById(R.id.int_bookmarked_news_published_date);
+            image = itemView.findViewById(R.id.news_image);
+            heading = itemView.findViewById(R.id.news_headline);
+            publishedDateTV = itemView.findViewById(R.id.bookmarked_news_published_date);
             this.recyclerViewItemListener = recyclerViewItemListener;
         }
 
@@ -90,6 +94,7 @@ public class InternationalNewsRecyclerViewAdapter extends RecyclerView.Adapter<I
                 publishedDateTV.setText(totalTime);
             }
         }
+
 
         private void onHeadingClickListener() {
             holder.heading.setOnClickListener(new View.OnClickListener() {

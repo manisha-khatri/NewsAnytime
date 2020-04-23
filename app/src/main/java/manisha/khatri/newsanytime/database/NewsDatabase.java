@@ -5,7 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {BookmarkedNews.class}, version = 7,exportSchema = false)
+@Database(entities = {BookmarkedNews.class}, version = 8,exportSchema = false)
 public abstract class NewsDatabase extends RoomDatabase {
 
     public static NewsDatabase dbInstance;
@@ -17,7 +17,7 @@ public abstract class NewsDatabase extends RoomDatabase {
         {
                 synchronized(NewsDatabase.class) {
                     dbInstance = Room.databaseBuilder(context.getApplicationContext(), NewsDatabase.class, "news_database")
-                                .fallbackToDestructiveMigration()
+                                //.fallbackToDestructiveMigration()
                                 //.addMigrations(MIGRATION_5_6)
                                 .build();
             }

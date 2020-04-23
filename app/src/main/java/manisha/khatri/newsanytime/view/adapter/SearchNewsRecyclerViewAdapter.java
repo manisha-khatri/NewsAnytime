@@ -13,6 +13,8 @@ import manisha.khatri.newsanytime.util.DateCalculator;
 import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.model.Article;
 import manisha.khatri.newsanytime.model.News;
+import manisha.khatri.newsanytime.util.HelperFunctions;
+
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class SearchNewsRecyclerViewAdapter extends RecyclerView.Adapter<SearchNe
     public SearchNewsRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
         this.news = news;
         this.context = context;
-        this.articles = news.getArticles();
+        this.articles = HelperFunctions.convertArrayToList(news.getArticles());
         this.recyclerViewItemListener = recyclerViewItemListener;
     }
 

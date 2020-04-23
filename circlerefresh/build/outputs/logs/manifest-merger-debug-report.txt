@@ -1,41 +1,41 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
-INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
-INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
-INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
-INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
-INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
-INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
+ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
+INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
+INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
+INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
+INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
+INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
+INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
 	package
-		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:3:5-46
-		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
-		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
+		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:3:5-46
+		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
+		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
 	android:versionName
-		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
-		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
-		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
+		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
+		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
+		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
 	android:versionCode
-		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
-		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
-		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
+		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
+		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:2:1-10:12
+		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
 	xmlns:android
-		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:2:11-69
+		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:2:11-69
 application
-ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:5:5-8:19
+ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:5:5-8:19
 	android:allowBackup
-		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml:6:9-35
+		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml:6:9-35
 uses-sdk
-INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
-INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
-INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
-INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
+INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
+INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
+INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
+INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
-		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
-		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
+		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
+		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
+		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
-		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
-		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/NewsAnytime/circlerefresh/src/main/AndroidManifest.xml
+		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
+		ADDED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml
+		INJECTED from /Users/manishakhatri/Desktop/Manisha/NEWS_ANYTIME_2020/vijay's review changes/NewsAnytime - fix code duplication/circlerefresh/src/main/AndroidManifest.xml

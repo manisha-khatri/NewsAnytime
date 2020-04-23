@@ -1,73 +1,28 @@
 package manisha.khatri.newsanytime.model;
 
-import android.support.annotation.Nullable;
-import java.io.Serializable;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class Article implements Serializable
-{
-
-    @SerializedName("source")
-    @Expose
-    @Nullable
-    private Source source = null;
-
-    @SerializedName("author")
-    @Expose
-    @Nullable
-    private String author;
-
-    @SerializedName("title")
-    @Expose
-    @Nullable
-    private String title;
-
-    @SerializedName("description")
-    @Expose
-    @Nullable
-    private String description;
-
-    @SerializedName("url")
-    @Expose
-    @Nullable
-    private String url;
-
-    @SerializedName("urlToImage")
-    @Expose
-    @Nullable
-    private String urlToImage;
-
-    @SerializedName("publishedAt")
-    @Expose
-    @Nullable
+public class Article {
     private String publishedAt;
 
-    @SerializedName("content")
-    @Expose
-    @Nullable
+    private String author;
+
+    private String urlToImage;
+
+    private String description;
+
+    private Source source;
+
+    private String title;
+
+    private String url;
+
     private String content;
 
-    private final static long serialVersionUID = 8912954806878633795L;
+    public String getPublishedAt() {
+        return publishedAt;
+    }
 
-    public Article(Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
-        super();
-        this.source = source;
-        this.author = author;
-        this.title = title;
-        this.description = description;
-        this.url = url;
-        this.urlToImage = urlToImage;
+    public void setPublishedAt(String publishedAt) {
         this.publishedAt = publishedAt;
-        this.content = content;
-    }
-
-    public Source getSource() {
-        return source;
-    }
-
-    public void setSource(Source source) {
-        this.source = source;
     }
 
     public String getAuthor() {
@@ -78,12 +33,12 @@ public class Article implements Serializable
         this.author = author;
     }
 
-    public String getTitle() {
-        return title;
+    public String getUrlToImage() {
+        return urlToImage;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setUrlToImage(String urlToImage) {
+        this.urlToImage = urlToImage;
     }
 
     public String getDescription() {
@@ -94,28 +49,28 @@ public class Article implements Serializable
         this.description = description;
     }
 
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getUrlToImage() {
-        return urlToImage;
-    }
-
-    public void setUrlToImage(String urlToImage) {
-        this.urlToImage = urlToImage;
-    }
-
-    public String getPublishedAt() {
-        return publishedAt;
-    }
-
-    public void setPublishedAt(String publishedAt) {
-        this.publishedAt = publishedAt;
     }
 
     public String getContent() {
@@ -126,4 +81,8 @@ public class Article implements Serializable
         this.content = content;
     }
 
+    @Override
+    public String toString() {
+        return "ClassPojo [publishedAt = " + publishedAt + ", author = " + author + ", urlToImage = " + urlToImage + ", description = " + description + ", source = " + source + ", title = " + title + ", url = " + url + ", content = " + content + "]";
+    }
 }

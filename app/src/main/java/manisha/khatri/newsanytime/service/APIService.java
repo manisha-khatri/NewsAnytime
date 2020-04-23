@@ -1,13 +1,16 @@
 package manisha.khatri.newsanytime.service;
 
 import manisha.khatri.newsanytime.model.News;
+import manisha.khatri.newsanytime.util._enum.APIServiceConst;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface ApiService {
+public interface APIService {
 
-    String BASE_URL = "https://newsapi.org/v2/";
+    //https://newsapi.org/v2/top-headlines?country=in&apiKey=53ad2000d9d243f9b1a7e270275fe3a7
+    //https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=53ad2000d9d243f9b1a7e270275fe3a7
+    //https://newsapi.org/v2/top-headlines?q=trump&apiKey=53ad2000d9d243f9b1a7e270275fe3a7
 
     @GET("top-headlines")
     Call<News> getTopHeadlinesBasedOnCountryAndLanguage(

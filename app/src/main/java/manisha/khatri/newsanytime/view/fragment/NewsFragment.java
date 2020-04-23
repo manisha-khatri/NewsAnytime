@@ -13,19 +13,18 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
-import manisha.khatri.newsanytime.util.NewsCategory;
-import manisha.khatri.newsanytime.view.adapter.NationalNewsRecyclerViewAdapter;
-import manisha.khatri.newsanytime.contract.NationalNewsContract;
+import manisha.khatri.newsanytime.contract.NewsContract;
+import manisha.khatri.newsanytime.util._enum.NewsIntent;
+import manisha.khatri.newsanytime.util._enum.NewsType;
+import manisha.khatri.newsanytime.view.adapter.NewsRecyclerViewAdapter;
 import manisha.khatri.newsanytime.model.Article;
 import manisha.khatri.newsanytime.model.News;
-import manisha.khatri.newsanytime.presenter.NationalNewsPresenter;
+import manisha.khatri.newsanytime.presenter.NewsPresenter;
 import manisha.khatri.newsanytime.view.activity.NewsDetailActivity;
 import manisha.tuesda.walker.circlerefresh.CircleRefreshLayout;
-import java.util.List;
 
-public class NationalNewsFragment extends Fragment implements NationalNewsContract, NationalNewsRecyclerViewAdapter.RecyclerViewItemListener {
-    NationalNewsPresenter nationalNewsPresenter;
-    List<Article> articles;
+public class NewsFragment extends Fragment implements NewsContract, NewsRecyclerViewAdapter.RecyclerViewItemListener {
+    NewsPresenter newsPresenter;
     ProgressBar prgssBar1, prgssBar2,prgssBar3, prgssBar4;
     TextView callbackRespMsg1, callbackRespMsg2, callbackRespMsg3, callbackRespMsg4;
     LinearLayout callbackRespMsgHolder1, callbackRespMsgHolder2, callbackRespMsgHolder3, callbackRespMsgHolder4;
@@ -33,39 +32,49 @@ public class NationalNewsFragment extends Fragment implements NationalNewsContra
     View rootView;
     CircleRefreshLayout mRefreshLayout2;
     private Handler mWaitHandler = new Handler();
+    NewsType newsType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState){
+        setNewsType(this.getArguments());
         rootView = inflater.inflate(R.layout.fragment_national_news, viewGroup, false);
         return rootView;
+    }
+
+    private void setNewsType(Bundle bundle) {
+        if (bundle != null) {
+             newsType = NewsType.valueOf(bundle.getString("NEWS_TYPE"));
+        }
+        else newsType = NewsType.NATIONAL;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initViews();
-        pullToRefreshAnimistener();
-        nationalNewsPresenter.fetchNews();  //fetch news by retrofit cal
+        pullToRefreshAnim();
+        newsPresenter.fetchNews();  //fetch news by retrofit cal
     }
 
     public void onStart(){
         super.onStart();
     }
 
-    private void pullToRefreshAnimistener() {
+    private void pullToRefreshAnim() {
         mRefreshLayout2.setOnRefreshListener(
                 new CircleRefreshLayout.OnCircleRefreshListener() {
                     @Override
                     public void refreshing() {
-                        nationalNewsPresenter.fetchNews();  //fetch news by retrofit call
+                        newsPresenter.fetchNews();  //fetch news by retrofit call
                     }
                     @Override
                     public void completeRefresh() {
                     }
                 });
     }
+
     private void initViews() {
         mRefreshLayout2 = getView().findViewById(R.id.refresh_layout2);
-        nationalNewsPresenter = new NationalNewsPresenter(this);
+        newsPresenter = new NewsPresenter(this, newsType);
         prgssBar1 = rootView.findViewById(R.id.callback_1_prgss_bar);
         prgssBar2 = rootView.findViewById(R.id.callback_2_prgss_bar);
         prgssBar3 = rootView.findViewById(R.id.callback_3_prgss_bar);
@@ -87,35 +96,36 @@ public class NationalNewsFragment extends Fragment implements NationalNewsContra
         recyclerView4 = rootView.findViewById(R.id.recycler_view4);
     }
 
-    public void onSuccessfulResponse(News news, NewsCategory newsCategory) {
-        switch(newsCategory){
-            case NATIONAL:
-                stopLoader(prgssBar1, callbackRespMsgHolder1);
-                displayNationalNews(news);
-                break;
-            case NATIONAL_SPORTS:
-                stopLoader(prgssBar2, callbackRespMsgHolder2);
-                displaySportsNews(news);
-                break;
-            case NATIONAL_BUSINESS:
-                stopLoader(prgssBar3, callbackRespMsgHolder3);
-                displayBusinessNews(news);
-                break;
-            case NATIONAL_ENTERTAINMENT:
-                stopLoader(prgssBar4, callbackRespMsgHolder4);
-                displayEntertainmentNews(news);
-                break;
-        }
+    public void displayInternationalNews(News news) {
+        stopLoader(prgssBar1, callbackRespMsgHolder1);
+        stopPullToRefreshAnim();
+        setNewsInRecyclerViewAdapter(news, recyclerView1);
+    }
+
+    public void displayNationalNews(News news) {
+        stopLoader(prgssBar1, callbackRespMsgHolder1);
+        stopPullToRefreshAnim();
+        setNewsInRecyclerViewAdapter(news, recyclerView1);
+    }
+
+    public void displaySportsNews(News news) {
+        stopLoader(prgssBar2, callbackRespMsgHolder2);
+        setNewsInRecyclerViewAdapter(news, recyclerView2);
+    }
+
+    public void displayBusinessNews(News news) {
+        stopLoader(prgssBar3, callbackRespMsgHolder3);
+        setNewsInRecyclerViewAdapter(news, recyclerView3);
+    }
+
+    public void displayEntertainmentNews(News news) {
+        stopLoader(prgssBar4, callbackRespMsgHolder4);
+        setNewsInRecyclerViewAdapter(news, recyclerView4);
     }
 
     private void stopLoader(ProgressBar progressBar, LinearLayout layout) {
         progressBar.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
-    }
-
-    public void displayNationalNews(News news) {
-        stopPullToRefreshAnim();
-        setNewsInRecyclerViewAdapter(news, recyclerView1);
     }
 
     public void stopPullToRefreshAnim(){
@@ -128,42 +138,29 @@ public class NationalNewsFragment extends Fragment implements NationalNewsContra
         }, 2000);
     }
 
-    public void displaySportsNews(News news) {
-        setNewsInRecyclerViewAdapter(news, recyclerView2);
-    }
-
-    public void displayBusinessNews(News news) {
-        setNewsInRecyclerViewAdapter(news, recyclerView3);
-    }
-
-    public void displayEntertainmentNews(News news) {
-        setNewsInRecyclerViewAdapter(news, recyclerView4);
-    }
-
     public void setNewsInRecyclerViewAdapter(News news, RecyclerView recyclerView) {
-        NationalNewsRecyclerViewAdapter adapter = new NationalNewsRecyclerViewAdapter(news, getActivity(),this);     //class object, which calls default constructor
+        NewsRecyclerViewAdapter adapter = new NewsRecyclerViewAdapter(news, getActivity(),this);     //class object, which calls default constructor
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
-    public void onFailureResponse(String errorMsg, NewsCategory newsCategory) {
+    public void onNatInternatNewsFailureResponse(String errorMsg) {
         stopPullToRefreshAnim();
-        switch(newsCategory){
-            case NATIONAL:
-                showErrorOnFailure(prgssBar1, callbackRespMsg1, errorMsg);
-                break;
-            case NATIONAL_SPORTS:
-                showErrorOnFailure(prgssBar2, callbackRespMsg2, errorMsg);
-                break;
-            case NATIONAL_BUSINESS:
-                showErrorOnFailure(prgssBar3, callbackRespMsg3, errorMsg);
-                break;
-            case NATIONAL_ENTERTAINMENT:
-                showErrorOnFailure(prgssBar4, callbackRespMsg4, errorMsg);
-                break;
-        }
+        showErrorOnFailure(prgssBar1, callbackRespMsg1, errorMsg);
+    }
+
+    public void onSportsNewsFailureResponse(String errorMsg) {
+        showErrorOnFailure(prgssBar2, callbackRespMsg2, errorMsg);
+    }
+
+    public void onBusinessNewsFailureResponse(String errorMsg) {
+        showErrorOnFailure(prgssBar3, callbackRespMsg3, errorMsg);
+    }
+
+    public void onEntertainmentNewsFailureResponse(String errorMsg) {
+        showErrorOnFailure(prgssBar4, callbackRespMsg4, errorMsg);
     }
 
     void showErrorOnFailure(ProgressBar prgssBar, TextView tv, String errorMsg){
@@ -176,11 +173,11 @@ public class NationalNewsFragment extends Fragment implements NationalNewsContra
     @Override
     public void onRecyclerViewItemClickListener(Article article){
         Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-        intent.putExtra("HEADLINE", article.getTitle());
-        intent.putExtra("IMAGE", article.getUrlToImage());
-        intent.putExtra("DESCRIPTION", article.getDescription());
-        intent.putExtra("CONTENT", article.getContent());
-        intent.putExtra("PUBLISHEDDATE", article.getPublishedAt());
+        intent.putExtra(NewsIntent.HEADLINE.toString(), article.getTitle());
+        intent.putExtra(NewsIntent.IMAGE.toString(), article.getUrlToImage());
+        intent.putExtra(NewsIntent.DESCRIPTION.toString(), article.getDescription());
+        intent.putExtra(NewsIntent.CONTENT.toString(), article.getContent());
+        intent.putExtra(NewsIntent.PUBLISHEDDATE.toString(), article.getPublishedAt());
 
         this.startActivity(intent);
     }

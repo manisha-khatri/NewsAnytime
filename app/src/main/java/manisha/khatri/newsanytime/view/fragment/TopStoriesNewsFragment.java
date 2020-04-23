@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.model.Article;
-import manisha.khatri.newsanytime.util.NewsCategory;
+import manisha.khatri.newsanytime.util._enum.NewsIntent;
 import manisha.khatri.newsanytime.view.adapter.TopStoriesRecyclerViewAdapter;
 import manisha.khatri.newsanytime.contract.TopStoriesContract;
 import manisha.khatri.newsanytime.model.News;
@@ -22,7 +22,7 @@ import manisha.khatri.newsanytime.presenter.TopStoriesPresenter;
 import manisha.khatri.newsanytime.view.activity.NewsDetailActivity;
 import manisha.tuesda.walker.circlerefresh.CircleRefreshLayout;
 
-public class TopStoriesFragment extends Fragment implements TopStoriesContract, TopStoriesRecyclerViewAdapter.RecyclerViewItemListener {
+public class TopStoriesNewsFragment extends Fragment implements TopStoriesContract, TopStoriesRecyclerViewAdapter.RecyclerViewItemListener {
     TopStoriesPresenter topStoriesPresenter;
     RecyclerView recyclerView;
     ProgressBar prgssBar;
@@ -82,7 +82,7 @@ public class TopStoriesFragment extends Fragment implements TopStoriesContract, 
     }
 
     @Override
-    public void onSuccessfulResponse(News news, NewsCategory newsCategory) {
+    public void onSuccessfulResponse(News news) {
         stopLoader(prgssBar, callbackRespMsgHolder);
         displayTopStories(news);
     }
@@ -105,7 +105,7 @@ public class TopStoriesFragment extends Fragment implements TopStoriesContract, 
     }
 
     @Override
-    public void onFailureResponse(String errorMsg, NewsCategory newsCategory) {
+    public void onFailureResponse(String errorMsg) {
         stopPullToRefreshAnim();
         showErrorOnFailure(prgssBar, callbackRespMsg, errorMsg);
     }
@@ -118,11 +118,11 @@ public class TopStoriesFragment extends Fragment implements TopStoriesContract, 
     @Override
     public void onRecyclerViewItemClickListener(Article article) {
         Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-        intent.putExtra("HEADLINE", article.getTitle());
-        intent.putExtra("IMAGE", article.getUrlToImage());
-        intent.putExtra("DESCRIPTION", article.getDescription());
-        intent.putExtra("CONTENT", article.getContent());
-        intent.putExtra("PUBLISHEDDATE", article.getPublishedAt());
+        intent.putExtra(NewsIntent.HEADLINE.toString(), article.getTitle());
+        intent.putExtra(NewsIntent.IMAGE.toString(), article.getUrlToImage());
+        intent.putExtra(NewsIntent.DESCRIPTION.toString(), article.getDescription());
+        intent.putExtra(NewsIntent.CONTENT.toString(), article.getContent());
+        intent.putExtra(NewsIntent.PUBLISHEDDATE.toString(), article.getPublishedAt());
 
         this.startActivity(intent);
     }

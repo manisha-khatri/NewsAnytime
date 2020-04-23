@@ -13,6 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.database.BookmarkedNews;
+import manisha.khatri.newsanytime.util._enum.GenericStrings;
+import manisha.khatri.newsanytime.util._enum.NewsIntent;
 import manisha.khatri.newsanytime.view.adapter.SavedNewsAdapter;
 import manisha.khatri.newsanytime.contract.SavedNewsContract;
 import manisha.khatri.newsanytime.presenter.SavedNewsPresenter;
@@ -63,17 +65,18 @@ public class SavedNewsActivity extends AppCompatActivity implements SavedNewsCon
 
     public void handleNoSavedNewsInDB(){
         prgssBar.setVisibility(View.GONE);
-        callbackRespMsg.setText("No saved news");
+        callbackRespMsg.setText(GenericStrings.No_saved_news.toString());
     }
 
     @Override
-    public void renderNewsList(List<BookmarkedNews> bookmarkedNewsList) {
-        if(bookmarkedNewsList.size()>0) {
-            hideNewsLoadingWidget();
-            setNewsInRecyclerViewAdapter(recyclerView, bookmarkedNewsList);
-        }
-        else
-            handleNoSavedNewsInDB();
+    public void onSuccessfulResponse(List<BookmarkedNews> bookmarkedNewsList) {
+        hideNewsLoadingWidget();
+        setNewsInRecyclerViewAdapter(recyclerView, bookmarkedNewsList);
+    }
+
+    @Override
+    public void onFailureResponse(String msg) {
+        handleNoSavedNewsInDB();
     }
 
     private void hideNewsLoadingWidget() {
@@ -85,11 +88,11 @@ public class SavedNewsActivity extends AppCompatActivity implements SavedNewsCon
     @Override
     public void onRecyclerViewItemClickListener(BookmarkedNews bookmarkedNews) {
         Intent intent = new Intent(this, NewsDetailActivity.class);
-        intent.putExtra("HEADLINE", bookmarkedNews.getHeadline());
-        intent.putExtra("IMAGE", bookmarkedNews.getImageUrl());
-        intent.putExtra("DESCRIPTION", bookmarkedNews.getDescription());
-        intent.putExtra("CONTENT", bookmarkedNews.getContent());
-        intent.putExtra("PUBLISHEDDATE", bookmarkedNews.getPublishedDate());
+        intent.putExtra(NewsIntent.HEADLINE.toString(), bookmarkedNews.getHeadline());
+        intent.putExtra(NewsIntent.IMAGE.toString(), bookmarkedNews.getImageUrl());
+        intent.putExtra(NewsIntent.DESCRIPTION.toString(), bookmarkedNews.getDescription());
+        intent.putExtra(NewsIntent.CONTENT.toString(), bookmarkedNews.getContent());
+        intent.putExtra(NewsIntent.PUBLISHEDDATE.toString(), bookmarkedNews.getPublishedDate());
 
         this.startActivity(intent);
     }

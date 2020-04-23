@@ -1,7 +1,5 @@
 package manisha.khatri.newsanytime.presenter;
 
-import manisha.khatri.newsanytime.contract.InternationalNewsContract;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

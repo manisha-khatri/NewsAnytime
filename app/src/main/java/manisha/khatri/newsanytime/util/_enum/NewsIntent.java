@@ -1,6 +1,6 @@
 package manisha.khatri.newsanytime.util._enum;
 
-public enum NewsIntentInfo {
+public enum NewsIntent {
     HEADLINE("HEADLINE"),
     IMAGE("IMAGE"),
     DESCRIPTION("DESCRIPTION"),
@@ -10,7 +10,7 @@ public enum NewsIntentInfo {
 
     private final String name;
 
-    private NewsIntentInfo(String str) {
+    private NewsIntent(String str) {
         name = str;
     }
 

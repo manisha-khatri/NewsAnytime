@@ -1,8 +1,8 @@
-package manisha.khatri.newsanytime.contract;
+package manisha.khatri.newsanytime.service;
 
 import manisha.khatri.newsanytime.model.News;
 
-public interface TopStoriesContract {
+public interface APIResponseCallBack {
     public void onSuccessfulResponse(News news);
     public void onFailureResponse(String errorMsg);
 }
