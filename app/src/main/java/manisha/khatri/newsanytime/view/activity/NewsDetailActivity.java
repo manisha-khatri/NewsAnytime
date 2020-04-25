@@ -64,9 +64,8 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
         headlineTV.setText(bookmarkedNews.getHeadline());
         descriptionTV.setText(bookmarkedNews.getDescription());
 
-        String content = bookmarkedNews.getContent();
-        String newsContent = (content!=null)?removeInvalidCharFromLast(content):null;
-        contentTV.setText(newsContent);
+        String content = (bookmarkedNews.getContent()!=null)?removeInvalidCharFromLast(bookmarkedNews.getContent()):null;
+        contentTV.setText(content);
 
         setImage(bookmarkedNews.getImageUrl());
         setPublishedDate(bookmarkedNews.getPublishedDate());
