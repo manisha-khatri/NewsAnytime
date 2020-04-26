@@ -2,27 +2,27 @@ package manisha.khatri.newsanytime.presenter;
 
 import manisha.khatri.newsanytime.contract.NewsContract;
 import manisha.khatri.newsanytime.model.News;
+import manisha.khatri.newsanytime.service.APINewsRepositoryImpl;
 import manisha.khatri.newsanytime.service.APIResponseCallBack;
 import manisha.khatri.newsanytime.service.APINewsRepository;
 import manisha.khatri.newsanytime.util._enum.NewsCategory;
-import manisha.khatri.newsanytime.util._enum.NewsType;
+import manisha.khatri.newsanytime.util._enum.Country;
 
 public class NewsPresenter {
     private final NewsContract newsContract;
     APINewsRepository apiNewsRepository;
-    NewsType newsType;
 
-    public NewsPresenter(NewsContract newsContract, NewsType newsType) {
+    public NewsPresenter(NewsContract newsContract) {
         this.newsContract = newsContract;
-        this.newsType = newsType;
     }
 
-    public void fetchNews() {
-        apiNewsRepository = new APINewsRepository();
-        if(newsType == NewsType.NATIONAL){
-            String language = "en";
-            String country = "in";
-            apiNewsRepository.fetchNewsByCountryAndLanguage(new APIResponseCallBack() {
+    public void fetchNews(String country) {
+        String language = "en";
+        apiNewsRepository = new APINewsRepositoryImpl();
+
+        if(country != Country.ALL.toString()){
+
+            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
                 @Override
                 public void onSuccessfulResponse(News news) {
                     newsContract.displayNationalNews(news);
@@ -31,8 +31,8 @@ public class NewsPresenter {
                 public void onFailureResponse(String errorMsg) {
                     newsContract.onNatInternatNewsFailureResponse(errorMsg);
                 }
-            }, country, language);
-            apiNewsRepository.fetchNewsByLanguageCategoryAndCountry(new APIResponseCallBack() {
+            }, country, language,"");
+            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
                 @Override
                 public void onSuccessfulResponse(News news) {
                     newsContract.displaySportsNews(news);
@@ -41,8 +41,8 @@ public class NewsPresenter {
                 public void onFailureResponse(String errorMsg) {
                     newsContract.onSportsNewsFailureResponse(errorMsg);
                 }
-            }, NewsCategory.SPORTS.toString(), language, country);
-            apiNewsRepository.fetchNewsByLanguageCategoryAndCountry(new APIResponseCallBack() {
+            }, country, language, NewsCategory.SPORTS.toString());
+            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
                 @Override
                 public void onSuccessfulResponse(News news) {
                     newsContract.displayBusinessNews(news);
@@ -51,8 +51,8 @@ public class NewsPresenter {
                 public void onFailureResponse(String errorMsg) {
                     newsContract.onBusinessNewsFailureResponse(errorMsg);
                 }
-            }, NewsCategory.BUSINESS.toString(), language, country);
-            apiNewsRepository.fetchNewsByLanguageCategoryAndCountry(new APIResponseCallBack() {
+            }, country, language, NewsCategory.BUSINESS.toString());
+            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
                 @Override
                 public void onSuccessfulResponse(News news) {
                     newsContract.displayEntertainmentNews(news);
@@ -61,12 +61,10 @@ public class NewsPresenter {
                 public void onFailureResponse(String errorMsg) {
                     newsContract.onEntertainmentNewsFailureResponse(errorMsg);
                 }
-            }, NewsCategory.ENTERTAINMENT.toString(), language, country);
+            }, country, language, NewsCategory.ENTERTAINMENT.toString());
         }
-        else if(newsType == NewsType.INTERNATIONAL){
-            String category = "general";
-            String language = "en";
-            apiNewsRepository.fetchNewsByLanguageAndCategory(new APIResponseCallBack() {
+        else {
+            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
                 @Override
                 public void onSuccessfulResponse(News news) {
                     newsContract.displayInternationalNews(news);
@@ -75,8 +73,8 @@ public class NewsPresenter {
                 public void onFailureResponse(String errorMsg) {
                     newsContract.onNatInternatNewsFailureResponse(errorMsg);
                 }
-            }, category, language);
-            apiNewsRepository.fetchNewsByLanguageAndCategory(new APIResponseCallBack() {
+            }, "", language, NewsCategory.GENERAL.toString());
+            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
                 @Override
                 public void onSuccessfulResponse(News news) {
                     newsContract.displaySportsNews(news);
@@ -85,8 +83,8 @@ public class NewsPresenter {
                 public void onFailureResponse(String errorMsg) {
                     newsContract.onSportsNewsFailureResponse(errorMsg);
                 }
-            }, NewsCategory.SPORTS.toString(), language);
-            apiNewsRepository.fetchNewsByLanguageAndCategory(new APIResponseCallBack() {
+            }, "", language, NewsCategory.SPORTS.toString());
+            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
                 @Override
                 public void onSuccessfulResponse(News news) {
                     newsContract.displayBusinessNews(news);
@@ -95,8 +93,8 @@ public class NewsPresenter {
                 public void onFailureResponse(String errorMsg) {
                     newsContract.onBusinessNewsFailureResponse(errorMsg);
                 }
-            }, NewsCategory.BUSINESS.toString(), language);
-            apiNewsRepository.fetchNewsByLanguageAndCategory(new APIResponseCallBack() {
+            }, "", language, NewsCategory.BUSINESS.toString());
+            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
                 @Override
                 public void onSuccessfulResponse(News news) {
                     newsContract.displayEntertainmentNews(news);
@@ -105,7 +103,7 @@ public class NewsPresenter {
                 public void onFailureResponse(String errorMsg) {
                     newsContract.onEntertainmentNewsFailureResponse(errorMsg);
                 }
-            }, NewsCategory.ENTERTAINMENT.toString(), language);
+            }, "", language, NewsCategory.ENTERTAINMENT.toString());
         }
     }
 

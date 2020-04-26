@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.model.Article;
@@ -24,13 +22,7 @@ import manisha.tuesda.walker.circlerefresh.CircleRefreshLayout;
 
 public class TopStoriesNewsFragment extends Fragment implements TopStoriesContract, TopStoriesRecyclerViewAdapter.RecyclerViewItemListener {
     TopStoriesPresenter topStoriesPresenter;
-    RecyclerView recyclerView;
-    ProgressBar prgssBar;
-    LinearLayout callbackRespMsgHolder;
-    TextView callbackRespMsg;
     View rootView;
-    CircleRefreshLayout mRefreshLayout3;
-    private Handler mWaitHandler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
@@ -50,7 +42,7 @@ public class TopStoriesNewsFragment extends Fragment implements TopStoriesContra
     }
 
     private void pullToRefreshAnimListener() {
-        mRefreshLayout3.setOnRefreshListener(
+        ((CircleRefreshLayout)getView().findViewById(R.id.refresh_layout3)).setOnRefreshListener(
                 new CircleRefreshLayout.OnCircleRefreshListener() {
                     @Override
                     public void refreshing() {
@@ -63,19 +55,14 @@ public class TopStoriesNewsFragment extends Fragment implements TopStoriesContra
     }
 
     private void initViews() {
-        mRefreshLayout3 = getView().findViewById(R.id.refresh_layout3);
         topStoriesPresenter = new TopStoriesPresenter(this);
-        recyclerView = rootView.findViewById(R.id.recycler_view_top_stories);
-        prgssBar = rootView.findViewById(R.id.top_stories_callback_prgss_bar2);
-        callbackRespMsgHolder = rootView.findViewById(R.id.top_stories_callback_Resp_Msg_holder2);
-        callbackRespMsg = rootView.findViewById(R.id.top_stories_callback_resp_msg2);
     }
 
     void stopPullToRefreshAnim(){
-        mWaitHandler.postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mRefreshLayout3.finishRefreshing();
+                ((CircleRefreshLayout)getView().findViewById(R.id.refresh_layout3)).finishRefreshing();
                 //stopRefreshBtn.callOnClick();
             }
         }, 2000);
@@ -83,36 +70,36 @@ public class TopStoriesNewsFragment extends Fragment implements TopStoriesContra
 
     @Override
     public void onSuccessfulResponse(News news) {
-        stopLoader(prgssBar, callbackRespMsgHolder);
+        stopLoader();
         displayTopStories(news);
     }
 
-    private void stopLoader(ProgressBar progressBar, LinearLayout layout) {
-        progressBar.setVisibility(View.GONE);
-        layout.setVisibility(View.GONE);
+    private void stopLoader() {
+        rootView.findViewById(R.id.top_stories_progress_bar).setVisibility(View.GONE);
+        rootView.findViewById(R.id.top_stories_msg_holder).setVisibility(View.GONE);
     }
 
     public void displayTopStories(News news) {
         stopPullToRefreshAnim();
-        setNewsInRecyclerViewAdapter(news, recyclerView);
+        setNewsInRecyclerViewAdapter(news);
     }
 
-    public void setNewsInRecyclerViewAdapter(News news, RecyclerView recyclerView) {
+    public void setNewsInRecyclerViewAdapter(News news) {
         TopStoriesRecyclerViewAdapter adapter = new TopStoriesRecyclerViewAdapter(news, getActivity(), this);     //class object, which calls default constructor
-        recyclerView.setAdapter(adapter);
+        ((RecyclerView)rootView.findViewById(R.id.recycler_view_top_stories)).setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(linearLayoutManager);
+        ((RecyclerView)rootView.findViewById(R.id.recycler_view_top_stories)).setLayoutManager(linearLayoutManager);
     }
 
     @Override
     public void onFailureResponse(String errorMsg) {
         stopPullToRefreshAnim();
-        showErrorOnFailure(prgssBar, callbackRespMsg, errorMsg);
+        showErrorOnFailure(errorMsg);
     }
 
-    void showErrorOnFailure(ProgressBar prgssBar, TextView tv, String errorMsg){
-        prgssBar.setVisibility(View.GONE);
-        tv.setText(errorMsg);
+    void showErrorOnFailure( String errorMsg){
+        rootView.findViewById(R.id.top_stories_progress_bar).setVisibility(View.GONE);
+        ((TextView)rootView.findViewById(R.id.top_stories_err_msg)).setText(errorMsg);
     }
 
     @Override

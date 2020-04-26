@@ -7,9 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.database.BookmarkedNews;
@@ -21,14 +18,9 @@ import manisha.khatri.newsanytime.presenter.SavedNewsPresenter;
 import java.util.List;
 
 public class SavedNewsActivity extends AppCompatActivity implements SavedNewsContract, SavedNewsAdapter.RecyclerViewItemListener {
-
     SavedNewsPresenter savedNewsPresenter;
-    ProgressBar prgssBar;
-    TextView callbackRespMsg;
-    RecyclerView recyclerView;
-    LinearLayout callbackRespMsgHolder;
-    ImageView backBtn;
-    Toolbar toolbar;
+    TextView erorMsgTV;
+    RecyclerView savedNewsRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,18 +32,14 @@ public class SavedNewsActivity extends AppCompatActivity implements SavedNewsCon
     }
 
     private void initViews() {
-        toolbar = findViewById(R.id.saved_news_toolbar);
         savedNewsPresenter = new SavedNewsPresenter(this);
-        prgssBar = findViewById(R.id.saved_news_callback_prgss_bar);
-        callbackRespMsg = findViewById(R.id.saved_news_callback_resp_msg);
-        recyclerView = findViewById(R.id.recycler_view_saved_news);
-        callbackRespMsgHolder = findViewById(R.id.saved_news_callback_Resp_Msg_holder);
-        backBtn = findViewById(R.id.saved_news_back_btn);
+        erorMsgTV = findViewById(R.id.sn_error_msg);
+        savedNewsRecyclerView = findViewById(R.id.sn_recycler_view);
         setToolbar();
     }
 
     private void setToolbar() {
-        setSupportActionBar(toolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.sn_toolbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
@@ -64,14 +52,14 @@ public class SavedNewsActivity extends AppCompatActivity implements SavedNewsCon
     }
 
     public void handleNoSavedNewsInDB(){
-        prgssBar.setVisibility(View.GONE);
-        callbackRespMsg.setText(GenericStrings.No_saved_news.toString());
+        findViewById(R.id.sn_prgss_bar).setVisibility(View.GONE);
+        erorMsgTV.setText(GenericStrings.No_saved_news.toString());
     }
 
     @Override
     public void onSuccessfulResponse(List<BookmarkedNews> bookmarkedNewsList) {
         hideNewsLoadingWidget();
-        setNewsInRecyclerViewAdapter(recyclerView, bookmarkedNewsList);
+        setNewsInRecyclerViewAdapter(savedNewsRecyclerView, bookmarkedNewsList);
     }
 
     @Override
@@ -80,9 +68,9 @@ public class SavedNewsActivity extends AppCompatActivity implements SavedNewsCon
     }
 
     private void hideNewsLoadingWidget() {
-        prgssBar.setVisibility(View.GONE);
-        callbackRespMsg.setVisibility(View.GONE);
-        callbackRespMsgHolder.setVisibility(View.GONE);
+        findViewById(R.id.sn_prgss_bar).setVisibility(View.GONE);
+        erorMsgTV.setVisibility(View.GONE);
+        findViewById(R.id.sn_msg_holder).setVisibility(View.GONE);
     }
 
     @Override
@@ -98,7 +86,7 @@ public class SavedNewsActivity extends AppCompatActivity implements SavedNewsCon
     }
 
     void onBackBtnClickListener(){
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.sn_back_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();
             }

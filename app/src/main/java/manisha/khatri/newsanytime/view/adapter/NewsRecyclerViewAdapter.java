@@ -18,13 +18,11 @@ import java.util.List;
 
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder> {
 
-    News news;
     Context context;
     List<Article> articles;
     private RecyclerViewItemListener recyclerViewItemListener;
 
     public NewsRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
-        this.news = news;
         this.context = context;
         this.articles = HelperFunctions.convertArrayToList(news.getArticles());
         this.recyclerViewItemListener = recyclerViewItemListener;
@@ -70,7 +68,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         private void initViews(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
             image = itemView.findViewById(R.id.news_image);
             heading = itemView.findViewById(R.id.news_headline);
-            publishedDateTV = itemView.findViewById(R.id.bookmarked_news_published_date);
+            publishedDateTV = itemView.findViewById(R.id.news_published_date);
             this.recyclerViewItemListener = recyclerViewItemListener;
         }
 

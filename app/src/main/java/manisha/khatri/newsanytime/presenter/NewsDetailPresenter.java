@@ -4,6 +4,7 @@ import android.app.Application;
 import manisha.khatri.newsanytime.contract.NewsDetailContract;
 import manisha.khatri.newsanytime.database.BookmarkedNews;
 import manisha.khatri.newsanytime.database.DBNewsRepository;
+import manisha.khatri.newsanytime.database.DBNewsRepositoryImpl;
 import manisha.khatri.newsanytime.database.DBRepositorySearchNewsCallBck;
 
 public class NewsDetailPresenter {
@@ -15,7 +16,7 @@ public class NewsDetailPresenter {
     }
 
     public void searchNews(String publishDate, Application application){
-        DBNewsRepository = new DBNewsRepository(application);
+        DBNewsRepository = new DBNewsRepositoryImpl(application);
         DBNewsRepository.searchNewsByPublishDate(new DBRepositorySearchNewsCallBck() {
             @Override
             public void isNewsFound(boolean result) {
@@ -28,12 +29,12 @@ public class NewsDetailPresenter {
     }
 
     public void deleteNews(String publishDate, Application application){
-        DBNewsRepository = new DBNewsRepository(application);
+        DBNewsRepository = new DBNewsRepositoryImpl(application);
         DBNewsRepository.deleteNewsByPublishDate(publishDate);
     }
 
     public void saveNews(BookmarkedNews bookmarkedNews, Application application){
-        DBNewsRepository = new DBNewsRepository(application);
+        DBNewsRepository = new DBNewsRepositoryImpl(application);
         DBNewsRepository.saveNewsInDB( bookmarkedNews);
     }
 }

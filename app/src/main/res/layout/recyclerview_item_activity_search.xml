@@ -41,7 +41,7 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/bookmarked_news_published_date"
+                android:id="@+id/news_published_date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif"

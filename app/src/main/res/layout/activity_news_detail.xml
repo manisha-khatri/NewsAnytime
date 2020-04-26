@@ -20,7 +20,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/single_news_image"
+                android:id="@+id/nd_image"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:scaleType="fitXY"
@@ -33,7 +33,7 @@
                 android:padding="20dp">
 
                 <TextView
-                    android:id="@+id/single_news_heading"
+                    android:id="@+id/nd_heading"
                     android:layout_width="match_parent"
                     android:fontFamily="Montserrat"
                     android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                     android:textColor="#211a23"/>
 
                 <TextView
-                    android:id="@+id/news_detail_published_date"
+                    android:id="@+id/nd_published_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
@@ -52,7 +52,7 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/single_news_description"
+                    android:id="@+id/nd_description"
                     android:layout_width="match_parent"
                     android:layout_marginTop="15dp"
                     android:lineSpacingExtra="5dp"
@@ -63,7 +63,7 @@
                     android:textColor="#211a23" />
 
                 <TextView
-                    android:id="@+id/single_news_content"
+                    android:id="@+id/nd_content"
                     android:layout_width="match_parent"
                     android:lineSpacingExtra="5dp"
                     android:textSize="14dp"

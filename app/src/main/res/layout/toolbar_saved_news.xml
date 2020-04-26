@@ -1,5 +1,5 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/saved_news_toolbar"
+    android:id="@+id/sn_toolbar"
     android:layout_width="match_parent"
     android:layout_height="45dp"
     android:background="#147fbb">
@@ -11,7 +11,7 @@
 
 
         <ImageView
-            android:id="@+id/saved_news_back_btn"
+            android:id="@+id/sn_back_btn"
             android:layout_width="35dp"
             android:layout_height="30dp"
             android:layout_marginTop="8dp"

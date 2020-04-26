@@ -13,36 +13,16 @@ public interface APIService {
     //https://newsapi.org/v2/top-headlines?q=trump&apiKey=53ad2000d9d243f9b1a7e270275fe3a7
 
     @GET("top-headlines")
-    Call<News> getTopHeadlinesBasedOnCountryAndLanguage(
+    Call<News> getNewsFor(
             @Query("country") String country,
             @Query("language") String language,
-            @Query("apiKey") String apiKey
-    );
-
-    @GET("top-headlines")
-    Call<News> getTopHeadlinesBasedOnCountryCategoryLang(
-            @Query("country") String country,
             @Query("category") String category,
-            @Query("language") String language,
             @Query("apiKey") String apiKey
     );
 
     @GET("top-headlines")
-    Call<News> getTopHeadlinesBasedOnSearchedKeyword(
+    Call<News> getNewsBySearchedKeyword(
             @Query("q") String q,
-            @Query("language") String language,
-            @Query("apiKey") String apiKey
-    );
-
-    @GET("top-headlines")
-    Call<News> getTopHeadlinesBasedOnLanguage(
-            @Query("language") String language,
-            @Query("apiKey") String apiKey
-    );
-
-    @GET("top-headlines")
-    Call<News> getTopHeadlinesBasedOnCategoryAndLanguage(
-            @Query("category") String category,
             @Query("language") String language,
             @Query("apiKey") String apiKey
     );

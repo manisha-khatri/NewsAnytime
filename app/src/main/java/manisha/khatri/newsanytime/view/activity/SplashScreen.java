@@ -18,13 +18,6 @@ import manisha.khatri.newsanytime.util._enum.GenericStrings;
 
 public class SplashScreen extends AppCompatActivity {
 
-    ProgressBar progressBar;
-    ImageView errorImage;
-    TextView errorMsg;
-    LinearLayout linearLayout;
-    private Handler mWaitHandler = new Handler();
-    Animation myAnim;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
@@ -34,19 +27,19 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void navigateToHomePageActivity() {
-        mWaitHandler.postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 try {
                     if (internetConnectivityTest()) {
-                        progressBar.setVisibility(View.GONE);
+                        findViewById(R.id.progressBar).setVisibility(View.GONE);
                         Intent intent = new Intent(SplashScreen.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        progressBar.setVisibility(View.GONE);
-                        errorMsg.setText(GenericStrings.Internet_is_not_available.toString());
-                        errorImage.setImageResource(R.drawable.reload_icon);
+                        findViewById(R.id.progressBar).setVisibility(View.GONE);
+                        ((TextView)findViewById(R.id.internet_connection_msg)).setText(GenericStrings.Internet_is_not_available.toString());
+                        ((ImageView)findViewById(R.id.error_icon)).setImageResource(R.drawable.reload_icon);
                     }
                 } catch (Exception ignored) {
                     ignored.printStackTrace();
@@ -56,14 +49,11 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void initViews() {
-        progressBar = findViewById(R.id.progressBar);
-        errorImage = findViewById(R.id.error_icon);
-        errorMsg = findViewById(R.id.internet_connection_msg);
-        linearLayout = findViewById(R.id.splash_linear_layout);
-        errorImage.setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.error_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
+                findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
                 navigateToHomePageActivity();
             }
         });
@@ -78,12 +68,12 @@ public class SplashScreen extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         //Remove all the callbacks otherwise navigation will execute even after activity is killed or closed.
-        mWaitHandler.removeCallbacksAndMessages(null);
+        new Handler().removeCallbacksAndMessages(null);
     }
 
     private void fadedAnimation() {
-        myAnim = AnimationUtils.loadAnimation(this, R.anim.faded_animation);
-        linearLayout.startAnimation(myAnim);
+        Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.faded_animation);
+        findViewById(R.id.splash_linear_layout).startAnimation(myAnim);
     }
 
 }

@@ -19,14 +19,11 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class SearchNewsRecyclerViewAdapter extends RecyclerView.Adapter<SearchNewsRecyclerViewAdapter.ViewHolder> {
-
-    News news;
     Context context;
     List<Article> articles;
     private RecyclerViewItemListener recyclerViewItemListener;
 
     public SearchNewsRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
-        this.news = news;
         this.context = context;
         this.articles = HelperFunctions.convertArrayToList(news.getArticles());
         this.recyclerViewItemListener = recyclerViewItemListener;
@@ -68,7 +65,7 @@ public class SearchNewsRecyclerViewAdapter extends RecyclerView.Adapter<SearchNe
             super(itemView);
             newsImageIV = itemView.findViewById(R.id.searched_news_image);
             newsHeadingTV = itemView.findViewById(R.id.searched_news_headline);
-            publishedDateTV = itemView.findViewById(R.id.bookmarked_news_published_date);
+            publishedDateTV = itemView.findViewById(R.id.news_published_date);
             this.recyclerViewItemListener = recyclerViewItemListener;
         }
 

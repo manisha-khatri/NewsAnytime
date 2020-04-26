@@ -3,7 +3,8 @@ package manisha.khatri.newsanytime.util._enum;
 public enum NewsCategory {
     SPORTS("sports"),
     BUSINESS("business"),
-    ENTERTAINMENT("entertainment");
+    ENTERTAINMENT("entertainment"),
+    GENERAL("general");
 
     private final String name;
 

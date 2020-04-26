@@ -2,6 +2,7 @@ package manisha.khatri.newsanytime.presenter;
 
 import manisha.khatri.newsanytime.contract.SearchNewsContract;
 import manisha.khatri.newsanytime.model.News;
+import manisha.khatri.newsanytime.service.APINewsRepositoryImpl;
 import manisha.khatri.newsanytime.service.APIResponseCallBack;
 import manisha.khatri.newsanytime.service.APINewsRepository;
 
@@ -11,7 +12,7 @@ public class SearchNewsPresenter {
 
     public SearchNewsPresenter(SearchNewsContract contract){
         this.contract = contract;
-        apiNewsRepository = new APINewsRepository();
+        apiNewsRepository = new APINewsRepositoryImpl();
     }
 
     public void fetchNews(String keyword){

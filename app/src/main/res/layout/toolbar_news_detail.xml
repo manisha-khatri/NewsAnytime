@@ -1,6 +1,6 @@
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/news_detail_toolbar"
+    android:id="@+id/nd_toolbar"
     android:layout_width="match_parent"
     android:layout_height="45dp"
     android:background="#147fbb">
@@ -11,7 +11,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/news_detail_back_btn"
+            android:id="@+id/nd_back_btn"
             android:layout_width="35dp"
             android:layout_height="30dp"
             android:layout_marginTop="8dp"
@@ -23,11 +23,11 @@
             android:gravity="right">
 
             <ImageView
-                android:id="@+id/bookmark_news_item"
+                android:id="@+id/nd_bookmark_btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"
-                android:background="@drawable/final_bookmark" />
+                android:background="@drawable/uncheck_bookmark_img" />
         </LinearLayout>
     </LinearLayout>
 

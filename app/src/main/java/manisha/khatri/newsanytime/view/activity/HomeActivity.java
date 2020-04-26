@@ -16,12 +16,6 @@ import manisha.khatri.newsanytime.util._enum.GenericStrings;
 import manisha.khatri.newsanytime.view.adapter.*;
 
 public class HomeActivity extends AppCompatActivity {
-    SearchView searchView;
-    TextView appTitle;
-    Button bkmrkBtn;
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,23 +27,17 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        toolbar = findViewById(R.id.toolbar_home);
-        appTitle = findViewById(R.id.app_title);
-        searchView = findViewById(R.id.search_view);
-        bkmrkBtn =  findViewById(R.id.bookmark_news_list);
-        tabLayout =  findViewById(R.id.tab_layout);
-        viewPager = findViewById(R.id.view_pager);
         setToolbar();
         setupSearchView();
     }
 
     private void setToolbar() {
-        setSupportActionBar(toolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar_home));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     private void onBookmarkNewsListBtnClick() {
-        bkmrkBtn.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.bookmark_news_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, SavedNewsActivity.class);
@@ -59,6 +47,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setTabs() {
+        TabLayout tabLayout =  findViewById(R.id.tab_layout);
+        final ViewPager viewPager = findViewById(R.id.view_pager);
+
         tabLayout.addTab(tabLayout.newTab().setText(Fragments.NATIONAL.toString()));
         tabLayout.addTab(tabLayout.newTab().setText(Fragments.TOP_STORIES.toString()));
         tabLayout.addTab(tabLayout.newTab().setText(Fragments.INTERNATIONAL.toString()));
@@ -92,17 +83,18 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupSearchView() {
+        SearchView searchView = findViewById(R.id.search_view);
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                appTitle.setVisibility(View.VISIBLE);
+                findViewById(R.id.app_title).setVisibility(View.VISIBLE);
                 return false;
             }
         });
         searchView.setOnSearchClickListener(new SearchView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                appTitle.setVisibility(View.GONE);
+                findViewById(R.id.app_title).setVisibility(View.GONE);
             }
         });
 

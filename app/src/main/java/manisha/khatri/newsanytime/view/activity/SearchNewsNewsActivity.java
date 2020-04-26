@@ -7,9 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.model.Article;
@@ -23,12 +20,7 @@ import manisha.khatri.newsanytime.presenter.SearchNewsPresenter;
 public class SearchNewsNewsActivity extends AppCompatActivity implements SearchNewsContract, SearchNewsRecyclerViewAdapter.RecyclerViewItemListener {
 
     SearchNewsPresenter searchNewsPresenter;
-    ImageView backBtn;
-    RecyclerView recyclerView;
-    ProgressBar progsBar;
-    LinearLayout callbackRespMsgHolder;
-    TextView callbackRespMsg;
-    Toolbar toolbar;
+    RecyclerView searchNewsRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +36,18 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
     }
 
     private void initViews() {
-        toolbar = findViewById(R.id.searched_news_toolbar);
         searchNewsPresenter = new SearchNewsPresenter(this);
-        backBtn = findViewById(R.id.news_searched_news_back_btn);
-        recyclerView = findViewById(R.id.recycler_view_searched_news);
-        progsBar = findViewById(R.id.srch_news_callback_prgss_bar);
-        callbackRespMsgHolder = findViewById(R.id.srch_news_callback_Resp_Msg_holder);
-        callbackRespMsg = findViewById(R.id.srch_news_callback_resp_msg);
+        searchNewsRecyclerView = findViewById(R.id.sn_recycler_view);
         setToolbar();
     }
 
     private void setToolbar() {
-        setSupportActionBar(toolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.sn_toolbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     void backBtnClickListener(){
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.sn_back_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -88,17 +75,18 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
     @Override
     public void onSuccessfulResponse(News news) {
         hideNewsLoadingWidgets();
-        setNewsInRecyclerViewAdapter(news, recyclerView);
+        setNewsInRecyclerViewAdapter(news, searchNewsRecyclerView);
     }
 
     private void hideNewsLoadingWidgets() {
-        progsBar.setVisibility(View.GONE);   // hide progress bar
-        callbackRespMsgHolder.setVisibility(View.GONE);
+        findViewById(R.id.sn_prgss_bar).setVisibility(View.GONE);   // hide progress bar
+        findViewById(R.id.sn_msg_holder).setVisibility(View.GONE);
     }
 
     public void onFailureResponse(){
-        progsBar.setVisibility(View.GONE);
-        callbackRespMsg.setText(GenericStrings.Data_is_not_available.toString());
+        findViewById(R.id.sn_prgss_bar).setVisibility(View.GONE);
+        TextView errMsg = findViewById(R.id.sn_error_msg);
+        errMsg.setText(GenericStrings.Data_is_not_available.toString());
     }
 
     @Override

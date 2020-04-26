@@ -16,12 +16,6 @@ import manisha.khatri.newsanytime.util._enum.NewsIntent;
 import com.squareup.picasso.Picasso;
 
 public class NewsDetailActivity extends AppCompatActivity implements NewsDetailContract {
-    ImageView imageIV;
-    TextView headlineTV;
-    TextView descriptionTV;
-    TextView contentTV;
-    TextView publishedDateTV;
-    ImageView backBtn;
     ImageView bookmarkBtn;
     NewsDetailPresenter newsDetailPresenter;
     Boolean newsSavedInDB = false;
@@ -41,13 +35,7 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
     private void initViews() {
         setToolbar();
         newsDetailPresenter = new NewsDetailPresenter(this);
-        headlineTV = findViewById(R.id.single_news_heading);
-        imageIV = findViewById(R.id.single_news_image);
-        descriptionTV = findViewById(R.id.single_news_description);
-        contentTV = findViewById(R.id.single_news_content);
-        bookmarkBtn = findViewById(R.id.bookmark_news_item);
-        backBtn = findViewById(R.id.news_detail_back_btn);
-        publishedDateTV = findViewById(R.id.news_detail_published_date);
+        bookmarkBtn = findViewById(R.id.nd_bookmark_btn);
     }
 
     void getNewsDetailsFromIntent() {
@@ -61,6 +49,10 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
     }
 
     private void setActivityViews() {
+        TextView headlineTV = findViewById(R.id.nd_heading);
+        TextView descriptionTV = findViewById(R.id.nd_description);
+        TextView contentTV = findViewById(R.id.nd_content);
+
         headlineTV.setText(bookmarkedNews.getHeadline());
         descriptionTV.setText(bookmarkedNews.getDescription());
 
@@ -92,12 +84,12 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
     }
 
     public void uncheckBookmark(){
-        bookmarkBtn.setImageResource(R.drawable.final_bookmark);
+        bookmarkBtn.setImageResource(R.drawable.uncheck_bookmark_img);
         newsSavedInDB = false;
     }
 
     public void checkBookmark() {
-        bookmarkBtn.setImageResource(R.drawable.final_bookmark_filled_icon);
+        bookmarkBtn.setImageResource(R.drawable.checked_bookmark_img);
         newsSavedInDB = true;
     }
 
@@ -106,7 +98,7 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
     }
 
     private void setToolbar() {
-        Toolbar toolbar = findViewById(R.id.news_detail_toolbar);
+        Toolbar toolbar = findViewById(R.id.nd_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
@@ -116,6 +108,7 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
     }
 
     private void setPublishedDate(String publishedDateStr) {
+        TextView publishedDateTV = findViewById(R.id.nd_published_date);
         DateCalculator dateCalculator = new DateCalculator();
         if(dateCalculator.validatePublishedDate(publishedDateStr)) {
             String totalTime = dateCalculator.calculateTotalTimeDifference(
@@ -128,6 +121,7 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
     }
 
     private void setImage(String imageUrl) {
+        ImageView imageIV = findViewById(R.id.nd_image);
         if (imageUrl != null && imageUrl !="" && imageUrl != " ") {
             Picasso.with(this)
                     .load(imageUrl)
@@ -149,7 +143,7 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
     }
 
     void onBackBtnClickListener(){
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.nd_back_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();
             }
