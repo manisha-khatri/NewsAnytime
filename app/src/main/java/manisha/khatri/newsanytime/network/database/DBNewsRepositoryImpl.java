@@ -1,4 +1,4 @@
-package manisha.khatri.newsanytime.database;
+package manisha.khatri.newsanytime.network.database;
 
 import android.app.Application;
 import android.os.AsyncTask;

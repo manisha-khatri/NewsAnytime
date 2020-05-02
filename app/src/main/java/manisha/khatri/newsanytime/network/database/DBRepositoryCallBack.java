@@ -1,4 +1,4 @@
-package manisha.khatri.newsanytime.database;
+package manisha.khatri.newsanytime.network.database;
 
 import java.util.List;
 

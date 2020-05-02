@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
-import manisha.khatri.newsanytime.database.BookmarkedNews;
+import manisha.khatri.newsanytime.network.database.BookmarkedNews;
 import manisha.khatri.newsanytime.util._enum.GenericStrings;
 import manisha.khatri.newsanytime.util._enum.NewsIntent;
 import manisha.khatri.newsanytime.view.adapter.SavedNewsAdapter;

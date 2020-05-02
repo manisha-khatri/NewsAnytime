@@ -1,4 +1,4 @@
-package manisha.khatri.newsanytime.network;
+package manisha.khatri.newsanytime.network.webservice;
 
 public interface APINewsRepository {
     void fetchNewsFor(APIResponseCallBack apiResponseCallBack, String country, String language, String category);

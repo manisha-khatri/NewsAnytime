@@ -1,6 +1,6 @@
-package manisha.khatri.newsanytime.network;
+package manisha.khatri.newsanytime.network.webservice;
 
-import manisha.khatri.newsanytime.model.News;
+import manisha.khatri.newsanytime.network.model.News;
 import manisha.khatri.newsanytime.util._enum.APIServiceConst;
 import retrofit2.Call;
 import retrofit2.Callback;

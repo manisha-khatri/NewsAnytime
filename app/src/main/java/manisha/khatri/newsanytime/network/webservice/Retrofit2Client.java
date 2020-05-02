@@ -1,4 +1,4 @@
-package manisha.khatri.newsanytime.network;
+package manisha.khatri.newsanytime.network.webservice;
 
 import manisha.khatri.newsanytime.util._enum.APIServiceConst;
 import retrofit2.Retrofit;

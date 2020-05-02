@@ -2,10 +2,10 @@ package manisha.khatri.newsanytime.presenter;
 
 import java.io.IOException;
 import manisha.khatri.newsanytime.contract.NewsContract;
-import manisha.khatri.newsanytime.model.News;
-import manisha.khatri.newsanytime.network.APINewsRepositoryImpl;
-import manisha.khatri.newsanytime.network.APIResponseCallBack;
-import manisha.khatri.newsanytime.network.APINewsRepository;
+import manisha.khatri.newsanytime.network.model.News;
+import manisha.khatri.newsanytime.network.webservice.APINewsRepositoryImpl;
+import manisha.khatri.newsanytime.network.webservice.APIResponseCallBack;
+import manisha.khatri.newsanytime.network.webservice.APINewsRepository;
 import manisha.khatri.newsanytime.util._enum.GenericStrings;
 import manisha.khatri.newsanytime.util._enum.NewsCategory;
 import manisha.khatri.newsanytime.util._enum.Country;

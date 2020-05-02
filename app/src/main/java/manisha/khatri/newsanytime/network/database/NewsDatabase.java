@@ -1,4 +1,4 @@
-package manisha.khatri.newsanytime.database;
+package manisha.khatri.newsanytime.network.database;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;

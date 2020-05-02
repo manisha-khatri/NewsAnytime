@@ -9,12 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
-import manisha.khatri.newsanytime.model.Article;
+import manisha.khatri.newsanytime.network.model.Article;
 import manisha.khatri.newsanytime.util._enum.GenericStrings;
 import manisha.khatri.newsanytime.util._enum.NewsIntent;
 import manisha.khatri.newsanytime.view.adapter.SearchNewsRecyclerViewAdapter;
 import manisha.khatri.newsanytime.contract.SearchNewsContract;
-import manisha.khatri.newsanytime.model.News;
+import manisha.khatri.newsanytime.network.model.News;
 import manisha.khatri.newsanytime.presenter.SearchNewsPresenter;
 
 public class SearchNewsNewsActivity extends AppCompatActivity implements SearchNewsContract, SearchNewsRecyclerViewAdapter.RecyclerViewListener {

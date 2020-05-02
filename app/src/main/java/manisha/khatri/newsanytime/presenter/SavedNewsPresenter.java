@@ -3,10 +3,10 @@ package manisha.khatri.newsanytime.presenter;
 import android.app.Application;
 import java.util.List;
 import manisha.khatri.newsanytime.contract.SavedNewsContract;
-import manisha.khatri.newsanytime.database.BookmarkedNews;
-import manisha.khatri.newsanytime.database.DBNewsRepository;
-import manisha.khatri.newsanytime.database.DBNewsRepositoryImpl;
-import manisha.khatri.newsanytime.database.DBRepositoryCallBack;
+import manisha.khatri.newsanytime.network.database.BookmarkedNews;
+import manisha.khatri.newsanytime.network.database.DBNewsRepository;
+import manisha.khatri.newsanytime.network.database.DBNewsRepositoryImpl;
+import manisha.khatri.newsanytime.network.database.DBRepositoryCallBack;
 
 public class SavedNewsPresenter {
     SavedNewsContract savedNewsContract;

@@ -1,4 +1,4 @@
-package manisha.khatri.newsanytime.model;
+package manisha.khatri.newsanytime.network.model;
 
 public class Article {
     private String publishedAt;

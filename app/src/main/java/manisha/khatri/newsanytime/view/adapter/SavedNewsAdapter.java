@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import manisha.khatri.newsanytime.database.BookmarkedNews;
+import manisha.khatri.newsanytime.network.database.BookmarkedNews;
 import manisha.khatri.newsanytime.util.DateCalculator;
 import manisha.khatri.newsanytime.R;
 

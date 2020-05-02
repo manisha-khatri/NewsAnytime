@@ -1,6 +1,6 @@
 package manisha.khatri.newsanytime.contract;
 
-import manisha.khatri.newsanytime.model.News;
+import manisha.khatri.newsanytime.network.model.News;
 
 public interface NewsContract {
     void displayGeneralNews(News news);
