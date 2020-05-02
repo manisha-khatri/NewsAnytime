@@ -8,7 +8,7 @@ public enum NewsCategory {
 
     private final String name;
 
-    private NewsCategory(String str) {
+    NewsCategory(String str) {
         name = str;
     }
 

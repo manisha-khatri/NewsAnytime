@@ -10,7 +10,7 @@ public enum NewsIntent {
 
     private final String name;
 
-    private NewsIntent(String str) {
+    NewsIntent(String str) {
         name = str;
     }
 

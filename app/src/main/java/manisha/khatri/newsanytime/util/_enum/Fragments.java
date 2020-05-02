@@ -8,7 +8,7 @@ public enum Fragments {
 
     private final String value;
 
-    private Fragments(String str) {
+    Fragments(String str) {
         value = str;
     }
 

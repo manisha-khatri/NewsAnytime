@@ -21,12 +21,12 @@ public class SavedNewsPresenter {
         DBNewsRepository.fetchNewsFromDB(new DBRepositoryCallBack() {
             @Override
             public void onFailureResponse(String msg) {
-                savedNewsContract.onFailureResponse(msg);
+                savedNewsContract.displayBookmarkedNewsErrorMsg(msg);
             }
 
             @Override
             public void onSuccessfulResponse(List<BookmarkedNews> bookmarkedNews) {
-                savedNewsContract.onSuccessfulResponse(bookmarkedNews);
+                savedNewsContract.displayBookmarkedNews(bookmarkedNews);
             }
         });
     }

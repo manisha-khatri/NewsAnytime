@@ -20,7 +20,7 @@ import manisha.khatri.newsanytime.presenter.TopStoriesPresenter;
 import manisha.khatri.newsanytime.view.activity.NewsDetailActivity;
 import manisha.tuesda.walker.circlerefresh.CircleRefreshLayout;
 
-public class TopStoriesNewsFragment extends Fragment implements TopStoriesContract, TopStoriesRecyclerViewAdapter.RecyclerViewItemListener {
+public class TopStoriesNewsFragment extends Fragment implements TopStoriesContract, TopStoriesRecyclerViewAdapter.RecyclerViewListener {
     TopStoriesPresenter topStoriesPresenter;
     View rootView;
 
@@ -41,6 +41,47 @@ public class TopStoriesNewsFragment extends Fragment implements TopStoriesContra
         super.onStart();
     }
 
+    @Override
+    public void displayTopStoriesNews(News news) {
+        stopLoader();
+        displayTopStories(news);
+    }
+
+    public void displayTopStories(News news) {
+        stopPullToRefreshAnim();
+        setNewsInRecyclerViewAdapter(news);
+    }
+
+    public void setNewsInRecyclerViewAdapter(News news) {
+        TopStoriesRecyclerViewAdapter adapter = new TopStoriesRecyclerViewAdapter(news, getActivity(), this);     //class object, which calls default constructor
+        ((RecyclerView)rootView.findViewById(R.id.recycler_view_top_stories)).setAdapter(adapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        ((RecyclerView)rootView.findViewById(R.id.recycler_view_top_stories)).setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    public void displayTopStoriesNewsErrMsg(String errorMsg) {
+        stopPullToRefreshAnim();
+        showErrorOnFailure(errorMsg);
+    }
+
+    void showErrorOnFailure( String errorMsg){
+        rootView.findViewById(R.id.top_stories_progress_bar).setVisibility(View.GONE);
+        ((TextView)rootView.findViewById(R.id.top_stories_err_msg)).setText(errorMsg);
+    }
+
+    @Override
+    public void onItemClick(Article article) {
+        Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+        intent.putExtra(NewsIntent.HEADLINE.toString(), article.getTitle());
+        intent.putExtra(NewsIntent.IMAGE.toString(), article.getUrlToImage());
+        intent.putExtra(NewsIntent.DESCRIPTION.toString(), article.getDescription());
+        intent.putExtra(NewsIntent.CONTENT.toString(), article.getContent());
+        intent.putExtra(NewsIntent.PUBLISHEDDATE.toString(), article.getPublishedAt());
+
+        this.startActivity(intent);
+    }
+
     private void pullToRefreshAnimListener() {
         ((CircleRefreshLayout)getView().findViewById(R.id.refresh_layout3)).setOnRefreshListener(
                 new CircleRefreshLayout.OnCircleRefreshListener() {
@@ -58,7 +99,7 @@ public class TopStoriesNewsFragment extends Fragment implements TopStoriesContra
         topStoriesPresenter = new TopStoriesPresenter(this);
     }
 
-    void stopPullToRefreshAnim(){
+    private void stopPullToRefreshAnim(){
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -68,51 +109,9 @@ public class TopStoriesNewsFragment extends Fragment implements TopStoriesContra
         }, 2000);
     }
 
-    @Override
-    public void onSuccessfulResponse(News news) {
-        stopLoader();
-        displayTopStories(news);
-    }
-
     private void stopLoader() {
         rootView.findViewById(R.id.top_stories_progress_bar).setVisibility(View.GONE);
         rootView.findViewById(R.id.top_stories_msg_holder).setVisibility(View.GONE);
     }
-
-    public void displayTopStories(News news) {
-        stopPullToRefreshAnim();
-        setNewsInRecyclerViewAdapter(news);
-    }
-
-    public void setNewsInRecyclerViewAdapter(News news) {
-        TopStoriesRecyclerViewAdapter adapter = new TopStoriesRecyclerViewAdapter(news, getActivity(), this);     //class object, which calls default constructor
-        ((RecyclerView)rootView.findViewById(R.id.recycler_view_top_stories)).setAdapter(adapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        ((RecyclerView)rootView.findViewById(R.id.recycler_view_top_stories)).setLayoutManager(linearLayoutManager);
-    }
-
-    @Override
-    public void onFailureResponse(String errorMsg) {
-        stopPullToRefreshAnim();
-        showErrorOnFailure(errorMsg);
-    }
-
-    void showErrorOnFailure( String errorMsg){
-        rootView.findViewById(R.id.top_stories_progress_bar).setVisibility(View.GONE);
-        ((TextView)rootView.findViewById(R.id.top_stories_err_msg)).setText(errorMsg);
-    }
-
-    @Override
-    public void onRecyclerViewItemClickListener(Article article) {
-        Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-        intent.putExtra(NewsIntent.HEADLINE.toString(), article.getTitle());
-        intent.putExtra(NewsIntent.IMAGE.toString(), article.getUrlToImage());
-        intent.putExtra(NewsIntent.DESCRIPTION.toString(), article.getDescription());
-        intent.putExtra(NewsIntent.CONTENT.toString(), article.getContent());
-        intent.putExtra(NewsIntent.PUBLISHEDDATE.toString(), article.getPublishedAt());
-
-        this.startActivity(intent);
-    }
-
 
 }

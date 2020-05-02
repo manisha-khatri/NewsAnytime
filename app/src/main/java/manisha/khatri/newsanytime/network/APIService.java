@@ -1,7 +1,6 @@
-package manisha.khatri.newsanytime.service;
+package manisha.khatri.newsanytime.network;
 
 import manisha.khatri.newsanytime.model.News;
-import manisha.khatri.newsanytime.util._enum.APIServiceConst;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -24,6 +23,7 @@ public interface APIService {
     Call<News> getNewsBySearchedKeyword(
             @Query("q") String q,
             @Query("language") String language,
+            @Query("category") String category,
             @Query("apiKey") String apiKey
     );
 }

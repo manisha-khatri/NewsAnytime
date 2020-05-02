@@ -1,10 +1,15 @@
 package manisha.khatri.newsanytime.presenter;
 
+import java.io.IOException;
 import manisha.khatri.newsanytime.contract.SearchNewsContract;
 import manisha.khatri.newsanytime.model.News;
-import manisha.khatri.newsanytime.service.APINewsRepositoryImpl;
-import manisha.khatri.newsanytime.service.APIResponseCallBack;
-import manisha.khatri.newsanytime.service.APINewsRepository;
+import manisha.khatri.newsanytime.network.APINewsRepositoryImpl;
+import manisha.khatri.newsanytime.network.APIResponseCallBack;
+import manisha.khatri.newsanytime.network.APINewsRepository;
+import manisha.khatri.newsanytime.util._enum.GenericStrings;
+import manisha.khatri.newsanytime.util._enum.NewsCategory;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class SearchNewsPresenter {
     private final SearchNewsContract contract;
@@ -18,14 +23,37 @@ public class SearchNewsPresenter {
     public void fetchNews(String keyword){
         apiNewsRepository.fetchNewsBySearchedKeyword(new APIResponseCallBack() {
             @Override
-            public void onSuccessfulResponse(News news) {
-                contract.onSuccessfulResponse(news);
+            public void onSuccessfulResponse(Call<News> call, Response<News> response) {
+                validateSuccessfulResponse(call, response);
             }
 
             @Override
-            public void onFailureResponse(String errorMsg) {
-                contract.onFailureResponse();
+            public void onFailureResponse(Call<News> call, Throwable t) {
+                validateFailureResponse(call, t);
             }
-        }, keyword);
+        }, keyword, "en", NewsCategory.GENERAL.toString());
+    }
+
+    private void validateSuccessfulResponse(Call<News> call, Response<News> response){
+        if (response.isSuccessful()) {
+            News news = response.body();
+            if (news.getTotalResults() > 0) {
+                contract.displaySearchNews(news);
+            } else {
+                contract.displaySearchNewsErrorMsg(GenericStrings.No_news_found.toString());
+            }
+        }
+        else{
+            contract.displaySearchNewsErrorMsg(GenericStrings.Internal_server_error.toString());
+        }
+    }
+
+    private void validateFailureResponse(Call<News> call, Throwable t){
+        if(t instanceof IOException){
+            contract.displaySearchNewsErrorMsg(GenericStrings.Network_error.toString());
+        }
+        else{
+            contract.displaySearchNewsErrorMsg(GenericStrings.Converter_error.toString());
+        }
     }
 }

@@ -8,25 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import manisha.khatri.newsanytime.util.DateCalculator;
 import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.model.Article;
 import manisha.khatri.newsanytime.model.News;
-import manisha.khatri.newsanytime.util.HelperFunctions;
-
+import manisha.khatri.newsanytime.util.Helper;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class SearchNewsRecyclerViewAdapter extends RecyclerView.Adapter<SearchNewsRecyclerViewAdapter.ViewHolder> {
     Context context;
     List<Article> articles;
-    private RecyclerViewItemListener recyclerViewItemListener;
+    private RecyclerViewListener recyclerViewListener;
 
-    public SearchNewsRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
+    public SearchNewsRecyclerViewAdapter(News news, Context context, RecyclerViewListener recyclerViewListener) {
         this.context = context;
-        this.articles = HelperFunctions.convertArrayToList(news.getArticles());
-        this.recyclerViewItemListener = recyclerViewItemListener;
+        this.articles = Helper.convertArrayToList(news.getArticles());
+        this.recyclerViewListener = recyclerViewListener;
     }
 
     @NonNull
@@ -34,7 +32,7 @@ public class SearchNewsRecyclerViewAdapter extends RecyclerView.Adapter<SearchNe
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
         View listItem = layoutInflater.inflate(R.layout.recyclerview_item_activity_search, viewGroup, false);
-        return new ViewHolder(listItem, recyclerViewItemListener);
+        return new ViewHolder(listItem, recyclerViewListener);
     }
 
     @Override
@@ -47,87 +45,60 @@ public class SearchNewsRecyclerViewAdapter extends RecyclerView.Adapter<SearchNe
         return articles.size();
     }
 
-    public interface RecyclerViewItemListener {
-        void onRecyclerViewItemClickListener(Article newsArticle);
+    public interface RecyclerViewListener {
+        void onItemClick(Article newsArticle);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
-        int position;
-        ViewHolder holder;
-        ImageView newsImageIV;
-        TextView newsHeadingTV;
+        ImageView imageView;
+        TextView headlineTV;
         TextView publishedDateTV;
-        DateCalculator dateCalculator;
-        RecyclerViewItemListener recyclerViewItemListener;
+        RecyclerViewListener recyclerViewListener;
 
-        public ViewHolder(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
+        public ViewHolder(@NonNull View itemView, RecyclerViewListener recyclerViewListener) {
             super(itemView);
-            newsImageIV = itemView.findViewById(R.id.searched_news_image);
-            newsHeadingTV = itemView.findViewById(R.id.searched_news_headline);
+            imageView = itemView.findViewById(R.id.searched_news_image);
+            headlineTV = itemView.findViewById(R.id.searched_news_headline);
             publishedDateTV = itemView.findViewById(R.id.news_published_date);
-            this.recyclerViewItemListener = recyclerViewItemListener;
+            this.recyclerViewListener = recyclerViewListener;
         }
 
         public void render(ViewHolder viewHolder, int position) {
-            this.position = position;
-            this.holder = viewHolder;
-
-            setNewsImage();
-            setNewsHeadline();
-            setPublishedDate();
-            onNewsImageClickListener();
-            onNewsHeadingClickListener();
+            loadImage(viewHolder, position);
+            headlineTV.setText(articles.get(position).getTitle());
+            publishedDateTV.setText(getPublishedDate(position));
+            onItemClick(position);
         }
 
-        private void onNewsHeadingClickListener() {
-            holder.newsHeadingTV.setOnClickListener(new View.OnClickListener() {
+        private void onItemClick(final int position) {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    passInfoToListener();
+                    recyclerViewListener.onItemClick(articles.get(position));
                 }
             });
         }
 
-        private void onNewsImageClickListener() {
-            holder.newsImageIV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    passInfoToListener();
-                }
-            });
-        }
-
-        void passInfoToListener(){
-            Article newsArticle = articles.get(position);
-            recyclerViewItemListener.onRecyclerViewItemClickListener(newsArticle);
-        }
-
-        private void setPublishedDate() {
-            String publishedDateStr = articles.get(position).getPublishedAt();
-            dateCalculator = new DateCalculator();
-            if(dateCalculator.validatePublishedDate(publishedDateStr)) {
-                String totalTime = dateCalculator.calculateTotalTimeDifference(
-                        dateCalculator.convertDateIntoISTTimeZone(publishedDateStr),
+        private String getPublishedDate(int position) {
+            DateCalculator dateCalculator = new DateCalculator();
+            if(dateCalculator.validatePublishedDate(articles.get(position).getPublishedAt())) {
+                return dateCalculator.calculateTotalTimeDifference(
+                        dateCalculator.convertDateIntoISTTimeZone(articles.get(position).getPublishedAt()),
                         dateCalculator.getCurrentDate());
-                publishedDateTV.setText(totalTime);
             }
+            return null;
         }
 
-        private void setNewsHeadline() {
-            newsHeadingTV.setText(articles.get(position).getTitle());
-        }
-
-        private void setNewsImage() {
+        private void loadImage(ViewHolder holder, int position) {
             String imageUrl = articles.get(position).getUrlToImage();
 
             if (imageUrl != null && imageUrl !="" && imageUrl != " ") {
                 Picasso.with(context)
                         .load(imageUrl)
-                        .into(newsImageIV);
+                        .into(imageView);
             }
             else
-                holder.newsImageIV.setImageResource(R.drawable.image_not_present);
+                holder.imageView.setImageResource(R.drawable.image_not_present);
         }
     }
 }

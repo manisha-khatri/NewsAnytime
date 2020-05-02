@@ -3,15 +3,13 @@ package manisha.khatri.newsanytime.contract;
 import manisha.khatri.newsanytime.model.News;
 
 public interface NewsContract {
+    void displayGeneralNews(News news);
+    void displaySportsNews(News news);
+    void displayBusinessNews(News news);
+    void displayEntertainmentNews(News news);
 
-    public void displayInternationalNews(News news);
-    public void displayNationalNews(News news);
-    public void displaySportsNews(News news);
-    public void displayBusinessNews(News news);
-    public void displayEntertainmentNews(News news);
-
-    public void onNatInternatNewsFailureResponse(String errorMsg);
-    public void onSportsNewsFailureResponse(String errorMsg);
-    public void onBusinessNewsFailureResponse(String errorMsg);
-    public void onEntertainmentNewsFailureResponse(String errorMsg);
+    void displayGeneralNewsErrorMsg(String errorMsg);
+    void displaySportsNewsErrorMsg(String errorMsg);
+    void displayBusinessNewsErrorMsg(String errorMsg);
+    void displayEntertainmentNewsErrorMsg(String errorMsg);
 }

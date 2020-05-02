@@ -54,18 +54,18 @@ public class DateCalculator {
             else
                 return (sDays+" days ago");
         }
-        else if(checkHours(days,hours)!=null) {
-           return checkHours(days,hours);
+        else if(getTotalHoursIn(days,hours)!=null) {
+           return getTotalHoursIn(days,hours);
         }
-        else if(checkMinutes(hours,minutes)!=null) {
-            return checkMinutes(hours,minutes);
+        else if(getTotalMinutesIn(hours,minutes)!=null) {
+            return getTotalMinutesIn(hours,minutes);
         }
-        else if(checkSeconds(minutes,seconds)!=null){
-            return checkSeconds(minutes,seconds);
+        else if(getTotalSecondsIn(minutes,seconds)!=null){
+            return getTotalSecondsIn(minutes,seconds);
         }
         return "";
     }
-    String checkHours(long days, long hours){
+    String getTotalHoursIn(long days, long hours){
         if(hours > 0) {
             String  sHours = Long.toString(hours);
             if(hours == 1)
@@ -79,7 +79,7 @@ public class DateCalculator {
         }
         return null;
     }
-    String checkMinutes(long hours, long minutes){
+    String getTotalMinutesIn(long hours, long minutes){
         if(minutes > 0) {
             String  sMinutes = Long.toString(minutes);
             return (sMinutes+" min ago");
@@ -90,7 +90,7 @@ public class DateCalculator {
         }
         return null;
     }
-    String checkSeconds(long minutes, long seconds){
+    String getTotalSecondsIn(long minutes, long seconds){
         if(seconds > 0){
             String  sSeconds = Long.toString(seconds);
             return (sSeconds+" sec ago");

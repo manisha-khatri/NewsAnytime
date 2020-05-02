@@ -20,12 +20,12 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
 
     Context context;
     List<BookmarkedNews> bookmarkedNewsList;
-    private RecyclerViewItemListener recyclerViewItemListener;
+    private RecyclerViewListener recyclerViewListener;
 
-    public SavedNewsAdapter(List<BookmarkedNews> bookmarkedNewsList, Context context, RecyclerViewItemListener recyclerViewItemListener) {
+    public SavedNewsAdapter(List<BookmarkedNews> bookmarkedNewsList, Context context, RecyclerViewListener recyclerViewListener) {
         this.context = context;
         this.bookmarkedNewsList = bookmarkedNewsList;
-        this.recyclerViewItemListener = recyclerViewItemListener;
+        this.recyclerViewListener = recyclerViewListener;
     }
 
     @NonNull
@@ -33,7 +33,7 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
         View listItem = layoutInflater.inflate(R.layout.recyclerview_saved_news_item, viewGroup, false);
-        return new ViewHolder(listItem, recyclerViewItemListener);
+        return new ViewHolder(listItem, recyclerViewListener);
     }
 
     @Override
@@ -46,89 +46,63 @@ public class SavedNewsAdapter extends RecyclerView.Adapter<SavedNewsAdapter.View
         return bookmarkedNewsList.size();
     }
 
-    public interface RecyclerViewItemListener {
-        void onRecyclerViewItemClickListener(BookmarkedNews bookmarkedNews);
+    public interface RecyclerViewListener {
+        void onItemClick(BookmarkedNews bookmarkedNews);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
-        int position;
-        ViewHolder holder;
-        ImageView image;
-        TextView heading;
+        ImageView imageView;
+        TextView headlineTV;
         TextView publishedDateTV;
-        DateCalculator dateCalculator;
-        RecyclerViewItemListener recyclerViewItemListener;
+        RecyclerViewListener recyclerViewListener;
 
-        public ViewHolder(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
+        public ViewHolder(@NonNull View itemView, RecyclerViewListener recyclerViewListener) {
             super(itemView);
-            initViews(itemView, recyclerViewItemListener);
+            initViews(itemView, recyclerViewListener);
         }
 
-        private void initViews(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
-            image = itemView.findViewById(R.id.saved_news_image);
-            heading = itemView.findViewById(R.id.saved_news_headline);
+        private void initViews(@NonNull View itemView, RecyclerViewListener recyclerViewListener) {
+            imageView = itemView.findViewById(R.id.saved_news_image);
+            headlineTV = itemView.findViewById(R.id.saved_news_headline);
             publishedDateTV = itemView.findViewById(R.id.saved_news_published_date);
-            this.recyclerViewItemListener = recyclerViewItemListener;
+            this.recyclerViewListener = recyclerViewListener;
         }
 
         public void render(ViewHolder viewHolder, int position) {
-            this.position = position;
-            this.holder = viewHolder;
-            setImage();
-            setHeadline();
-            setPublishedDate();
-            onImageClickListener();
-            onHeadingClickListener();
+            loadImage(viewHolder, position);
+            headlineTV.setText(bookmarkedNewsList.get(position).getHeadline());
+            publishedDateTV.setText(getPublishedDate(position));
+            onItemClick(position);
         }
 
-        private void setPublishedDate() {
-            String publishedDateStr = bookmarkedNewsList.get(position).getPublishedDate();
-            dateCalculator = new DateCalculator();
-            if(dateCalculator.validatePublishedDate(publishedDateStr)) {
-                String totalTime = dateCalculator.calculateTotalTimeDifference(
-                        dateCalculator.convertDateIntoISTTimeZone(publishedDateStr),
+        private String getPublishedDate(int position) {
+            DateCalculator dateCalculator = new DateCalculator();
+            if(dateCalculator.validatePublishedDate(bookmarkedNewsList.get(position).getPublishedDate())) {
+                return dateCalculator.calculateTotalTimeDifference(
+                        dateCalculator.convertDateIntoISTTimeZone(bookmarkedNewsList.get(position).getPublishedDate()),
                         dateCalculator.getCurrentDate());
-                publishedDateTV.setText(totalTime);
             }
+            return null;
         }
 
-        private void onHeadingClickListener() {
-            holder.heading.setOnClickListener(new View.OnClickListener() {
+        private void onItemClick(final int position) {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    passInfoToListener();
+                    recyclerViewListener.onItemClick(bookmarkedNewsList.get(position));
                 }
             });
         }
 
-        public void passInfoToListener() {
-            BookmarkedNews bookmarkedNews = bookmarkedNewsList.get(position);
-            recyclerViewItemListener.onRecyclerViewItemClickListener(bookmarkedNews);
-        }
-
-        private void onImageClickListener() {
-            holder.image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    passInfoToListener();
-                }
-            });
-        }
-
-        private void setHeadline() {
-            heading.setText(bookmarkedNewsList.get(position).getHeadline());
-        }
-
-        private void setImage() {
+        private void loadImage(ViewHolder holder, int position) {
             String imageUrl = bookmarkedNewsList.get(position).getImageUrl();
             if (imageUrl != null && imageUrl != "" && imageUrl != " ") {
                 Picasso.with(context)
                         .load(imageUrl)
-                        .into(image);
+                        .into(imageView);
             }
             else
-                holder.image.setImageResource(R.drawable.image_not_present);
+                holder.imageView.setImageResource(R.drawable.image_not_present);
         }
     }
 }

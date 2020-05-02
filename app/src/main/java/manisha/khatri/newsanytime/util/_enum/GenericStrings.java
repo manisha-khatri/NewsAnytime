@@ -13,7 +13,7 @@ public enum GenericStrings {
 
     private final String name;
 
-    private GenericStrings(String str) {
+    GenericStrings(String str) {
         name = str;
     }
 

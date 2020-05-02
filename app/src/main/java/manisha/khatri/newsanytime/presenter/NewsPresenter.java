@@ -1,16 +1,21 @@
 package manisha.khatri.newsanytime.presenter;
 
+import java.io.IOException;
 import manisha.khatri.newsanytime.contract.NewsContract;
 import manisha.khatri.newsanytime.model.News;
-import manisha.khatri.newsanytime.service.APINewsRepositoryImpl;
-import manisha.khatri.newsanytime.service.APIResponseCallBack;
-import manisha.khatri.newsanytime.service.APINewsRepository;
+import manisha.khatri.newsanytime.network.APINewsRepositoryImpl;
+import manisha.khatri.newsanytime.network.APIResponseCallBack;
+import manisha.khatri.newsanytime.network.APINewsRepository;
+import manisha.khatri.newsanytime.util._enum.GenericStrings;
 import manisha.khatri.newsanytime.util._enum.NewsCategory;
 import manisha.khatri.newsanytime.util._enum.Country;
+import retrofit2.Call;
+import retrofit2.Response;
+import static manisha.khatri.newsanytime.util._enum.NewsCategory.*;
 
 public class NewsPresenter {
     private final NewsContract newsContract;
-    APINewsRepository apiNewsRepository;
+    private APINewsRepository apiNewsRepository;
 
     public NewsPresenter(NewsContract newsContract) {
         this.newsContract = newsContract;
@@ -20,90 +25,91 @@ public class NewsPresenter {
         String language = "en";
         apiNewsRepository = new APINewsRepositoryImpl();
 
-        if(country != Country.ALL.toString()){
-
-            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
-                @Override
-                public void onSuccessfulResponse(News news) {
-                    newsContract.displayNationalNews(news);
-                }
-                @Override
-                public void onFailureResponse(String errorMsg) {
-                    newsContract.onNatInternatNewsFailureResponse(errorMsg);
-                }
-            }, country, language,"");
-            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
-                @Override
-                public void onSuccessfulResponse(News news) {
-                    newsContract.displaySportsNews(news);
-                }
-                @Override
-                public void onFailureResponse(String errorMsg) {
-                    newsContract.onSportsNewsFailureResponse(errorMsg);
-                }
-            }, country, language, NewsCategory.SPORTS.toString());
-            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
-                @Override
-                public void onSuccessfulResponse(News news) {
-                    newsContract.displayBusinessNews(news);
-                }
-                @Override
-                public void onFailureResponse(String errorMsg) {
-                    newsContract.onBusinessNewsFailureResponse(errorMsg);
-                }
-            }, country, language, NewsCategory.BUSINESS.toString());
-            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
-                @Override
-                public void onSuccessfulResponse(News news) {
-                    newsContract.displayEntertainmentNews(news);
-                }
-                @Override
-                public void onFailureResponse(String errorMsg) {
-                    newsContract.onEntertainmentNewsFailureResponse(errorMsg);
-                }
-            }, country, language, NewsCategory.ENTERTAINMENT.toString());
+        if(country.equals(Country.ALL.toString())){
+            country = "";
         }
-        else {
-            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
-                @Override
-                public void onSuccessfulResponse(News news) {
-                    newsContract.displayInternationalNews(news);
-                }
-                @Override
-                public void onFailureResponse(String errorMsg) {
-                    newsContract.onNatInternatNewsFailureResponse(errorMsg);
-                }
-            }, "", language, NewsCategory.GENERAL.toString());
-            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
-                @Override
-                public void onSuccessfulResponse(News news) {
-                    newsContract.displaySportsNews(news);
-                }
-                @Override
-                public void onFailureResponse(String errorMsg) {
-                    newsContract.onSportsNewsFailureResponse(errorMsg);
-                }
-            }, "", language, NewsCategory.SPORTS.toString());
-            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
-                @Override
-                public void onSuccessfulResponse(News news) {
-                    newsContract.displayBusinessNews(news);
-                }
-                @Override
-                public void onFailureResponse(String errorMsg) {
-                    newsContract.onBusinessNewsFailureResponse(errorMsg);
-                }
-            }, "", language, NewsCategory.BUSINESS.toString());
-            apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
-                @Override
-                public void onSuccessfulResponse(News news) {
-                    newsContract.displayEntertainmentNews(news);
-                }
-                @Override
-                public void onFailureResponse(String errorMsg) {
-                    newsContract.onEntertainmentNewsFailureResponse(errorMsg);
-                }
-            }, "", language, NewsCategory.ENTERTAINMENT.toString());
+        apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
+            @Override
+            public void onSuccessfulResponse(Call<News> call, Response<News> response) {
+                validateSuccessfulResponse(call, response, GENERAL);
+            }
+            @Override
+            public void onFailureResponse(Call<News> call, Throwable t) {
+                validateFailureResponse(call, t, GENERAL);
+            }
+        }, country, language, GENERAL.toString());
+        apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
+            @Override
+            public void onSuccessfulResponse(Call<News> call, Response<News> response) {
+                validateSuccessfulResponse(call, response, SPORTS);
+            }
+            @Override
+            public void onFailureResponse(Call<News> call, Throwable t) {
+                validateFailureResponse(call, t, SPORTS);
+            }
+        }, country, language, SPORTS.toString());
+        apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
+            @Override
+            public void onSuccessfulResponse(Call<News> call, Response<News> response) {
+                validateSuccessfulResponse(call, response, BUSINESS);
+            }
+            @Override
+            public void onFailureResponse(Call<News> call, Throwable t) {
+                validateFailureResponse(call, t, BUSINESS);
+            }
+        }, country, language, BUSINESS.toString());
+        apiNewsRepository.fetchNewsFor(new APIResponseCallBack() {
+            @Override
+            public void onSuccessfulResponse(Call<News> call, Response<News> response) {
+                validateSuccessfulResponse(call, response, ENTERTAINMENT);
+            }
+            @Override
+            public void onFailureResponse(Call<News> call, Throwable t) {
+                validateFailureResponse(call, t, ENTERTAINMENT);
+            }
+        }, country, language, ENTERTAINMENT.toString());
+    }
+
+    private void validateSuccessfulResponse(Call<News> call, Response<News> response, NewsCategory category){
+        if (response.isSuccessful()) {
+            News news = response.body();
+            if (news.getTotalResults() > 0) {
+                displayNewsOnSuccess(category, news);
+            } else {
+                displayErrorOnFailure(category, GenericStrings.No_news_found.toString());
+            }
+        }
+        else{
+            displayErrorOnFailure(category, GenericStrings.Internal_server_error.toString());
+        }
+    }
+
+    private void validateFailureResponse(Call<News> call, Throwable t, NewsCategory category){
+        if(t instanceof IOException){
+            displayErrorOnFailure(category, GenericStrings.Network_error.toString());
+        }
+        else{
+            displayErrorOnFailure(category, GenericStrings.Converter_error.toString());
+        }
+    }
+
+    private void displayNewsOnSuccess(NewsCategory category, News news){
+        switch (category){
+            case GENERAL    :  newsContract.displayGeneralNews(news);   break;
+            case SPORTS     :  newsContract.displaySportsNews(news);   break;
+            case BUSINESS   :  newsContract.displayBusinessNews(news);   break;
+            case ENTERTAINMENT :  newsContract.displayEntertainmentNews(news);break;
+        }
+    }
+
+    private void displayErrorOnFailure(NewsCategory category, String errMsg){
+        switch (category){
+            //displayGeneralNewsErrorMsg
+            //showGeneralNewsErrorMsg
+            case GENERAL    :  newsContract.displayGeneralNewsErrorMsg(errMsg);   break;
+            case SPORTS     :  newsContract.displaySportsNewsErrorMsg(errMsg);   break;
+            case BUSINESS   :  newsContract.displayBusinessNewsErrorMsg(errMsg);   break;
+            case ENTERTAINMENT :  newsContract.displayEntertainmentNewsErrorMsg(errMsg);   break;
         }
     }
 

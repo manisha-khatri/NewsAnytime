@@ -17,7 +17,7 @@ import manisha.khatri.newsanytime.contract.SavedNewsContract;
 import manisha.khatri.newsanytime.presenter.SavedNewsPresenter;
 import java.util.List;
 
-public class SavedNewsActivity extends AppCompatActivity implements SavedNewsContract, SavedNewsAdapter.RecyclerViewItemListener {
+public class SavedNewsActivity extends AppCompatActivity implements SavedNewsContract, SavedNewsAdapter.RecyclerViewListener {
     SavedNewsPresenter savedNewsPresenter;
     TextView erorMsgTV;
     RecyclerView savedNewsRecyclerView;
@@ -31,16 +31,16 @@ public class SavedNewsActivity extends AppCompatActivity implements SavedNewsCon
         onBackBtnClickListener();
     }
 
-    private void initViews() {
-        savedNewsPresenter = new SavedNewsPresenter(this);
-        erorMsgTV = findViewById(R.id.sn_error_msg);
-        savedNewsRecyclerView = findViewById(R.id.sn_recycler_view);
-        setToolbar();
-    }
+    @Override
+    public void onItemClick(BookmarkedNews bookmarkedNews) {
+        Intent intent = new Intent(this, NewsDetailActivity.class);
+        intent.putExtra(NewsIntent.HEADLINE.toString(), bookmarkedNews.getHeadline());
+        intent.putExtra(NewsIntent.IMAGE.toString(), bookmarkedNews.getImageUrl());
+        intent.putExtra(NewsIntent.DESCRIPTION.toString(), bookmarkedNews.getDescription());
+        intent.putExtra(NewsIntent.CONTENT.toString(), bookmarkedNews.getContent());
+        intent.putExtra(NewsIntent.PUBLISHEDDATE.toString(), bookmarkedNews.getPublishedDate());
 
-    private void setToolbar() {
-        setSupportActionBar((Toolbar) findViewById(R.id.sn_toolbar));
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        this.startActivity(intent);
     }
 
     public void setNewsInRecyclerViewAdapter( RecyclerView recyclerView, List<BookmarkedNews> bookmarkedNewsList) {
@@ -57,14 +57,26 @@ public class SavedNewsActivity extends AppCompatActivity implements SavedNewsCon
     }
 
     @Override
-    public void onSuccessfulResponse(List<BookmarkedNews> bookmarkedNewsList) {
+    public void displayBookmarkedNews(List<BookmarkedNews> bookmarkedNewsList) {
         hideNewsLoadingWidget();
         setNewsInRecyclerViewAdapter(savedNewsRecyclerView, bookmarkedNewsList);
     }
 
     @Override
-    public void onFailureResponse(String msg) {
+    public void displayBookmarkedNewsErrorMsg(String msg) {
         handleNoSavedNewsInDB();
+    }
+
+    private void initViews() {
+        savedNewsPresenter = new SavedNewsPresenter(this);
+        erorMsgTV = findViewById(R.id.sn_error_msg);
+        savedNewsRecyclerView = findViewById(R.id.sn_recycler_view);
+        setToolbar();
+    }
+
+    private void setToolbar() {
+        setSupportActionBar((Toolbar) findViewById(R.id.sn_toolbar));
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     private void hideNewsLoadingWidget() {
@@ -73,19 +85,7 @@ public class SavedNewsActivity extends AppCompatActivity implements SavedNewsCon
         findViewById(R.id.sn_msg_holder).setVisibility(View.GONE);
     }
 
-    @Override
-    public void onRecyclerViewItemClickListener(BookmarkedNews bookmarkedNews) {
-        Intent intent = new Intent(this, NewsDetailActivity.class);
-        intent.putExtra(NewsIntent.HEADLINE.toString(), bookmarkedNews.getHeadline());
-        intent.putExtra(NewsIntent.IMAGE.toString(), bookmarkedNews.getImageUrl());
-        intent.putExtra(NewsIntent.DESCRIPTION.toString(), bookmarkedNews.getDescription());
-        intent.putExtra(NewsIntent.CONTENT.toString(), bookmarkedNews.getContent());
-        intent.putExtra(NewsIntent.PUBLISHEDDATE.toString(), bookmarkedNews.getPublishedDate());
-
-        this.startActivity(intent);
-    }
-
-    void onBackBtnClickListener(){
+    private void onBackBtnClickListener(){
         findViewById(R.id.sn_back_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();

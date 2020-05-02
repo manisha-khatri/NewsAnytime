@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.contract.NewsContract;
-import manisha.khatri.newsanytime.util._enum.GenericStrings;
 import manisha.khatri.newsanytime.util._enum.NewsIntent;
 import manisha.khatri.newsanytime.util._enum.Country;
 import manisha.khatri.newsanytime.view.adapter.NewsRecyclerViewAdapter;
@@ -24,7 +23,7 @@ import manisha.khatri.newsanytime.presenter.NewsPresenter;
 import manisha.khatri.newsanytime.view.activity.NewsDetailActivity;
 import manisha.tuesda.walker.circlerefresh.CircleRefreshLayout;
 
-public class NewsFragment extends Fragment implements NewsContract, NewsRecyclerViewAdapter.RecyclerViewItemListener {
+public class NewsFragment extends Fragment implements NewsContract, NewsRecyclerViewAdapter.RecyclerViewListener {
     NewsPresenter newsPresenter;
     View rootView;
 
@@ -42,10 +41,6 @@ public class NewsFragment extends Fragment implements NewsContract, NewsRecycler
         return newsFragment;
     }
 
-    private String getCountry() {
-        return this.getArguments().getString("COUNTRY", Country.INDIA.toString());
-    }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initViews();
@@ -53,34 +48,7 @@ public class NewsFragment extends Fragment implements NewsContract, NewsRecycler
         newsPresenter.fetchNews(getCountry());  //fetch news by retrofit cal
     }
 
-    public void onStart(){
-        super.onStart();
-    }
-
-    private void pullToRefreshAnim() {
-        ((CircleRefreshLayout)getView().findViewById(R.id.refresh_layout)).setOnRefreshListener(
-                new CircleRefreshLayout.OnCircleRefreshListener() {
-                    @Override
-                    public void refreshing() {
-                        newsPresenter.fetchNews(getCountry());  //fetch news by retrofit call
-                    }
-                    @Override
-                    public void completeRefresh() {
-                    }
-                });
-    }
-
-    private void initViews() {
-        newsPresenter = new NewsPresenter(this);
-    }
-
-    public void displayInternationalNews(News news) {
-        stopLoader((ProgressBar) rootView.findViewById(R.id.prgssbar_1), (LinearLayout) rootView.findViewById(R.id.holder_1));
-        stopPullToRefreshAnim();
-        setNewsInRecyclerViewAdapter(news, (RecyclerView) rootView.findViewById(R.id.recycler_view_1));
-    }
-
-    public void displayNationalNews(News news) {
+    public void displayGeneralNews(News news) {
         stopLoader((ProgressBar) rootView.findViewById(R.id.prgssbar_1), (LinearLayout) rootView.findViewById(R.id.holder_1));
         stopPullToRefreshAnim();
         setNewsInRecyclerViewAdapter(news, (RecyclerView) rootView.findViewById(R.id.recycler_view_1));
@@ -101,11 +69,6 @@ public class NewsFragment extends Fragment implements NewsContract, NewsRecycler
         setNewsInRecyclerViewAdapter(news, (RecyclerView) rootView.findViewById(R.id.recycler_view4));
     }
 
-    private void stopLoader(ProgressBar progressBar, LinearLayout layout) {
-        progressBar.setVisibility(View.GONE);
-        layout.setVisibility(View.GONE);
-    }
-
     public void stopPullToRefreshAnim(){
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -124,24 +87,24 @@ public class NewsFragment extends Fragment implements NewsContract, NewsRecycler
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
-    public void onNatInternatNewsFailureResponse(String errorMsg) {
+    public void displayGeneralNewsErrorMsg(String errorMsg) {
         stopPullToRefreshAnim();
         showErrorOnFailure((ProgressBar) rootView.findViewById(R.id.prgssbar_1), (TextView) rootView.findViewById(R.id.err_msg_1), errorMsg);
     }
 
-    public void onSportsNewsFailureResponse(String errorMsg) {
+    public void displaySportsNewsErrorMsg(String errorMsg) {
         showErrorOnFailure((ProgressBar) rootView.findViewById(R.id.prgssbar_2), (TextView) rootView.findViewById(R.id.err_msg_2), errorMsg);
     }
 
-    public void onBusinessNewsFailureResponse(String errorMsg) {
+    public void displayBusinessNewsErrorMsg(String errorMsg) {
         showErrorOnFailure((ProgressBar) rootView.findViewById(R.id.prgss_bar_3), (TextView) rootView.findViewById(R.id.err_msg_3), errorMsg);
     }
 
-    public void onEntertainmentNewsFailureResponse(String errorMsg) {
+    public void displayEntertainmentNewsErrorMsg(String errorMsg) {
         showErrorOnFailure((ProgressBar) rootView.findViewById(R.id.prgssbar_4), (TextView) rootView.findViewById(R.id.err_msg_4), errorMsg);
     }
 
-    void showErrorOnFailure(ProgressBar prgssBar, TextView tv, String errorMsg){
+    public void showErrorOnFailure(ProgressBar prgssBar, TextView tv, String errorMsg){
         TextView callbackRespMsg;
         prgssBar.setVisibility(View.GONE);
         callbackRespMsg = tv;
@@ -149,7 +112,7 @@ public class NewsFragment extends Fragment implements NewsContract, NewsRecycler
     }
 
     @Override
-    public void onRecyclerViewItemClickListener(Article article){
+    public void onItemClick(Article article){
         Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
         intent.putExtra(NewsIntent.HEADLINE.toString(), article.getTitle());
         intent.putExtra(NewsIntent.IMAGE.toString(), article.getUrlToImage());
@@ -158,6 +121,32 @@ public class NewsFragment extends Fragment implements NewsContract, NewsRecycler
         intent.putExtra(NewsIntent.PUBLISHEDDATE.toString(), article.getPublishedAt());
 
         this.startActivity(intent);
+    }
+
+    private void stopLoader(ProgressBar progressBar, LinearLayout layout) {
+        progressBar.setVisibility(View.GONE);
+        layout.setVisibility(View.GONE);
+    }
+
+    private void initViews() {
+        newsPresenter = new NewsPresenter(this);
+    }
+
+    private String getCountry() {
+        return this.getArguments().getString("COUNTRY", Country.INDIA.toString());
+    }
+
+    private void pullToRefreshAnim() {
+        ((CircleRefreshLayout)getView().findViewById(R.id.refresh_layout)).setOnRefreshListener(
+                new CircleRefreshLayout.OnCircleRefreshListener() {
+                    @Override
+                    public void refreshing() {
+                        newsPresenter.fetchNews(getCountry());  //fetch news by retrofit call
+                    }
+                    @Override
+                    public void completeRefresh() {
+                    }
+                });
     }
 
 }

@@ -4,6 +4,6 @@ import manisha.khatri.newsanytime.database.BookmarkedNews;
 import java.util.List;
 
 public interface SavedNewsContract {
-    public void onSuccessfulResponse(List<BookmarkedNews> bookmarkedNews);
-    public void onFailureResponse(String msg);
+    void displayBookmarkedNews(List<BookmarkedNews> bookmarkedNews);
+    void displayBookmarkedNewsErrorMsg(String msg);
 }

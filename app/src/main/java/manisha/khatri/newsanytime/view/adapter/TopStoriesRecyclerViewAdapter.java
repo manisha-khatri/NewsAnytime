@@ -12,7 +12,7 @@ import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.model.Article;
 import manisha.khatri.newsanytime.model.News;
 import manisha.khatri.newsanytime.util.DateCalculator;
-import manisha.khatri.newsanytime.util.HelperFunctions;
+import manisha.khatri.newsanytime.util.Helper;
 
 import com.squareup.picasso.Picasso;
 import java.util.List;
@@ -20,12 +20,12 @@ import java.util.List;
 public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStoriesRecyclerViewAdapter.ViewHolder> {
     Context context;
     List<Article> articles;
-    private RecyclerViewItemListener recyclerViewItemListener;
+    private RecyclerViewListener recyclerViewListener;
 
-    public TopStoriesRecyclerViewAdapter(News news, Context context, RecyclerViewItemListener recyclerViewItemListener) {
+    public TopStoriesRecyclerViewAdapter(News news, Context context, RecyclerViewListener recyclerViewListener) {
         this.context = context;
-        this.articles = HelperFunctions.convertArrayToList(news.getArticles());
-        this.recyclerViewItemListener = recyclerViewItemListener;
+        this.articles = Helper.convertArrayToList(news.getArticles());
+        this.recyclerViewListener = recyclerViewListener;
     }
 
     @NonNull
@@ -33,7 +33,7 @@ public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStori
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
         View listItem = layoutInflater.inflate(R.layout.recyclerview_top_stories_item2, viewGroup, false);
-        return new ViewHolder(listItem, recyclerViewItemListener);
+        return new ViewHolder(listItem, recyclerViewListener);
     }
 
     @Override
@@ -46,89 +46,64 @@ public class TopStoriesRecyclerViewAdapter extends RecyclerView.Adapter<TopStori
         return articles.size();
     }
 
-    public interface RecyclerViewItemListener {
-        void onRecyclerViewItemClickListener(Article article);
+    public interface RecyclerViewListener {
+        void onItemClick(Article article);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        int position;
-        ViewHolder holder;
-        ImageView imageIV;
-        DateCalculator dateCalculator;
-        TextView headingTV;
+        ImageView imageView;
+        TextView headlineTV;
         TextView publishedDateTV;
-        RecyclerViewItemListener recyclerViewItemListener;  //handle any operation on the recyclerview items
+        RecyclerViewListener recyclerViewListener;  //handle any operation on the recyclerview items
 
-        public ViewHolder(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
+        public ViewHolder(@NonNull View itemView, RecyclerViewListener recyclerViewListener) {
             super(itemView);
-            initViews(itemView, recyclerViewItemListener);
+            initViews(itemView, recyclerViewListener);
         }
 
-        private void initViews(@NonNull View itemView, RecyclerViewItemListener recyclerViewItemListener) {
-            imageIV = itemView.findViewById(R.id.top_stories2_img);
-            headingTV = itemView.findViewById(R.id.top_stories2_heading);
+        private void initViews(@NonNull View itemView, RecyclerViewListener recyclerViewListener) {
+            imageView = itemView.findViewById(R.id.top_stories2_img);
+            headlineTV = itemView.findViewById(R.id.top_stories2_heading);
             publishedDateTV = itemView.findViewById(R.id.top_stories2_published_date);
-            this.recyclerViewItemListener = recyclerViewItemListener;
+            this.recyclerViewListener = recyclerViewListener;
         }
 
         public void render(ViewHolder viewHolder, int position) {
-            this.position = position;
-            this.holder = viewHolder;
-            setImage();
-            setHeadline();
-            setPublishedDate();
-            onImageClickListener();
-            onHeadingClickListener();
+            loadImage(viewHolder,position);
+            headlineTV.setText(articles.get(position).getTitle());
+            publishedDateTV.setText(getPublishedDate(position));
+            onItemClick(viewHolder,position);
         }
 
-        private void setPublishedDate() {
-            String publishedDateStr = articles.get(position).getPublishedAt();
-            dateCalculator = new DateCalculator();
-            if(dateCalculator.validatePublishedDate(publishedDateStr)) {
-                String totalTime = dateCalculator.calculateTotalTimeDifference(
-                        dateCalculator.convertDateIntoISTTimeZone(publishedDateStr),
+        private String getPublishedDate(int position) {
+            DateCalculator dateCalculator = new DateCalculator();
+            if(dateCalculator.validatePublishedDate(articles.get(position).getPublishedAt())) {
+                return dateCalculator.calculateTotalTimeDifference(
+                        dateCalculator.convertDateIntoISTTimeZone(articles.get(position).getPublishedAt()),
                         dateCalculator.getCurrentDate());
-                publishedDateTV.setText(totalTime);
             }
+            return null;
         }
 
-        private void onHeadingClickListener() {
-            holder.headingTV.setOnClickListener(new View.OnClickListener() {
+        private void onItemClick(ViewHolder viewHolder, final int position) {
+            viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    passInfoToListener();
+                    Article article = articles.get(position);
+                    recyclerViewListener.onItemClick(article);
                 }
             });
         }
 
-        private void onImageClickListener() {
-            holder.imageIV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    passInfoToListener();
-                }
-            });
-        }
-
-        void passInfoToListener(){
-            Article article = articles.get(position);
-            recyclerViewItemListener.onRecyclerViewItemClickListener(article);
-        }
-
-        private void setHeadline() {
-            String headLine = articles.get(position).getTitle();
-            headingTV.setText(headLine);
-        }
-
-        private void setImage() {
+        private void loadImage(ViewHolder holder, int position) {
             String imageUrl = articles.get(position).getUrlToImage();
             if (imageUrl != null && imageUrl !="" && imageUrl != " ") {
                 Picasso.with(context)
                         .load(imageUrl)
-                        .into(imageIV);
+                        .into(imageView);
             }
             else
-                holder.imageIV.setImageResource(R.drawable.image_not_present);
+                holder.imageView.setImageResource(R.drawable.image_not_present);
         }
     }
 }

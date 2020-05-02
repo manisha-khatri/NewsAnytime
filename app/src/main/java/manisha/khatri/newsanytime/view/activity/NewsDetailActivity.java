@@ -32,37 +32,6 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
         onBackBtnClickListener();
     }
 
-    private void initViews() {
-        setToolbar();
-        newsDetailPresenter = new NewsDetailPresenter(this);
-        bookmarkBtn = findViewById(R.id.nd_bookmark_btn);
-    }
-
-    void getNewsDetailsFromIntent() {
-        bookmarkedNews = new BookmarkedNews();
-        bookmarkedNews.setHeadline(getValueFromIntent(NewsIntent.HEADLINE.toString()));
-        bookmarkedNews.setImageUrl(getValueFromIntent(NewsIntent.IMAGE.toString()));
-        bookmarkedNews.setContent(getValueFromIntent(NewsIntent.CONTENT.toString()));
-        bookmarkedNews.setDescription(getValueFromIntent(NewsIntent.DESCRIPTION.toString()));
-        bookmarkedNews.setPublishedDate(getValueFromIntent(NewsIntent.PUBLISHEDDATE.toString()));
-        setActivityViews();
-    }
-
-    private void setActivityViews() {
-        TextView headlineTV = findViewById(R.id.nd_heading);
-        TextView descriptionTV = findViewById(R.id.nd_description);
-        TextView contentTV = findViewById(R.id.nd_content);
-
-        headlineTV.setText(bookmarkedNews.getHeadline());
-        descriptionTV.setText(bookmarkedNews.getDescription());
-
-        String content = (bookmarkedNews.getContent()!=null)?removeInvalidCharFromLast(bookmarkedNews.getContent()):null;
-        contentTV.setText(content);
-
-        setImage(bookmarkedNews.getImageUrl());
-        setPublishedDate(bookmarkedNews.getPublishedDate());
-    }
-
     public void checkIfNewsAlreadySavedInDB() {
         newsDetailPresenter.searchNews(bookmarkedNews.getPublishedDate(), getApplication());
     }
@@ -97,9 +66,39 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
         newsDetailPresenter.deleteNews(bookmarkedNews.getPublishedDate(), getApplication());
     }
 
+    private void initViews() {
+        setToolbar();
+        newsDetailPresenter = new NewsDetailPresenter(this);
+        bookmarkBtn = findViewById(R.id.nd_bookmark_btn);
+    }
+
+    void getNewsDetailsFromIntent() {
+        bookmarkedNews = new BookmarkedNews();
+        bookmarkedNews.setHeadline(getValueFromIntent(NewsIntent.HEADLINE.toString()));
+        bookmarkedNews.setImageUrl(getValueFromIntent(NewsIntent.IMAGE.toString()));
+        bookmarkedNews.setContent(getValueFromIntent(NewsIntent.CONTENT.toString()));
+        bookmarkedNews.setDescription(getValueFromIntent(NewsIntent.DESCRIPTION.toString()));
+        bookmarkedNews.setPublishedDate(getValueFromIntent(NewsIntent.PUBLISHEDDATE.toString()));
+        setActivityViews();
+    }
+
+    private void setActivityViews() {
+        TextView headlineTV = findViewById(R.id.nd_heading);
+        TextView descriptionTV = findViewById(R.id.nd_description);
+        TextView contentTV = findViewById(R.id.nd_content);
+
+        headlineTV.setText(bookmarkedNews.getHeadline());
+        descriptionTV.setText(bookmarkedNews.getDescription());
+
+        String content = (bookmarkedNews.getContent()!=null)?removeInvalidCharFromLast(bookmarkedNews.getContent()):null;
+        contentTV.setText(content);
+
+        setImage(bookmarkedNews.getImageUrl());
+        setPublishedDate(bookmarkedNews.getPublishedDate());
+    }
+
     private void setToolbar() {
-        Toolbar toolbar = findViewById(R.id.nd_toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.nd_toolbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
@@ -142,7 +141,7 @@ public class NewsDetailActivity extends AppCompatActivity implements NewsDetailC
         return newsContent;
     }
 
-    void onBackBtnClickListener(){
+    private void onBackBtnClickListener(){
         findViewById(R.id.nd_back_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 finish();

@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import manisha.khatri.newsanytime.R;
 import manisha.khatri.newsanytime.util._enum.Fragments;
 import manisha.khatri.newsanytime.util._enum.GenericStrings;
@@ -24,6 +22,12 @@ public class HomeActivity extends AppCompatActivity {
         initViews();
         setTabs();
         onBookmarkNewsListBtnClick();
+    }
+
+    public void callSearchNewsActivity(String searchedKeyword){
+        Intent intent = new Intent(HomeActivity.this, SearchNewsNewsActivity.class);
+        intent.putExtra(GenericStrings.SEARCHED_KEYWORD.toString(),searchedKeyword);
+        startActivity(intent);
     }
 
     private void initViews() {
@@ -74,12 +78,6 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    public void callSearchNewsActivity(String searchedKeyword){
-        Intent intent = new Intent(HomeActivity.this, SearchNewsNewsActivity.class);
-        intent.putExtra(GenericStrings.SEARCHED_KEYWORD.toString(),searchedKeyword);
-        startActivity(intent);
     }
 
     private void setupSearchView() {

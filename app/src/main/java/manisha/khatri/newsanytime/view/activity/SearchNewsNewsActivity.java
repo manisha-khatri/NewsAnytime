@@ -17,7 +17,7 @@ import manisha.khatri.newsanytime.contract.SearchNewsContract;
 import manisha.khatri.newsanytime.model.News;
 import manisha.khatri.newsanytime.presenter.SearchNewsPresenter;
 
-public class SearchNewsNewsActivity extends AppCompatActivity implements SearchNewsContract, SearchNewsRecyclerViewAdapter.RecyclerViewItemListener {
+public class SearchNewsNewsActivity extends AppCompatActivity implements SearchNewsContract, SearchNewsRecyclerViewAdapter.RecyclerViewListener {
 
     SearchNewsPresenter searchNewsPresenter;
     RecyclerView searchNewsRecyclerView;
@@ -33,26 +33,6 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
         if(searchedKeyword != null) {
             searchNewsPresenter.fetchNews(searchedKeyword);
         }
-    }
-
-    private void initViews() {
-        searchNewsPresenter = new SearchNewsPresenter(this);
-        searchNewsRecyclerView = findViewById(R.id.sn_recycler_view);
-        setToolbar();
-    }
-
-    private void setToolbar() {
-        setSupportActionBar((Toolbar) findViewById(R.id.sn_toolbar));
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
-
-    void backBtnClickListener(){
-        findViewById(R.id.sn_back_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 
     public String getSearchedKeyword() {
@@ -73,24 +53,18 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
     }
 
     @Override
-    public void onSuccessfulResponse(News news) {
+    public void displaySearchNews(News news) {
         hideNewsLoadingWidgets();
         setNewsInRecyclerViewAdapter(news, searchNewsRecyclerView);
     }
 
-    private void hideNewsLoadingWidgets() {
-        findViewById(R.id.sn_prgss_bar).setVisibility(View.GONE);   // hide progress bar
-        findViewById(R.id.sn_msg_holder).setVisibility(View.GONE);
-    }
-
-    public void onFailureResponse(){
+    public void displaySearchNewsErrorMsg(String errMsg){
         findViewById(R.id.sn_prgss_bar).setVisibility(View.GONE);
-        TextView errMsg = findViewById(R.id.sn_error_msg);
-        errMsg.setText(GenericStrings.Data_is_not_available.toString());
+        ((TextView)findViewById(R.id.sn_error_msg)).setText(errMsg);
     }
 
     @Override
-    public void onRecyclerViewItemClickListener(Article newsArticle) {
+    public void onItemClick(Article newsArticle) {
         Intent intent = new Intent(SearchNewsNewsActivity.this, NewsDetailActivity.class);
         intent.putExtra(NewsIntent.HEADLINE.toString(), newsArticle.getTitle());
         intent.putExtra(NewsIntent.IMAGE.toString(), newsArticle.getUrlToImage());
@@ -98,5 +72,30 @@ public class SearchNewsNewsActivity extends AppCompatActivity implements SearchN
         intent.putExtra(NewsIntent.CONTENT.toString(), newsArticle.getContent());
         intent.putExtra(NewsIntent.PUBLISHEDDATE.toString(), newsArticle.getPublishedAt());
         this.startActivity(intent);
+    }
+
+    private void initViews() {
+        searchNewsPresenter = new SearchNewsPresenter(this);
+        searchNewsRecyclerView = findViewById(R.id.sn_recycler_view);
+        setToolbar();
+    }
+
+    private void setToolbar() {
+        setSupportActionBar((Toolbar) findViewById(R.id.sn_toolbar));
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    private void backBtnClickListener(){
+        findViewById(R.id.sn_back_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
+    private void hideNewsLoadingWidgets() {
+        findViewById(R.id.sn_prgss_bar).setVisibility(View.GONE);   // hide progress bar
+        findViewById(R.id.sn_msg_holder).setVisibility(View.GONE);
     }
 }

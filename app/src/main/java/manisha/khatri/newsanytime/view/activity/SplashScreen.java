@@ -26,6 +26,13 @@ public class SplashScreen extends AppCompatActivity {
         navigateToHomePageActivity();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //Remove all the callbacks otherwise navigation will execute even after activity is killed or closed.
+        new Handler().removeCallbacksAndMessages(null);
+    }
+
     private void navigateToHomePageActivity() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -62,13 +69,6 @@ public class SplashScreen extends AppCompatActivity {
     private boolean internetConnectivityTest() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //Remove all the callbacks otherwise navigation will execute even after activity is killed or closed.
-        new Handler().removeCallbacksAndMessages(null);
     }
 
     private void fadedAnimation() {

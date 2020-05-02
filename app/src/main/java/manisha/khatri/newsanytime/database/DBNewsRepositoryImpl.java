@@ -16,25 +16,24 @@ public class DBNewsRepositoryImpl implements DBNewsRepository{
         new fetchNewsListAsyncTask(dbRepositoryCallBack).execute();
     }
 
-    private  class fetchNewsListAsyncTask extends AsyncTask<Void, Void, List<BookmarkedNews>> {
-        DBRepositoryCallBack dbRepositoryCallBack;
-        public fetchNewsListAsyncTask(DBRepositoryCallBack dbRepositoryCallBack){
-            this.dbRepositoryCallBack = dbRepositoryCallBack;
-        }
-        @Override
-        protected List<BookmarkedNews> doInBackground(Void... voids) {
-            return newsDAO.fetchNewsList();
-        }
-        protected void onPostExecute(List<BookmarkedNews> bookmarkedNewsList){
-            if(bookmarkedNewsList.size() > 0)
-                dbRepositoryCallBack.onSuccessfulResponse(bookmarkedNewsList);
-            else
-                dbRepositoryCallBack.onFailureResponse("No news found!");
-        }
-    }
-
     public void searchNewsByPublishDate(DBRepositorySearchNewsCallBck dbRepositorySearchNewsCallBck, String publishDate) {
         new searchNewsByPublishedDateAsyncTask(dbRepositorySearchNewsCallBck).execute(publishDate);
+    }
+
+    public void deleteNewsByPublishDate(String publishDate) {
+        new deleteNewsByPublishDateAsyncTask().execute(publishDate);
+    }
+
+    public void saveNewsInDB(BookmarkedNews bookmarkedNews){
+        new saveNewsAsyncTask().execute(bookmarkedNews);
+    }
+
+    private  class deleteNewsByPublishDateAsyncTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... publishedDate) {
+            newsDAO.deleteNewsByPublishDate(publishedDate[0]);
+            return null;
+        }
     }
 
     private class searchNewsByPublishedDateAsyncTask extends AsyncTask<String, Void, String > {
@@ -54,20 +53,21 @@ public class DBNewsRepositoryImpl implements DBNewsRepository{
         }
     }
 
-    public void deleteNewsByPublishDate(String publishDate) {
-        new deleteNewsByPublishDateAsyncTask().execute(publishDate);
-    }
-
-    private  class deleteNewsByPublishDateAsyncTask extends AsyncTask<String, Void, Void> {
-        @Override
-        protected Void doInBackground(String... publishedDate) {
-            newsDAO.deleteNewsByPublishDate(publishedDate[0]);
-            return null;
+    private  class fetchNewsListAsyncTask extends AsyncTask<Void, Void, List<BookmarkedNews>> {
+        DBRepositoryCallBack dbRepositoryCallBack;
+        public fetchNewsListAsyncTask(DBRepositoryCallBack dbRepositoryCallBack){
+            this.dbRepositoryCallBack = dbRepositoryCallBack;
         }
-    }
-
-    public void saveNewsInDB(BookmarkedNews bookmarkedNews){
-        new saveNewsAsyncTask().execute(bookmarkedNews);
+        @Override
+        protected List<BookmarkedNews> doInBackground(Void... voids) {
+            return newsDAO.fetchNewsList();
+        }
+        protected void onPostExecute(List<BookmarkedNews> bookmarkedNewsList){
+            if(bookmarkedNewsList.size() > 0)
+                dbRepositoryCallBack.onSuccessfulResponse(bookmarkedNewsList);
+            else
+                dbRepositoryCallBack.onFailureResponse("No news found!");
+        }
     }
 
     private  class saveNewsAsyncTask extends AsyncTask<BookmarkedNews, Void, Void> {

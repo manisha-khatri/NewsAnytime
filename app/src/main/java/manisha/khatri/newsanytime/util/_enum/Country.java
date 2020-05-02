@@ -12,7 +12,7 @@ public enum Country {
 
     private final String name;
 
-    private Country(String str) {
+    Country(String str) {
         name = str;
     }
 
